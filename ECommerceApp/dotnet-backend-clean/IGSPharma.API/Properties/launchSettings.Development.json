@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5000",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "ASafariM.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "dotnetRunMessages": true,
+      "applicationUrl": "ASPNETCORE_URLS",
+      "environmentVariables": {
+        "IGSPHARMA_ENV": "$IGSPHARMA_ENV"
+      }
+    },
+    "ASafariM": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "ASPNETCORE_URLS",
+      "environmentVariables": {
+        "IGSPHARMA_ENV": "$IGSPHARMA_ENV"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "IGSPHARMA_ENV": "$IGSPHARMA_ENV"
+      }
+    }
+  }
+}

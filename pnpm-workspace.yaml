@@ -1,0 +1,4 @@
+packages:
+  - 'ECommerceApp/ecommerce-frontend'
+  - 'ECommerceApp/ecommerce-backend'
+  - 'packages/*'

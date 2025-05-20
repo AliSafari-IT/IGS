@@ -1,0 +1,31 @@
+{
+  "name": "igs-pharma-workspace",
+  "version": "1.0.0",
+  "description": "IGS-Pharma Workspace for Pharmacy Management System",
+  "private": true,
+  "scripts": {
+    "frontend": "pnpm --filter igs-pharma-frontend start",
+    "backend": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet run",
+    "frontend:alt": "pnpm --filter igs-pharma-frontend start:alt",
+    "build:frontend": "pnpm --filter igs-pharma-frontend build",
+    "test:frontend": "pnpm --filter igs-pharma-frontend test"
+  },
+  "keywords": [
+    "ecommerce",
+    "IGS-Pharma",
+    "Pharmacy",
+    "Medical Supplies",
+    "Equipment",
+    "Medical Devices",
+    "Medical Products",
+    "Medical Equipment",
+    "Medical Goods"
+    
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0"
+}

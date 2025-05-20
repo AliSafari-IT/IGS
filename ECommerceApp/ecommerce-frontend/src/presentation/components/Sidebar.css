@@ -1,0 +1,80 @@
+.sidebar {
+  width: 250px;
+  background-color: white;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  height: 100%;
+}
+
+.sidebar-section {
+  margin-bottom: 25px;
+}
+
+.sidebar-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-list li {
+  margin-bottom: 10px;
+}
+
+.category-list a {
+  color: #555;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.category-list a:hover {
+  color: #2a9d8f;
+}
+
+.price-filter {
+  margin-top: 10px;
+}
+
+.price-slider {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.price-range-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+}
+
+.rating-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rating-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}

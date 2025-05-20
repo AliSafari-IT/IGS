@@ -1,0 +1,17 @@
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Infrastructure.deps.json
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Infrastructure.dll
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Infrastructure.pdb
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Application.dll
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Domain.dll
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Application.pdb
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\bin\Debug\net9.0\IGSPharma.Domain.pdb
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.csproj.AssemblyReference.cache
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.AssemblyInfoInputs.cache
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.AssemblyInfo.cs
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.csproj.CoreCompileInputs.cache
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharm.03E352B0.Up2Date
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.dll
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\refint\IGSPharma.Infrastructure.dll
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\IGSPharma.Infrastructure.pdb
+D:\repos\IGS\ECommerceApp\dotnet-backend-clean\IGSPharma.Infrastructure\obj\Debug\net9.0\ref\IGSPharma.Infrastructure.dll
