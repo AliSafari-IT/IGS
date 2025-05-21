@@ -61,7 +61,7 @@ namespace IGSPharma.Infrastructure.Repositories
                         Id = $"{category}-{i}",
                         Name = $"{categoryNames[category]} {i}",
                         Price = Math.Round((decimal)(_random.NextDouble() * 50 + 10), 2),
-                        ImageUrl = $"https://via.placeholder.com/200x200?text={category}+{i}",
+                        ImageUrl = $"https://placehold.co/200x200?text={category}+{i}",
                         Category = category,
                         Description = $"This is a {categoryNames[category].ToLower()} that {(category == "prescription" ? "requires a valid prescription from a licensed healthcare provider" : "is available without prescription")}.",
                         InStock = _random.NextDouble() > 0.2,
