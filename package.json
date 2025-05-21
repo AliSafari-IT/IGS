@@ -1,6 +1,6 @@
 {
   "name": "igs-pharma-workspace",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "IGS-Pharma Workspace for Pharmacy Management System",
   "private": true,
   "scripts": {
@@ -19,8 +19,7 @@
     "Medical Devices",
     "Medical Products",
     "Medical Equipment",
-    "Medical Goods"
-    
+    "Medical Goods"    
   ],
   "devDependencies": {
     "concurrently": "^9.1.2"

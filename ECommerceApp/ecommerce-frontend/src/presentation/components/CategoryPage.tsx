@@ -1,21 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Product } from '../../domain/models/Product';
 import { getProducts } from '../../application/useCases/getProducts';
+import Sidebar from './Sidebar';
 import './CategoryPage.css';
 
 const CategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const productsPerPage = 20;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
+  // Filter state
+  const [filters, setFilters] = useState({
+    minPrice: 0,
+    maxPrice: 100,
+    medicationType: [] as string[],
+    requiresPrescription: null as boolean | null
+  });
   
   const handleViewDetails = (productId: string) => {
     navigate(`/product/${productId}`);
   };
+
+  // Handle filter changes from Sidebar
+  const handleFilterChange = (newFilters: any) => {
+    setFilters(newFilters);
+  };
+  
+  // Apply filters to products
+  useEffect(() => {
+    if (products.length > 0) {
+      let filtered = [...products];
+      
+      // Apply price filter
+      if (filters.maxPrice < 100) {
+        filtered = filtered.filter(product => 
+          product.price >= filters.minPrice && product.price <= filters.maxPrice
+        );
+      }
+      
+      // Apply medication type filter
+      if (filters.medicationType.length > 0) {
+        // This is a mock implementation since we don't have medication type in the product model
+        // In a real application, you would filter based on the actual product property
+        // filtered = filtered.filter(product => filters.medicationType.includes(product.medicationType));
+      }
+      
+      // Apply prescription filter
+      if (filters.requiresPrescription !== null) {
+        filtered = filtered.filter(product => 
+          product.requiresPrescription === filters.requiresPrescription
+        );
+      }
+      
+      setFilteredProducts(filtered);
+      setTotalPages(Math.ceil(filtered.length / productsPerPage));
+    }
+  }, [filters, products, productsPerPage]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,20 +71,23 @@ const CategoryPage: React.FC = () => {
         const data = await getProducts();
         
         // Filter products by category if needed
-        const filteredProducts = categoryId 
+        const categoryFiltered = categoryId 
           ? data.filter(product => product.category === categoryId) 
           : data;
         
         // If no products found or API fails, use mock data
-        const finalProducts = filteredProducts.length > 0 ? filteredProducts : generateMockProducts(100, categoryId || '');
+        const finalProducts = categoryFiltered.length > 0 ? categoryFiltered : generateMockProducts(100, categoryId || '');
         
         setProducts(finalProducts);
+        // Initial filtered products are the same as all products
+        setFilteredProducts(finalProducts);
         setTotalPages(Math.ceil(finalProducts.length / productsPerPage));
       } catch (error) {
         console.error('Error fetching products:', error);
         // Generate mock products if API fails
         const mockProducts = generateMockProducts(100, categoryId || '');
         setProducts(mockProducts);
+        setFilteredProducts(mockProducts);
         setTotalPages(Math.ceil(mockProducts.length / productsPerPage));
       } finally {
         setLoading(false);
@@ -45,7 +95,7 @@ const CategoryPage: React.FC = () => {
     };
 
     fetchProducts();
-  }, [categoryId]);
+  }, [categoryId, productsPerPage]);
 
   // Generate mock products for demonstration
   const generateMockProducts = (count: number, category: string): Product[] => {
@@ -58,7 +108,11 @@ const CategoryPage: React.FC = () => {
         name: `${categoryName} Product ${i}`,
         price: parseFloat((Math.random() * 100 + 5).toFixed(2)),
         imageUrl: `https://placehold.co/200x200?text=${categoryName}+${i}`,
-        category: category
+        category: category,
+        description: `This is a ${categoryName} product description.`,
+        inStock: Math.random() > 0.2, // 80% chance of being in stock
+        requiresPrescription: category === 'prescription',
+        manufacturer: `Pharma Company ${Math.floor(Math.random() * 10) + 1}`
       });
     }
     
@@ -86,11 +140,13 @@ const CategoryPage: React.FC = () => {
   const getCurrentPageProducts = () => {
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    return products.slice(indexOfFirstProduct, indexOfLastProduct);
+    return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   };
 
   // Change page
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   // Generate page numbers
   const pageNumbers = [];
@@ -98,66 +154,92 @@ const CategoryPage: React.FC = () => {
     pageNumbers.push(i);
   }
 
-  if (loading) {
-    return <div className="loading">Loading products...</div>;
-  }
-
   return (
     <div className="category-page">
       <div className="category-header">
         <h1>{getCategoryName(categoryId || '')} Products</h1>
-        <p>Showing {getCurrentPageProducts().length} of {products.length} products</p>
+        <p>Browse our selection of high-quality {getCategoryName(categoryId || '').toLowerCase()} products.</p>
       </div>
-
-      <div className="products-grid">
-        {getCurrentPageProducts().map((product) => (
-          <div className="product-card" key={product.id}>
-            <div className="product-image">
-              <img src={product.imageUrl} alt={product.name} />
+      
+      {loading ? (
+        <div className="loading">Loading products...</div>
+      ) : (
+        <div className="category-content">
+          <div className="category-sidebar">
+            <Sidebar onFilterChange={handleFilterChange} />
+          </div>
+          <div className="category-main">
+            <div className="filter-summary">
+              <p>Showing {filteredProducts.length} products</p>
+              {filters.maxPrice < 100 && (
+                <span className="filter-tag">Price: €0 - €{filters.maxPrice}</span>
+              )}
+              {filters.requiresPrescription !== null && (
+                <span className="filter-tag">
+                  {filters.requiresPrescription ? 'Prescription Required' : 'No Prescription'}
+                </span>
+              )}
             </div>
-            <div className="product-info">
-              <h3>{product.name}</h3>
-              <p className="product-price">€{product.price.toFixed(2)}</p>
+            
+            <div className="products-grid">
+              {filteredProducts.length > 0 ? (
+                getCurrentPageProducts().map(product => (
+                  <div className="product-card" key={product.id}>
+                    <div className="product-image">
+                      <img src={product.imageUrl} alt={product.name} />
+                    </div>
+                    <div className="product-info">
+                      <h3>{product.name}</h3>
+                      <p className="product-price">€{product.price.toFixed(2)}</p>
+                      <button 
+                        className="view-details-btn"
+                        onClick={() => handleViewDetails(product.id)}
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="no-products">
+                  <p>No products match your filter criteria.</p>
+                  <p>Try adjusting your filters or browse all products.</p>
+                </div>
+              )}
+            </div>
+
+            <div className="pagination">
               <button 
-                className="view-details-btn"
-                onClick={() => handleViewDetails(product.id)}
+                onClick={() => paginate(currentPage - 1)} 
+                disabled={currentPage === 1}
+                className="pagination-button"
               >
-                View Details
+                Previous
+              </button>
+              
+              <div className="page-numbers">
+                {pageNumbers.map(number => (
+                  <button
+                    key={number}
+                    onClick={() => paginate(number)}
+                    className={`page-number ${currentPage === number ? 'active' : ''}`}
+                  >
+                    {number}
+                  </button>
+                ))}
+              </div>
+              
+              <button 
+                onClick={() => paginate(currentPage + 1)} 
+                disabled={currentPage === totalPages}
+                className="pagination-button"
+              >
+                Next
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      <div className="pagination">
-        <button 
-          onClick={() => paginate(currentPage - 1)} 
-          disabled={currentPage === 1}
-          className="pagination-button"
-        >
-          Previous
-        </button>
-        
-        <div className="page-numbers">
-          {pageNumbers.map(number => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`page-number ${currentPage === number ? 'active' : ''}`}
-            >
-              {number}
-            </button>
-          ))}
         </div>
-        
-        <button 
-          onClick={() => paginate(currentPage + 1)} 
-          disabled={currentPage === totalPages}
-          className="pagination-button"
-        >
-          Next
-        </button>
-      </div>
+      )}
     </div>
   );
 };

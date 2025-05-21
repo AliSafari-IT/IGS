@@ -1,9 +1,13 @@
+using System.Text;
+using IGSPharma.Application;
 using IGSPharma.Application.Interfaces;
 using IGSPharma.Application.Services;
 using IGSPharma.Domain.Interfaces;
 using IGSPharma.Infrastructure;
 using IGSPharma.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,12 +24,26 @@ builder.Services.AddScoped<IProductService, ProductService>();
 // Register infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// Ensure database is created
-using (var scope = builder.Services.BuildServiceProvider().CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
-}
+// Register application layer
+builder.Services.AddApplication(builder.Configuration);
+
+// Configure JWT Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
+            ),
+        };
+    });
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -34,25 +52,48 @@ builder.Services.AddCors(options =>
         "AllowAll",
         policy =>
         {
-            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            policy
+                .WithOrigins("http://localhost:3000", "http://127.0.0.1:54831") // Explicitly specify the frontend origin
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials(); // Important for cookies/auth
         }
     );
 });
 
+// Ensure database is created
 var app = builder.Build();
+
+// Initialize the database
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
+}
+
+// App was already built above for database initialization
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    // Use CORS first in development
+    app.UseCors("AllowAll");
+    
+    // Skip HTTPS redirection in development to avoid CORS preflight issues
+    // app.UseHttpsRedirection();
+}
+else
+{
+    // In production, use HTTPS redirection but ensure CORS is applied first
+    app.UseCors("AllowAll");
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
-
-// Use CORS
-app.UseCors("AllowAll");
-
+// Add authentication middleware
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

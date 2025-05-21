@@ -1,8 +1,53 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../infrastructure/auth/AuthContext';
 import './Header.css';
 
 const Header: React.FC = () => {
+  const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+  const handleUserButtonClick = () => {
+    if (user) {
+      setMenuOpen(!menuOpen);
+    }
+  };
+  
+  // No longer using navigate directly to avoid DataCloneError
+  
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default action
+    e.stopPropagation(); // Prevent event bubbling
+    
+    if (logout) {
+      // First close the menu
+      setMenuOpen(false);
+      
+      // Then logout (which resets the user state)
+      logout();
+      
+      // Use window.location for navigation instead of React Router
+      // This avoids the DataCloneError completely
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 50);
+    }
+  };
   return (
     <header className="header">
       <div className="header-container">
@@ -30,9 +75,31 @@ const Header: React.FC = () => {
             <i className="fa fa-prescription-bottle-alt"></i>
             <span className="cart-count">0</span>
           </button>
-          <button className="user-btn">
-            <i className="fa fa-user-circle"></i>
-          </button>
+          <div className="user-menu" ref={menuRef}>
+            <button className="user-btn" onClick={handleUserButtonClick}>
+              {user ? (
+                <div className="user-avatar-small">
+                  {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                </div>
+              ) : (
+                <Link to="/login"><i className="fa fa-user-circle"></i></Link>
+              )}
+            </button>
+            {user && (
+              <div className={`user-dropdown ${menuOpen ? 'active' : ''}`}>
+                <div className="dropdown-user-info">
+                  <div className="dropdown-user-name">{user.firstName} {user.lastName}</div>
+                  <div className="dropdown-user-email">{user.email}</div>
+                </div>
+                <ul className="dropdown-menu">
+                  <li><Link to="/account" onClick={() => setMenuOpen(false)}>Mijn account</Link></li>
+                  <li><Link to="/account" onClick={() => setMenuOpen(false)}>Mijn bestellingen</Link></li>
+                  <li><Link to="/account" onClick={() => setMenuOpen(false)}>Mijn recepten</Link></li>
+                  <li><button onClick={handleLogout}>Uitloggen</button></li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

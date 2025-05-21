@@ -15,6 +15,11 @@
   background-color: #f8f9fa;
 }
 
+.main-content.full-width {
+  width: 100%;
+  max-width: 100%;
+}
+
 @media (max-width: 768px) {
   .content-container {
     flex-direction: column;
