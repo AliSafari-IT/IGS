@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Product } from '../../domain/models/Product';
 import { getProducts } from '../../application/useCases/getProducts';
 import './CategoryPage.css';
@@ -11,6 +11,11 @@ const CategoryPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const productsPerPage = 20;
+  const navigate = useNavigate();
+  
+  const handleViewDetails = (productId: string) => {
+    navigate(`/product/${productId}`);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -113,7 +118,12 @@ const CategoryPage: React.FC = () => {
             <div className="product-info">
               <h3>{product.name}</h3>
               <p className="product-price">€{product.price.toFixed(2)}</p>
-              <button className="view-details-btn">View Details</button>
+              <button 
+                className="view-details-btn"
+                onClick={() => handleViewDetails(product.id)}
+              >
+                View Details
+              </button>
             </div>
           </div>
         ))}

@@ -5,4 +5,8 @@ export interface Product {
   imageUrl: string;
   category?: string;
   description?: string;
+  inStock?: boolean;
+  requiresPrescription?: boolean;
+  dosage?: string | null;
+  manufacturer?: string | null;
 }

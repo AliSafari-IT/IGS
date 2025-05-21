@@ -1,16 +1,89 @@
 import axios from 'axios';
 import { Product } from '../../domain/models/Product';
 
-const API_URL = `https://localhost:${process.env.ASPNETCORE_HTTPS_PORT || 5001}/api`;
+// Configure axios to handle CORS and SSL issues
+axios.defaults.withCredentials = false;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+// Use the correct port from environment variables or fallback to default
+// Try HTTP first if HTTPS causes issues
+const API_URL = `http://localhost:5000/api`;
+// Alternative HTTPS URL if needed
+// const API_URL = `https://localhost:${process.env.ASPNETCORE_HTTPS_PORT || 5001}/api`;
+
+// Define the API response interface to match the backend format
+interface PagedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  pageSize: number;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
 
 export class ProductService {
-  async getAll(): Promise<Product[]> {
+  async getAll(category?: string, page: number = 1, limit: number = 20): Promise<Product[]> {
     try {
-      const response = await axios.get<Product[]>(`${API_URL}/products`);
-      return response.data;
+      // Build the URL with query parameters
+      let url = `${API_URL}/products?page=${page}&limit=${limit}`;
+      if (category) {
+        url += `&category=${encodeURIComponent(category)}`;
+      }
+      
+      // Make the API call
+      const response = await axios.get<PagedResponse<Product>>(url);
+      
+      // Check if the request was successful
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        console.error('API returned error:', response.data.message);
+        return [];
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
-      return [];
+      throw error; // Throw the error instead of returning empty array
+    }
+  }
+  
+  async getById(id: string): Promise<Product | null> {
+    try {
+      const response = await axios.get<ApiResponse<Product>>(`${API_URL}/products/${id}`);
+      
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        console.error('API returned error:', response.data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error(`Error fetching product with ID ${id}:`, error);
+      throw error;
+    }
+  }
+  
+  async searchProducts(query: string, page: number = 1, limit: number = 20): Promise<Product[]> {
+    try {
+      const response = await axios.get<PagedResponse<Product>>(
+        `${API_URL}/products/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
+      );
+      
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        console.error('API returned error:', response.data.message);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error searching products:', error);
+      throw error;
     }
   }
 }

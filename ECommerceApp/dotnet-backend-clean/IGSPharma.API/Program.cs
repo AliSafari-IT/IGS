@@ -1,7 +1,9 @@
 using IGSPharma.Application.Interfaces;
 using IGSPharma.Application.Services;
 using IGSPharma.Domain.Interfaces;
-using IGSPharma.Infrastructure.Repositories;
+using IGSPharma.Infrastructure;
+using IGSPharma.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 // Register infrastructure services
-builder.Services.AddSingleton<IProductRepository, MockProductRepository>();
+builder.Services.AddInfrastructure(builder.Configuration);
+
+// Ensure database is created
+using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
+}
 
 // Configure CORS
 builder.Services.AddCors(options =>

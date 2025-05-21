@@ -4,6 +4,8 @@ export { default as Layout } from './Layout';
 export { default as ProductList } from './ProductList';
 export { default as HomePage } from './HomePage';
 export { default as CategoryPage } from './CategoryPage';
+export { default as CategoriesPage } from './CategoriesPage';
 export { default as ProductDetails } from './ProductDetails';
 export { default as HealthAdvice } from './SimpleHealthAdvice';
 export { default as AboutUs } from './AboutUs';
+export { default as ContactUs } from './ContactUs';
