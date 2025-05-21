@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth, User } from '../../../infrastructure/auth/AuthContext';
 import './Auth.css';
 import './UserAccount.css';
@@ -8,6 +8,13 @@ const UserAccount: React.FC = () => {
   const { user, logout, updateProfile, changePassword, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#profile') setActiveTab('profile');
+    else if (location.hash === '#orders') setActiveTab('orders');
+    else if (location.hash === '#recipes') setActiveTab('recipes');
+  }, [location.hash]);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
@@ -341,7 +348,23 @@ const UserAccount: React.FC = () => {
             </div>
           </div>
         )}
-        
+
+        {activeTab === 'recipes' && (
+          <div className="account-section">
+            <h2>Mijn recepten</h2>
+            <div className="empty-state">
+              <div className="empty-icon">
+                <i className="fas fa-prescription-bottle-alt"></i>
+              </div>
+              <h3>Geen recepten gevonden</h3>
+              <p>U heeft nog geen recepten toegevoegd aan uw account.</p>
+              <button className="primary-button" onClick={() => navigate('/prescriptions')}>
+                Bekijk receptmedicijnen
+              </button>
+            </div>
+          </div>
+        )}
+
         {activeTab === 'addresses' && (
           <div className="account-section">
             <h2>Mijn adressen</h2>

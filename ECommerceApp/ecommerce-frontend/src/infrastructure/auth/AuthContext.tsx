@@ -56,8 +56,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(true);
       try {
         // Check localStorage for saved auth token
-        const token = localStorage.getItem('auth_token');
-        const userData = localStorage.getItem('user_data');
+        const token = localStorage.getItem('igs_auth_token');
+        const userData = localStorage.getItem('igs_user_data');
         
         if (token) {
           // Configure axios to use the token
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     // Update with fresh data from server
                     setUser(response.data);
                     // Update cached user data
-                    localStorage.setItem('user_data', JSON.stringify(response.data));
+                    localStorage.setItem('igs_user_data', JSON.stringify(response.data));
                     console.log('Token validation successful, user data updated');
                   }
                 })
@@ -90,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 });
             } catch (parseError) {
               console.error('Error parsing cached user data:', parseError);
-              localStorage.removeItem('user_data');
+              localStorage.removeItem('igs_user_data');
               setUser(null);
             }
           } else {
@@ -100,13 +100,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               if (response.data) {
                 setUser(response.data);
                 // Cache the user data
-                localStorage.setItem('user_data', JSON.stringify(response.data));
+                localStorage.setItem('igs_user_data', JSON.stringify(response.data));
               }
             } catch (error) {
               console.error('Token validation failed:', error);
               // Clear auth data on validation failure
-              localStorage.removeItem('auth_token');
-              localStorage.removeItem('refresh_token');
+              localStorage.removeItem('igs_auth_token');
+              localStorage.removeItem('igs_refresh_token');
               delete axios.defaults.headers.common['Authorization'];
               setUser(null);
             }
@@ -119,9 +119,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch (error) {
         console.error('Authentication check failed:', error);
         // Clear potentially corrupted data
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user_data');
-        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('igs_auth_token');
+        localStorage.removeItem('igs_user_data');
+        localStorage.removeItem('igs_refresh_token');
         delete axios.defaults.headers.common['Authorization'];
         setUser(null);
       } finally {
@@ -145,14 +145,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (response.data && response.data.success) {
         // Store auth data
-        localStorage.setItem('auth_token', response.data.token);
+        localStorage.setItem('igs_auth_token', response.data.token);
         if (response.data.refreshToken) {
-          localStorage.setItem('refresh_token', response.data.refreshToken);
+          localStorage.setItem('igs_refresh_token', response.data.refreshToken);
         }
         
         // Store user data in localStorage for persistence
         if (response.data.user) {
-          localStorage.setItem('user_data', JSON.stringify(response.data.user));
+          localStorage.setItem('igs_user_data', JSON.stringify(response.data.user));
         }
         
         // Save email if rememberMe is true
@@ -192,14 +192,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (response.data && response.data.success) {
         // Store auth data
-        localStorage.setItem('auth_token', response.data.token);
+        localStorage.setItem('igs_auth_token', response.data.token);
         if (response.data.refreshToken) {
-          localStorage.setItem('refresh_token', response.data.refreshToken);
+          localStorage.setItem('igs_refresh_token', response.data.refreshToken);
         }
         
         // Store user data in localStorage for persistence
         if (response.data.user) {
-          localStorage.setItem('user_data', JSON.stringify(response.data.user));
+          localStorage.setItem('igs_user_data', JSON.stringify(response.data.user));
         }
         
         // Set authorization header for future requests
@@ -238,9 +238,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
       
       // Then clear all auth-related data from localStorage
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.removeItem('user_data');
+      localStorage.removeItem('igs_auth_token');
+      localStorage.removeItem('igs_refresh_token');
+      localStorage.removeItem('igs_user_data');
       
       // Remove authorization header
       delete axios.defaults.headers.common['Authorization'];
@@ -339,7 +339,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Compute isAuthenticated once to ensure consistency
-  const isAuthenticated = !!user && !!localStorage.getItem('auth_token');
+  const isAuthenticated = !!user && !!localStorage.getItem('igs_auth_token');
   
   return (
     <AuthContext.Provider
