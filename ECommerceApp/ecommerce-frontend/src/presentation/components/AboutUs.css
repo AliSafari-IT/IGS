@@ -1,0 +1,196 @@
+.about-us-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.about-us-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.about-us-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.about-us-section {
+  margin-bottom: 4rem;
+}
+
+.about-us-section h2 {
+  font-size: 1.8rem;
+  color: #3498db;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.about-us-section p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Team section styles */
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.team-member {
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.team-member-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.placeholder-image {
+  background-color: #dde1e7;
+  position: relative;
+}
+
+.placeholder-image::after {
+  content: '👤';
+  font-size: 80px;
+  color: #b4b9c2;
+}
+
+.team-member h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.team-role {
+  color: #3498db;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Services section styles */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-item {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.service-item:hover {
+  transform: translateY(-5px);
+}
+
+.service-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.service-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: #2c3e50;
+}
+
+/* Values section styles */
+.values-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.value-item {
+  background-color: #f0f7ff;
+  border-left: 4px solid #3498db;
+  padding: 1.2rem;
+  border-radius: 4px;
+}
+
+.value-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+/* Location section styles */
+.location-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.address-info, .hours-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.hours-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hours-table td {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.hours-table td:first-child {
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .about-us-container {
+    padding: 1rem;
+  }
+  
+  .team-members, .services-grid, .values-list {
+    gap: 1rem;
+  }
+  
+  .team-member, .service-item {
+    min-width: 100%;
+  }
+}

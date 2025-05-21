@@ -1,0 +1,340 @@
+.health-advice-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.health-advice-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.health-advice-header h1 {
+  color: #2c8d8a;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.health-advice-header p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Topics Grid */
+.health-topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.health-topic-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.health-topic-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(44, 141, 138, 0.15);
+}
+
+.topic-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.topic-icon.large {
+  font-size: 3.5rem;
+}
+
+.health-topic-card h3 {
+  color: #2c8d8a;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.health-topic-card p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Topic Detail */
+.health-topic-detail {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  color: #2c8d8a;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: rgba(44, 141, 138, 0.1);
+}
+
+.topic-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.topic-header h2 {
+  color: #2c8d8a;
+  font-size: 1.8rem;
+  margin-left: 15px;
+}
+
+.topic-description {
+  margin-bottom: 30px;
+}
+
+.topic-description p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* FAQ Section */
+.faq-section {
+  margin-bottom: 40px;
+}
+
+.faq-section h3 {
+  color: #2c8d8a;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.faq-item {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #2c8d8a;
+}
+
+.faq-item h4 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.faq-item p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Ask Question Section */
+.ask-question-prompt {
+  background-color: #f0f7f7;
+  padding: 25px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ask-question-prompt h3 {
+  color: #2c8d8a;
+  margin-bottom: 10px;
+}
+
+.ask-question-prompt p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.question-form-container {
+  background-color: #f0f7f7;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.question-form-container h3 {
+  color: #2c8d8a;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2c8d8a;
+  box-shadow: 0 0 0 2px rgba(44, 141, 138, 0.2);
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.primary-button {
+  background-color: #2c8d8a;
+  color: white;
+  border: none;
+}
+
+.primary-button:hover {
+  background-color: #236e6c;
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: #2c8d8a;
+  border: 1px solid #2c8d8a;
+}
+
+.secondary-button:hover {
+  background-color: rgba(44, 141, 138, 0.1);
+}
+
+/* Confirmation Message */
+.confirmation-message {
+  background-color: #e6f3f3;
+  padding: 25px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.confirmation-message h3 {
+  color: #2c8d8a;
+  margin-bottom: 10px;
+}
+
+.confirmation-message p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Footer */
+.health-advice-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.disclaimer,
+.emergency-notice {
+  margin-bottom: 20px;
+}
+
+.disclaimer h4,
+.emergency-notice h4 {
+  color: #2c8d8a;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.disclaimer p,
+.emergency-notice p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.emergency-notice {
+  background-color: #fff3f3;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .health-topics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .health-advice-header h1 {
+    font-size: 2rem;
+  }
+  
+  .topic-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .topic-header h2 {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .form-footer {
+    flex-direction: column;
+  }
+  
+  .form-footer button {
+    width: 100%;
+  }
+}

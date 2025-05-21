@@ -1,0 +1,135 @@
+.product-details {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  color: #2c8d8a;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: rgba(44, 141, 138, 0.1);
+}
+
+.product-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .product-details-container {
+    flex-direction: row;
+  }
+}
+
+.product-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.product-image-container img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-info-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.product-info-container h1 {
+  font-size: 28px;
+  margin: 0;
+  color: #333;
+}
+
+.product-price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c8d8a;
+}
+
+.product-description {
+  margin-top: 20px;
+}
+
+.product-description h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.product-description p {
+  line-height: 1.6;
+  color: #666;
+}
+
+.product-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.add-to-cart-btn, .buy-now-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart-btn {
+  background-color: #fff;
+  color: #2c8d8a;
+  border: 2px solid #2c8d8a;
+}
+
+.add-to-cart-btn:hover {
+  background-color: rgba(44, 141, 138, 0.1);
+}
+
+.buy-now-btn {
+  background-color: #2c8d8a;
+  color: white;
+}
+
+.buy-now-btn:hover {
+  background-color: #236e6c;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 18px;
+  color: #e74c3c;
+}

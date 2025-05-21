@@ -20,22 +20,22 @@ const HomePage: React.FC = () => {
         <h2>Featured Categories</h2>
         <div className="category-cards">
           <div className="category-card">
-            <img src="https://via.placeholder.com/300x200?text=Prescription+Medications" alt="Prescription Medications" />
+            <img src="https://placehold.co/300x200?text=Prescription+Medications" alt="Prescription Medications" />
             <h3>Prescription Medications</h3>
             <Link to="/category/prescription">View Medications</Link>
           </div>
           <div className="category-card">
-            <img src="https://via.placeholder.com/300x200?text=Over-the-Counter" alt="Over-the-Counter" />
+            <img src="https://placehold.co/300x200?text=Over-the-Counter" alt="Over-the-Counter" />
             <h3>Over-the-Counter</h3>
             <Link to="/category/otc">View Medications</Link>
           </div>
           <div className="category-card">
-            <img src="https://via.placeholder.com/300x200?text=Vitamins+and+Supplements" alt="Vitamins and Supplements" />
+            <img src="https://placehold.co/300x200?text=Vitamins+and+Supplements" alt="Vitamins and Supplements" />
             <h3>Vitamins & Supplements</h3>
             <Link to="/category/vitamins">View Products</Link>
           </div>
           <div className="category-card">
-            <img src="https://via.placeholder.com/300x200?text=Personal+Care" alt="Personal Care" />
+            <img src="https://placehold.co/300x200?text=Personal+Care" alt="Personal Care" />
             <h3>Personal Care</h3>
             <Link to="/category/personal-care">View Products</Link>
           </div>

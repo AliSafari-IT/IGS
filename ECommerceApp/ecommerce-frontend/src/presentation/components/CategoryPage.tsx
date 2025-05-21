@@ -52,7 +52,7 @@ const CategoryPage: React.FC = () => {
         id: `${category}-${i}`,
         name: `${categoryName} Product ${i}`,
         price: parseFloat((Math.random() * 100 + 5).toFixed(2)),
-        imageUrl: `https://via.placeholder.com/200x200?text=${categoryName}+${i}`,
+        imageUrl: `https://placehold.co/200x200?text=${categoryName}+${i}`,
         category: category
       });
     }
