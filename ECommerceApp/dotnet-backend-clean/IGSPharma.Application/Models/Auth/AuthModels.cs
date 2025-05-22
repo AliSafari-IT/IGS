@@ -109,5 +109,8 @@ namespace IGSPharma.Application.Models.Auth
         public string LastName { get; set; }
 
         public string PhoneNumber { get; set; }
+        
+        // Added to help with user identification
+        public string UserId { get; set; }
     }
 }

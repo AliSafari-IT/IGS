@@ -53,26 +53,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Check if user is already logged in on mount
   useEffect(() => {
     const checkAuthStatus = async () => {
-      setIsLoading(true);
       try {
-        // Check localStorage for saved auth token
         const token = localStorage.getItem('igs_auth_token');
-        const userData = localStorage.getItem('igs_user_data');
         
         if (token) {
-          // Configure axios to use the token
+          console.log('Found auth token, setting up authorization headers');
+          // Set authorization header for future requests
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
-          // First try to use cached user data if available
+          // Check if we have cached user data
+          const userData = localStorage.getItem('igs_user_data');
+          
           if (userData) {
             try {
               const parsedUser = JSON.parse(userData);
               setUser(parsedUser);
               console.log('User authenticated from localStorage:', parsedUser.email);
               
+              // Create a new axios instance with the token to ensure it's used for this request
+              const axiosWithAuth = axios.create({
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+              
               // In the background, still validate the token with the server
               // but don't block the UI on this request
-              axios.get(`${AUTH_ENDPOINT}/me`)
+              axiosWithAuth.get(`${AUTH_ENDPOINT}/me`)
                 .then(response => {
                   if (response.data) {
                     // Update with fresh data from server
@@ -80,6 +88,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     // Update cached user data
                     localStorage.setItem('igs_user_data', JSON.stringify(response.data));
                     console.log('Token validation successful, user data updated');
+                    
+                    // Ensure global axios headers are updated
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                   }
                 })
                 .catch(err => {
@@ -96,11 +107,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           } else {
             // No cached user data, must validate with server
             try {
-              const response = await axios.get(`${AUTH_ENDPOINT}/me`);
+              // Create a new axios instance with the token to ensure it's used for this request
+              const axiosWithAuth = axios.create({
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+              
+              const response = await axiosWithAuth.get(`${AUTH_ENDPOINT}/me`);
               if (response.data) {
                 setUser(response.data);
                 // Cache the user data
                 localStorage.setItem('igs_user_data', JSON.stringify(response.data));
+                // Ensure global axios headers are updated
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
               }
             } catch (error) {
               console.error('Token validation failed:', error);
@@ -157,9 +178,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         // Save email if rememberMe is true
         if (rememberMe) {
-          localStorage.setItem('remembered_email', email);
+          localStorage.setItem('igs_remembered_email', email);
         } else {
-          localStorage.removeItem('remembered_email');
+          localStorage.removeItem('igs_remembered_email');
         }
         
         // Set authorization header for future requests
@@ -257,17 +278,111 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateProfile = async (userData: Partial<User>): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // Call the update profile API endpoint
-      const response = await axios.put(`${AUTH_ENDPOINT}/me`, userData);
+      // Check if user is authenticated
+      const token = localStorage.getItem('igs_auth_token');
+      if (!token) {
+        console.error('No authentication token found');
+        return false;
+      }
+      
+      // Debug token information
+      console.log('Token from localStorage:', token.substring(0, 20) + '...');
+      
+      // Try to decode the token to see what's inside (JWT tokens are base64 encoded)
+      try {
+        const tokenParts = token.split('.');
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(atob(tokenParts[1]));
+          console.log('Decoded token payload:', payload);
+          console.log('User ID in token:', payload.sub || payload.nameid || payload.userId || 'Not found');
+        } else {
+          console.error('Token does not appear to be in valid JWT format');
+        }
+      } catch (e) {
+        console.error('Error decoding token:', e);
+      }
+
+      // Create a new axios instance with the token to ensure it's used for this request
+      const axiosWithAuth = axios.create({
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      // Make sure we have the required fields according to UpdateUserRequest in the backend
+      // Include the user ID to help with identification on the backend
+      const updateData = {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phoneNumber: userData.phoneNumber || '',
+        // Include user ID if available - use the correct property name to match the backend model
+        // The backend expects 'userId' to be 'UserId' (capital U) to match the C# property name
+        userId: userData.id || user?.id || ''
+      };
+      
+      // Log the user ID for debugging
+      console.log('User ID being sent:', updateData.userId);
+      
+      // Create a new object with the correct property name to match the backend model
+      const backendData = {
+        firstName: updateData.firstName,
+        lastName: updateData.lastName,
+        phoneNumber: updateData.phoneNumber || '',
+        // Use capital U for UserId to match C# property name
+        UserId: updateData.userId
+      };
+      
+      console.log('Current user state in context:', user);
+      console.log('Sending data to backend with UserId:', backendData.UserId);
+      
+      console.log('API endpoint:', `${AUTH_ENDPOINT}/me`);
+      console.log('Authorization header:', `Bearer ${token.substring(0, 10)}...`);
+      
+      // Call the update profile API endpoint with the dedicated axios instance and the correct data
+      const response = await axiosWithAuth.put(`${AUTH_ENDPOINT}/me`, backendData);
+      
+      console.log('Profile update response status:', response.status);
+      console.log('Profile update response data:', response.data);
       
       if (response.data) {
-        setUser(response.data);
+        // Create a new user object with updated data
+        const updatedUser = user ? {
+          ...user,
+          firstName: updateData.firstName,
+          lastName: updateData.lastName,
+          phoneNumber: updateData.phoneNumber
+        } : response.data;
+        
+        // Update the user state
+        setUser(updatedUser);
+        console.log('Updated user state:', updatedUser);
+        
+        // Update local storage with the new user data
+        localStorage.setItem('igs_user_data', JSON.stringify(updatedUser));
+        console.log('Updated localStorage user data');
+        
+        // Also update the global axios defaults for future requests
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
         return true;
       }
       return false;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Profile update failed:', error);
-      return false;
+      if (error.response) {
+        console.error('Error response status:', error.response.status);
+        console.error('Error response data:', error.response.data);
+        
+        // IMPORTANT: Don't automatically log out on 401 errors
+        // Just report the error and let the component handle it
+        // This prevents the automatic logout issue
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
+      throw error; // Re-throw to allow component to handle the error
     } finally {
       setIsLoading(false);
     }

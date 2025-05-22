@@ -232,22 +232,52 @@ namespace IGSPharma.Application.Services
             UpdateUserRequest request
         )
         {
-            var user = await _userRepository.GetByIdAsync(userId);
+            Console.WriteLine(
+                $"[DEBUG] AuthService.UpdateUserDetailsAsync called for userId: {userId}"
+            );
+            Console.WriteLine(
+                $"[DEBUG] UpdateUserRequest: FirstName={request.FirstName}, LastName={request.LastName}, PhoneNumber={request.PhoneNumber}"
+            );
 
-            if (user == null)
+            try
             {
-                return null;
+                var user = await _userRepository.GetByIdAsync(userId);
+
+                if (user == null)
+                {
+                    Console.WriteLine($"[DEBUG] User not found with ID: {userId}");
+                    return null;
+                }
+
+                Console.WriteLine(
+                    $"[DEBUG] Found user: {user.Email}, Current values: FirstName={user.FirstName}, LastName={user.LastName}, PhoneNumber={user.PhoneNumber}"
+                );
+
+                // Update user details
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+                user.PhoneNumber = request.PhoneNumber;
+
+                Console.WriteLine(
+                    $"[DEBUG] Updating user with new values: FirstName={user.FirstName}, LastName={user.LastName}, PhoneNumber={user.PhoneNumber}"
+                );
+
+                // Save changes
+                var updatedUser = await _userRepository.UpdateAsync(user);
+                Console.WriteLine($"[DEBUG] User updated successfully: {updatedUser.Id}");
+
+                var response = MapUserToUserDetailsResponse(updatedUser);
+                Console.WriteLine(
+                    $"[DEBUG] Returning UserDetailsResponse for user: {response.Email}"
+                );
+                return response;
             }
-
-            // Update user details
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
-            user.PhoneNumber = request.PhoneNumber;
-
-            // Save changes
-            var updatedUser = await _userRepository.UpdateAsync(user);
-
-            return MapUserToUserDetailsResponse(updatedUser);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DEBUG] Exception in UpdateUserDetailsAsync: {ex.Message}");
+                Console.WriteLine($"[DEBUG] Stack trace: {ex.StackTrace}");
+                throw; // Re-throw to allow controller to handle the error
+            }
         }
 
         public async Task<bool> ChangePasswordAsync(string userId, ChangePasswordRequest request)

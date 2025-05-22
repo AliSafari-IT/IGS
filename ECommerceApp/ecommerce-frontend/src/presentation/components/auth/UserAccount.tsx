@@ -5,10 +5,11 @@ import './Auth.css';
 import './UserAccount.css';
 
 const UserAccount: React.FC = () => {
-  const { user, logout, updateProfile, changePassword, isLoading, isAuthenticated } = useAuth();
+  const { user, logout, updateProfile, changePassword, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (location.hash === '#profile') setActiveTab('profile');
@@ -43,12 +44,7 @@ const UserAccount: React.FC = () => {
     }
   }, [user]);
   
-  // Show loading state while checking authentication
-  if (isLoading) {
-    return <div className="loading">Loading...</div>;
-  }
-  
-  // If not authenticated and not loading, show a message instead of redirecting
+  // If not authenticated, show a message instead of redirecting
   // The ProtectedRoute in AppRoutes will handle the redirect
   if (!isAuthenticated || !user) {
     return null;
@@ -67,24 +63,56 @@ const UserAccount: React.FC = () => {
     setUpdateSuccess(false);
     setUpdateError(null);
     
+    // Validate form data
+    if (!formData.firstName || !formData.lastName) {
+      setUpdateError('Voornaam en achternaam zijn verplicht.');
+      return;
+    }
+    
+    console.log('Submitting profile update with data:', formData);
+    
     try {
-      const success = await updateProfile(formData);
+      // Show loading state
+      setIsLoading(true);
+      
+      // Make a copy of the form data to ensure we're sending the correct values
+      const dataToSubmit = {
+        ...formData,
+        // Ensure phoneNumber is included even if it's empty
+        phoneNumber: formData.phoneNumber || '',
+        // Include the user ID if available
+        id: user?.id || ''
+      };
+      
+      // Log the current user information for debugging
+      console.log('Current user:', user);
+      
+      console.log('Sending data to updateProfile:', dataToSubmit);
+      const success = await updateProfile(dataToSubmit);
+      
       if (success) {
+        console.log('Profile update successful');
         setUpdateSuccess(true);
         setIsEditing(false);
         // Clear success message after 3 seconds
         setTimeout(() => setUpdateSuccess(false), 3000);
       } else {
-        setUpdateError('Failed to update profile. Please try again.');
+        console.error('Profile update returned false');
+        setUpdateError('Profiel bijwerken mislukt. Probeer het opnieuw.');
       }
     } catch (err: any) {
       console.error('Error updating profile:', err);
       // Display error message from API if available
       if (err.response && err.response.data && err.response.data.message) {
         setUpdateError(err.response.data.message);
+      } else if (err.response && err.response.status === 401) {
+        // Don't show a logout message, just show an authentication error
+        setUpdateError('Authenticatiefout. Probeer het opnieuw of vernieuw de pagina.');
       } else {
-        setUpdateError('An error occurred while updating your profile.');
+        setUpdateError('Er is een fout opgetreden bij het bijwerken van uw profiel.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -267,6 +295,18 @@ const UserAccount: React.FC = () => {
                   />
                 </div>
                 
+                <div className="form-group">
+                  <label htmlFor="phoneNumber">Telefoonnummer</label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber || ''}
+                    onChange={handleChange}
+                    placeholder="+31 6 12345678"
+                  />
+                </div>
+                
                 <div className="form-actions">
                   <button 
                     type="button" 
@@ -276,6 +316,7 @@ const UserAccount: React.FC = () => {
                       setFormData({
                         firstName: user.firstName,
                         lastName: user.lastName,
+                        phoneNumber: user.phoneNumber || '',
                         email: user.email,
                       });
                     }}

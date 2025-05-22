@@ -69,7 +69,7 @@ const Login: React.FC = () => {
 
   // Check for remembered email on component mount
   React.useEffect(() => {
-    const rememberedEmail = localStorage.getItem('remembered_email');
+    const rememberedEmail = localStorage.getItem('igs_remembered_email');
     if (rememberedEmail) {
       setEmail(rememberedEmail);
       setRememberMe(true);

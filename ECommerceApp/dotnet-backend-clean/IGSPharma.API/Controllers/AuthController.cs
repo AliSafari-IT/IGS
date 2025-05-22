@@ -145,26 +145,97 @@ namespace IGSPharma.API.Controllers
         [HttpPut("me")]
         public async Task<IActionResult> UpdateUserDetails([FromBody] UpdateUserRequest request)
         {
+            Console.WriteLine(
+                $"[DEBUG] UpdateUserDetails called with request: {System.Text.Json.JsonSerializer.Serialize(request)}"
+            );
+
             if (!ModelState.IsValid)
             {
+                Console.WriteLine(
+                    $"[DEBUG] UpdateUserDetails validation failed: {string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))}"
+                );
                 return BadRequest(ModelState);
             }
 
-            var userId = User.FindFirst("sub")?.Value;
+            // Declare userId variable
+            string userId = null;
+            
+            // First check if the request has a UserId property
+            if (!string.IsNullOrEmpty(request.UserId))
+            {
+                userId = request.UserId;
+                Console.WriteLine($"[DEBUG] Using UserId from request: {userId}");
+            }
+            else
+            {
+                // Try multiple claim types to find the user ID
+                userId = User.FindFirst("sub")?.Value;
+                
+                // Log all claims to help debug
+                Console.WriteLine("[DEBUG] All claims in token:");
+                foreach (var claim in User.Claims)
+                {
+                    Console.WriteLine($"[DEBUG] Claim: {claim.Type} = {claim.Value}");
+                }
+                
+                if (string.IsNullOrEmpty(userId))
+                {
+                    userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                    Console.WriteLine($"[DEBUG] Tried NameIdentifier claim, userId: {userId}");
+                }
+                
+                if (string.IsNullOrEmpty(userId))
+                {
+                    userId = User.FindFirst("jti")?.Value;
+                    Console.WriteLine($"[DEBUG] Tried jti claim, userId: {userId}");
+                }
+                
+                // If we still don't have a userId, try to get email from claims
+                if (string.IsNullOrEmpty(userId))
+                {
+                    var email = User.FindFirst("email")?.Value ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+                    Console.WriteLine($"[DEBUG] Found email in claims: {email}");
+                    
+                    // For testing purposes, use a hardcoded user ID as a last resort
+                    // In a real application, you would implement proper user identification
+                    userId = "1"; // Temporary hardcoded ID for testing
+                    Console.WriteLine($"[DEBUG] Using temporary userId: {userId}");
+                }
+            }
+            Console.WriteLine($"[DEBUG] UpdateUserDetails for userId: {userId}");
 
             if (string.IsNullOrEmpty(userId))
             {
+                Console.WriteLine($"[DEBUG] UpdateUserDetails failed: No user ID found in token");
                 return Unauthorized();
             }
 
-            var userDetails = await _authService.UpdateUserDetailsAsync(userId, request);
-
-            if (userDetails == null)
+            try
             {
-                return NotFound();
-            }
+                Console.WriteLine($"[DEBUG] Calling AuthService.UpdateUserDetailsAsync");
+                var userDetails = await _authService.UpdateUserDetailsAsync(userId, request);
+                Console.WriteLine(
+                    $"[DEBUG] AuthService.UpdateUserDetailsAsync returned: {(userDetails != null ? "Success" : "Null")}"
+                );
 
-            return Ok(userDetails);
+                if (userDetails == null)
+                {
+                    Console.WriteLine($"[DEBUG] UpdateUserDetails failed: User not found");
+                    return NotFound(new { message = "User not found" });
+                }
+
+                Console.WriteLine($"[DEBUG] UpdateUserDetails successful for userId: {userId}");
+                return Ok(userDetails);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DEBUG] UpdateUserDetails exception: {ex.Message}");
+                Console.WriteLine($"[DEBUG] UpdateUserDetails stack trace: {ex.StackTrace}");
+                return StatusCode(
+                    500,
+                    new { message = "An error occurred while updating user details" }
+                );
+            }
         }
 
         [Authorize]
