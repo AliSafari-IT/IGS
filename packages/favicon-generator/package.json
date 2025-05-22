@@ -1,0 +1,19 @@
+{
+  "name": "@igs/favicon-generator",
+  "version": "1.0.0",
+  "description": "A tool to generate favicons from images for IGS Pharma",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "pnpm run build",
+    "favicon-generator": "node index.js"
+  },
+  "keywords": [
+    "favicon",
+    "generator",
+    "igs",
+    "pharma"
+  ],
+  "author": "IGS Pharma Team",
+  "license": "ISC"
+}

@@ -8,7 +8,8 @@
     "backend": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet run",
     "frontend:alt": "pnpm --filter igs-pharma-frontend start:alt",
     "build:frontend": "pnpm --filter igs-pharma-frontend build",
-    "test:frontend": "pnpm --filter igs-pharma-frontend test"
+    "test:frontend": "pnpm --filter igs-pharma-frontend test",
+    "favicon-generator": "node packages/favicon-generator/index.js"
   },
   "keywords": [
     "ecommerce",
@@ -19,12 +20,15 @@
     "Medical Devices",
     "Medical Products",
     "Medical Equipment",
-    "Medical Goods"    
+    "Medical Goods"
   ],
   "devDependencies": {
     "concurrently": "^9.1.2"
   },
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "sharp": "^0.34.2"
+  }
 }
