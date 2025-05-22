@@ -105,11 +105,29 @@ const AboutUs: React.FC = () => {
           <div className="location-info">
             <div className="address-info">
               <h3>Address</h3>
-              <p>123 Health Street</p>
-              <p>Brussels, 1000</p>
-              <p>Belgium</p>
-              <p>Phone: +32 2 123 45 67</p>
-              <p>Email: info@igspharma.com</p>
+              <div className="contact-item">
+                <img src="/images/svgs/map-pin.svg" alt="Address" className="contact-icon" />
+                <div>
+                  <p>Rue de Bosnie 104</p>
+                  <p>1060 Sint-Gillis</p>
+                  <p>Belgium</p>
+                </div>
+              </div>
+              <div className="contact-item">
+                <div className="icon-container">
+                  <img src="/images/svgs/phone-icon.svg" alt="Phone" className="contact-icon" />
+                  <img src="/images/svgs/whatsapp-icon.svg" alt="WhatsApp" className="contact-icon whatsapp-icon" />
+                </div>
+                <p>Phone & WhatsApp: +32 2 537 27 40</p>
+              </div>
+              <div className="contact-item">
+                <img src="/images/svgs/mail-icon.svg" alt="Email" className="contact-icon" />
+                <p>Email: contact@igs-pharma.com</p>
+              </div>
+              <div className="contact-item">
+                <img src="/images/svgs/website-icon.svg" alt="Website" className="contact-icon" />
+                <p>Website: <a href="https://igs-pharma.com" target="_blank" rel="noopener noreferrer">igs-pharma.com</a></p>
+              </div>
             </div>
             <div className="hours-info">
               <h3>Opening Hours</h3>

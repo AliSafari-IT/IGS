@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IGSPharma.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da35dd281c0183687a2fac115b6eda02666b5e66")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d36e649f211f71d67aa0c1329f76d08da2e1b8a")]
 [assembly: System.Reflection.AssemblyProductAttribute("IGSPharma.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IGSPharma.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -49,9 +49,9 @@ const ContactUs: React.FC = () => {
           <div className="info-section">
             <h2>Address</h2>
             <address>
-              <p><strong>IGS Pharma</strong></p>
+              <p><strong>IGS PHARMA (Pharmacie Laaroussi)</strong></p>
               <p>Rue de Bosnie 104</p>
-              <p>1060 Saint-Gilles</p>
+              <p>1060 Sint-Gillis</p>
               <p>Belgium</p>
             </address>
           </div>
@@ -68,10 +68,21 @@ const ContactUs: React.FC = () => {
           <div className="info-section">
             <h2>Get in Touch</h2>
             <ul className="contact-list">
-              <li><strong>Phone:</strong> +353 (01) 123 4567</li>
-              <li><strong>Email:</strong> info@igspharma.com</li>
-              <li><strong>Prescription Line:</strong> +353 (01) 123 4568</li>
-              <li><strong>Emergency:</strong> +353 (01) 123 4569</li>
+              <li>
+                <div className="icon-container">
+                  <img src="/images/svgs/phone-icon.svg" alt="Phone" className="contact-icon" />
+                  <img src="/images/svgs/whatsapp-icon.svg" alt="WhatsApp" className="contact-icon whatsapp-icon" />
+                </div>
+                <div><strong>Phone & WhatsApp:</strong> +32 2 537 27 40</div>
+              </li>
+              <li>
+                <img src="/images/svgs/mail-icon.svg" alt="Email" className="contact-icon" />
+                <div><strong>Email:</strong> contact@igs-pharma.com</div>
+              </li>
+              <li>
+                <img src="/images/svgs/website-icon.svg" alt="Website" className="contact-icon" />
+                <div><strong>Website:</strong> <a href="https://igs-pharma.com" target="_blank" rel="noopener noreferrer">igs-pharma.com</a></div>
+              </li>
             </ul>
           </div>
         </div>

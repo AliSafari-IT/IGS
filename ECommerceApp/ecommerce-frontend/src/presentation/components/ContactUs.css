@@ -63,7 +63,28 @@
 }
 
 .contact-list li {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.contact-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.whatsapp-icon {
+  fill: #25D366;
 }
 
 .contact-form-container {
