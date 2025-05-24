@@ -21,16 +21,16 @@ namespace IGSPharma.Infrastructure.Repositories
 
         public async Task<User> GetByIdAsync(string id)
         {
-            return await _context.Users
-                .Include(u => u.Addresses)
+            return await _context
+                .Users.Include(u => u.Addresses)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            return await _context.Users
-                .Include(u => u.Addresses)
-                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            return await _context
+                .Users.Include(u => u.Addresses)
+                .FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
@@ -82,7 +82,9 @@ namespace IGSPharma.Infrastructure.Repositories
 
         public async Task<bool> ValidateCredentialsAsync(string email, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                u.Email.ToLower() == email.ToLower()
+            );
             if (user == null)
                 return false;
 

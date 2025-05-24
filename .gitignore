@@ -77,4 +77,12 @@ logs
 
 # System Files
 .DS_Store
-Thumbs.db
+ECommerceApp/dotnet-backend-clean/.vs/IGSPharma/**
+ECommerceApp/IGSPharma.Core/obj/Debug/**
+ECommerceApp/IGSPharma.API/obj/Debug/**
+ECommerceApp/IGSPharma.API.Tests/obj/Debug/**
+ECommerceApp/IGSPharma.Domain/obj/Debug/**
+ECommerceApp/IGSPharma.Infrastructure/obj/Debug/**
+ECommerceApp/IGSPharma.Application/obj/Debug/**
+
+

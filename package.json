@@ -9,7 +9,13 @@
     "frontend:alt": "pnpm --filter igs-pharma-frontend start:alt",
     "build:frontend": "pnpm --filter igs-pharma-frontend build",
     "test:frontend": "pnpm --filter igs-pharma-frontend test",
-    "favicon-generator": "node packages/favicon-generator/index.js"
+    "favicon-generator": "node packages/favicon-generator/index.js",
+    "test:backend:domain": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Domain.Tests/IGSPharma.Domain.Tests.csproj",
+    "test:backend:application": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Application.Tests/IGSPharma.Application.Tests.csproj",
+    "test:backend:infrastructure": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Infrastructure.Tests/IGSPharma.Infrastructure.Tests.csproj",
+    "test:backend:api": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.API.Tests/IGSPharma.API.Tests.csproj",
+                   "test:backend": "concurrently \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Domain.Tests/IGSPharma.Domain.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Application.Tests/IGSPharma.Application.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Infrastructure.Tests/IGSPharma.Infrastructure.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.API.Tests/IGSPharma.API.Tests.csproj\"",
+    "test:all": "concurrently \"pnpm run test:backend\" \"pnpm run test:frontend\""
   },
   "keywords": [
     "ecommerce",
