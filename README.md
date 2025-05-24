@@ -49,7 +49,7 @@ IGS/
 1. Clone the repository:
 
    ```bash
-   git clone https://your-repository-url/IGS.git
+   git clone https://github.com/AliSafari-IT/IGS.git
    cd IGS
    ```
 
