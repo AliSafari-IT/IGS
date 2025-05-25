@@ -6,7 +6,7 @@ interface SidebarProps {
   onFilterChange?: (filters: {
     minPrice?: number;
     maxPrice?: number;
-    medicationType?: string[];
+    medicationTypes?: string[];
     requiresPrescription?: boolean | null;
   }) => void;
 }
@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
       onFilterChange({
         minPrice: 0,
         maxPrice: priceRange,
-        medicationType: medicationTypes,
+        medicationTypes: medicationTypes,
         requiresPrescription
       });
     }
@@ -65,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
               onFilterChange({
                 minPrice: 0,
                 maxPrice: 100,
-                medicationType: [],
+                medicationTypes: [],
                 requiresPrescription: null
               });
             }
@@ -104,7 +104,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
                 onFilterChange({
                   minPrice: 0,
                   maxPrice: value,
-                  medicationType: medicationTypes,
+                  medicationTypes: medicationTypes,
                   requiresPrescription
                 });
               }
@@ -122,90 +122,32 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
       <div className="sidebar-section">
         <h3>Medication Type</h3>
         <div className="filter-options">
-          <label>
-            <input 
-              type="checkbox" 
-              checked={medicationTypes.includes('tablets')}
-              onChange={(e) => {
-                const newTypes = e.target.checked 
-                  ? [...medicationTypes, 'tablets']
-                  : medicationTypes.filter(type => type !== 'tablets');
-                setMedicationTypes(newTypes);
-                
-                if (onFilterChange) {
-                  onFilterChange({
-                    minPrice: 0,
-                    maxPrice: priceRange,
-                    medicationType: newTypes,
-                    requiresPrescription
-                  });
-                }
-              }}
-            /> Tablets
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={medicationTypes.includes('capsules')}
-              onChange={(e) => {
-                const newTypes = e.target.checked 
-                  ? [...medicationTypes, 'capsules']
-                  : medicationTypes.filter(type => type !== 'capsules');
-                setMedicationTypes(newTypes);
-                
-                if (onFilterChange) {
-                  onFilterChange({
-                    minPrice: 0,
-                    maxPrice: priceRange,
-                    medicationType: newTypes,
-                    requiresPrescription
-                  });
-                }
-              }}
-            /> Capsules
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={medicationTypes.includes('liquid')}
-              onChange={(e) => {
-                const newTypes = e.target.checked 
-                  ? [...medicationTypes, 'liquid']
-                  : medicationTypes.filter(type => type !== 'liquid');
-                setMedicationTypes(newTypes);
-                
-                if (onFilterChange) {
-                  onFilterChange({
-                    minPrice: 0,
-                    maxPrice: priceRange,
-                    medicationType: newTypes,
-                    requiresPrescription
-                  });
-                }
-              }}
-            /> Liquid
-          </label>
-          <label>
-            <input 
-              type="checkbox" 
-              checked={medicationTypes.includes('topical')}
-              onChange={(e) => {
-                const newTypes = e.target.checked 
-                  ? [...medicationTypes, 'topical']
-                  : medicationTypes.filter(type => type !== 'topical');
-                setMedicationTypes(newTypes);
-                
-                if (onFilterChange) {
-                  onFilterChange({
-                    minPrice: 0,
-                    maxPrice: priceRange,
-                    medicationType: newTypes,
-                    requiresPrescription
-                  });
-                }
-              }}
-            /> Topical
-          </label>
+          {['tablets', 'capsules', 'liquid', 'topical', 'inhalers', 'injections', 'drops', 'suppositories', 'patches', 'powders'].map((type) => (
+            <label key={type} className="filter-option">
+              <input 
+                type="checkbox" 
+                checked={medicationTypes.includes(type)}
+                onChange={(e) => {
+                  const newTypes = e.target.checked 
+                    ? [...medicationTypes, type]
+                    : medicationTypes.filter(t => t !== type);
+                  setMedicationTypes(newTypes);
+                  
+                  if (onFilterChange) {
+                    onFilterChange({
+                      minPrice: 0,
+                      maxPrice: priceRange,
+                      medicationTypes: newTypes,
+                      requiresPrescription
+                    });
+                  }
+                }}
+              /> 
+              <span className="filter-option-label">
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </span>
+            </label>
+          ))}
         </div>
       </div>
       
@@ -224,7 +166,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
                   onFilterChange({
                     minPrice: 0,
                     maxPrice: priceRange,
-                    medicationType: medicationTypes,
+                    medicationTypes: medicationTypes,
                     requiresPrescription: true
                   });
                 }
@@ -243,7 +185,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
                   onFilterChange({
                     minPrice: 0,
                     maxPrice: priceRange,
-                    medicationType: medicationTypes,
+                    medicationTypes: medicationTypes,
                     requiresPrescription: false
                   });
                 }
@@ -262,7 +204,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onFilterChange }) => {
                   onFilterChange({
                     minPrice: 0,
                     maxPrice: priceRange,
-                    medicationType: medicationTypes,
+                    medicationTypes: medicationTypes,
                     requiresPrescription: null
                   });
                 }

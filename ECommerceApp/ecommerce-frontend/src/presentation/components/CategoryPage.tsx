@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { Product } from '../../domain/models/Product';
+import { Product, MedicationType } from '../../domain/models/Product';
 import { getProducts } from '../../application/useCases/getProducts';
 import Sidebar from './Sidebar';
 import './CategoryPage.css';
@@ -20,7 +20,7 @@ const CategoryPage: React.FC = () => {
   const [filters, setFilters] = useState({
     minPrice: 0,
     maxPrice: 100,
-    medicationType: [] as string[],
+    medicationTypes: [] as string[],
     requiresPrescription: null as boolean | null
   });
   
@@ -46,10 +46,10 @@ const CategoryPage: React.FC = () => {
       }
       
       // Apply medication type filter
-      if (filters.medicationType.length > 0) {
-        // This is a mock implementation since we don't have medication type in the product model
-        // In a real application, you would filter based on the actual product property
-        // filtered = filtered.filter(product => filters.medicationType.includes(product.medicationType));
+      if (filters.medicationTypes.length > 0) {
+        filtered = filtered.filter(product => 
+          product.medicationType && filters.medicationTypes.includes(product.medicationType)
+        );
       }
       
       // Apply prescription filter
@@ -99,21 +99,25 @@ const CategoryPage: React.FC = () => {
 
   // Generate mock products for demonstration
   const generateMockProducts = (count: number, category: string): Product[] => {
+    const medicationTypes: MedicationType[] = ['tablets', 'capsules', 'liquid', 'topical', 'inhalers', 'injections', 'drops', 'suppositories', 'patches', 'powders'];
     const mockProducts: Product[] = [];
     const categoryName = getCategoryName(category);
     
     for (let i = 1; i <= count; i++) {
-      mockProducts.push({
-        id: `${category}-${i}`,
-        name: `${categoryName} Product ${i}`,
-        price: parseFloat((Math.random() * 100 + 5).toFixed(2)),
-        imageUrl: `https://placehold.co/200x200?text=${categoryName}+${i}`,
-        category: category,
-        description: `This is a ${categoryName} product description.`,
+      const product: Product = {
+        id: `mock-${i}`,
+        name: `Product ${i}${category ? ` (${category})` : ''}`,
+        price: parseFloat((Math.random() * 100).toFixed(2)),
+        imageUrl: `https://placehold.co/200x200?text=Product+${i}`,
+        category: category || 'general',
+        description: `This is a sample product description for product ${i}.`,
         inStock: Math.random() > 0.2, // 80% chance of being in stock
-        requiresPrescription: category === 'prescription',
-        manufacturer: `Pharma Company ${Math.floor(Math.random() * 10) + 1}`
-      });
+        requiresPrescription: Math.random() > 0.7, // 30% chance of requiring prescription
+        dosage: Math.random() > 0.5 ? `${Math.floor(Math.random() * 1000) + 100}mg` : null,
+        manufacturer: `Manufacturer ${Math.floor(Math.random() * 10) + 1}`,
+        medicationType: medicationTypes[Math.floor(Math.random() * medicationTypes.length)]
+      };
+      mockProducts.push(product);
     }
     
     return mockProducts;

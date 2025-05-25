@@ -29,8 +29,9 @@ const ProductDetails: React.FC = () => {
       description: `This is a detailed description for ${categoryName} Product ${number}. It contains important information about the product's uses, benefits, and any potential side effects.`,
       inStock: Math.random() > 0.2, // 80% chance of being in stock
       requiresPrescription: category === 'prescription',
-      dosage: category === 'prescription' ? `${Math.floor(Math.random() * 500) + 50}mg` : undefined,
-      manufacturer: `Pharma Company ${Math.floor(Math.random() * 10) + 1}`
+      dosage: category === 'prescription' ? `${Math.floor(Math.random() * 500) + 50}mg` : null,
+      manufacturer: `Pharma Company ${Math.floor(Math.random() * 10) + 1}`,
+      medicationType: category === 'prescription' ? 'tablets' : 'tablets'
     };
   };
 

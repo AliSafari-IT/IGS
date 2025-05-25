@@ -35,8 +35,9 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
         description: `This is a ${categoryName} product description.`,
         inStock: Math.random() > 0.2, // 80% chance of being in stock
         requiresPrescription: category === 'prescription',
-        dosage: category === 'prescription' ? `${Math.floor(Math.random() * 500) + 50}mg` : undefined,
-        manufacturer: `Pharma Company ${Math.floor(Math.random() * 10) + 1}`
+        dosage: category === 'prescription' ? `${Math.floor(Math.random() * 500) + 50}mg` : null,
+        manufacturer: `Pharma Company ${Math.floor(Math.random() * 10) + 1}`,
+        medicationType: category === 'prescription' ? 'tablets' : 'tablets'
       });
     }
     
