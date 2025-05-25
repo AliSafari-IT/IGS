@@ -77,12 +77,29 @@ logs
 
 # System Files
 .DS_Store
+
+# Visual Studio files
 ECommerceApp/dotnet-backend-clean/.vs/IGSPharma/**
-ECommerceApp/IGSPharma.Core/obj/Debug/**
-ECommerceApp/IGSPharma.API/obj/Debug/**
-ECommerceApp/IGSPharma.API.Tests/obj/Debug/**
-ECommerceApp/IGSPharma.Domain/obj/Debug/**
-ECommerceApp/IGSPharma.Infrastructure/obj/Debug/**
-ECommerceApp/IGSPharma.Application/obj/Debug/**
 
+# Build outputs
+**/bin/
+**/obj/
+**/.vs/
+**/TestResults/
+**/publish/
+**/debug/
+**/release/
 
+# .NET Core build outputs
+**/bin/Debug/
+**/bin/Release/
+**/obj/Debug/
+**/obj/Release/
+
+# IDE specific files
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# System Files
+.DS_Store
