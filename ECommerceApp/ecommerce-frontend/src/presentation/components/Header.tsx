@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../infrastructure/auth/AuthContext";
 import { CartButton } from "./Cart";
+import { SearchButton } from "./Search";
 import "./Header.css";
 
 const Header: React.FC = () => {
@@ -87,9 +88,7 @@ const Header: React.FC = () => {
           </ul>
         </nav>
         <div className="header-actions">
-          <button className="search-btn">
-            <i className="fa fa-search"></i>
-          </button>
+          <SearchButton />
           <CartButton />
           <div className="user-menu" ref={menuRef}>
             <button className="user-btn" onClick={handleUserButtonClick}>

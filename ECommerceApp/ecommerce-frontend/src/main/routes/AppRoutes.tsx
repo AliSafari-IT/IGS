@@ -8,6 +8,7 @@ import ResetPassword from '../../presentation/components/auth/ResetPassword';
 import UserAccount from '../../presentation/components/auth/UserAccount';
 import { useAuth } from '../../infrastructure/auth/AuthContext';
 import PrivacyPolicy from '../../presentation/docs/legalDocs/PrivacyPolicy';
+import SearchResults from '../../presentation/pages/SearchResults';
 
 // Protected route component
 const ProtectedRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
@@ -51,6 +52,9 @@ const AppRoutes: React.FC = () => {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="account" element={<ProtectedRoute element={<UserAccount />} />} />
+        
+        {/* Search */}
+        <Route path="search" element={<SearchResults />} />
         
         {/* Legal docs */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
