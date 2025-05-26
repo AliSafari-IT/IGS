@@ -6,6 +6,7 @@ import Register from '../../presentation/components/auth/Register';
 import ForgotPassword from '../../presentation/components/auth/ForgotPassword';
 import ResetPassword from '../../presentation/components/auth/ResetPassword';
 import UserAccount from '../../presentation/components/auth/UserAccount';
+import AdminDashboard from '../../presentation/components/admin/AdminDashboard';
 import { useAuth } from '../../infrastructure/auth/AuthContext';
 import PrivacyPolicy from '../../presentation/docs/legalDocs/PrivacyPolicy';
 import SearchResults from '../../presentation/pages/SearchResults';
@@ -52,6 +53,9 @@ const AppRoutes: React.FC = () => {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="account" element={<ProtectedRoute element={<UserAccount />} />} />
+        
+        {/* Admin routes */}
+        <Route path="admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
         
         {/* Search */}
         <Route path="search" element={<SearchResults />} />

@@ -321,6 +321,16 @@
   color: #e74c3c;
 }
 
+.admin-link {
+  color: #4CAF50; /* Green color to indicate admin functionality */
+  font-weight: 600;
+}
+
+.admin-link:hover {
+  color: #388E3C; /* Darker green on hover */
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .main-nav {
     display: none;

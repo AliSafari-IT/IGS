@@ -151,6 +151,18 @@ const Header: React.FC = () => {
                       Mijn recepten
                     </Link>
                   </li>
+                  {/* Only show Admin Beheer if user has admin role */}
+                  {user && user.role === 'admin' && (
+                    <li>
+                      <Link
+                        to="/admin"
+                        onClick={() => setMenuOpen(false)}
+                        className="admin-link"
+                      >
+                        Admin Beheer
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <button onClick={handleLogout}>Uitloggen</button>
                   </li>

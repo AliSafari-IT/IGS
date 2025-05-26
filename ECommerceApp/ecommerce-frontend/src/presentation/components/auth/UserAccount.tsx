@@ -224,49 +224,7 @@ const UserAccount: React.FC = () => {
             onClick={() => setActiveTab('settings')}
           >
             <i className="fas fa-cog"></i> Instellingen
-          </button>
-          
-          {/* Admin Menu - Only visible for admin roles */}
-          {user.role === 'admin' && (
-            <div className="admin-menu-container">
-              <button 
-                className={`nav-item admin-toggle ${isAdminMenuOpen ? 'open' : ''}`}
-                onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
-              >
-                <i className="fas fa-shield-alt"></i> Admin Beheer
-                <i className={`fas fa-chevron-${isAdminMenuOpen ? 'up' : 'down'} admin-toggle-icon`}></i>
-              </button>
-              
-              {isAdminMenuOpen && (
-                <div className="admin-submenu">
-                  <button 
-                    className={`nav-item submenu-item ${activeTab === 'admin-users' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('admin-users')}
-                  >
-                    <i className="fas fa-users"></i> Gebruikers beheren
-                  </button>
-                  <button 
-                    className={`nav-item submenu-item ${activeTab === 'admin-products' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('admin-products')}
-                  >
-                    <i className="fas fa-pills"></i> Producten beheren
-                  </button>
-                  <button 
-                    className={`nav-item submenu-item ${activeTab === 'admin-orders' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('admin-orders')}
-                  >
-                    <i className="fas fa-shopping-cart"></i> Bestellingen beheren
-                  </button>
-                  <button 
-                    className={`nav-item submenu-item ${activeTab === 'admin-changelog' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('admin-changelog')}
-                  >
-                    <i className="fas fa-file-alt"></i> Changelog beheren
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+          </button>          
           
           <button 
             className="nav-item logout"

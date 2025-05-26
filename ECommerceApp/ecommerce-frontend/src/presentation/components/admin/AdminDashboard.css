@@ -1,0 +1,151 @@
+.admin-dashboard {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-dashboard-title {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #2c3e50;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 12px;
+  font-weight: 600;
+}
+
+.admin-dashboard-nav {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #ecf0f1;
+  padding-bottom: 12px;
+  overflow-x: auto;
+  background-color: #f9f9f9;
+  border-radius: 8px 8px 0 0;
+  padding: 12px;
+}
+
+.admin-nav-item {
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #555;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-nav-item:hover {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+}
+
+.admin-nav-item.active {
+  background-color: #27ae60;
+  color: white;
+  box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+}
+
+.admin-dashboard-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  min-height: 500px;
+}
+
+/* Add icons to the navigation */
+.admin-nav-item::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.admin-nav-item:nth-child(1)::before {
+  content: '\f15c'; /* file-alt icon */
+}
+
+.admin-nav-item:nth-child(2)::before {
+  content: '\f007'; /* user icon */
+}
+
+.admin-nav-item:nth-child(3)::before {
+  content: '\f291'; /* shopping-bag icon */
+}
+
+.admin-nav-item:nth-child(4)::before {
+  content: '\f291'; /* shopping-cart icon */
+}
+
+.admin-nav-item:nth-child(5)::before {
+  content: '\f013'; /* cog icon */
+}
+
+/* Placeholder panels for sections under development */
+.admin-placeholder-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
+}
+
+.admin-placeholder-panel h2 {
+  font-size: 24px;
+  color: #2c3e50;
+  margin-bottom: 16px;
+}
+
+.admin-placeholder-panel p {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-bottom: 30px;
+  max-width: 500px;
+}
+
+.admin-placeholder-icon {
+  font-size: 64px;
+  color: #bdc3c7;
+  margin-bottom: 20px;
+}
+
+.admin-placeholder-icon i {
+  opacity: 0.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .admin-dashboard-nav {
+    flex-wrap: wrap;
+  }
+  
+  .admin-nav-item {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+    justify-content: center;
+  }
+  
+  .admin-placeholder-panel {
+    padding: 40px 15px;
+  }
+  
+  .admin-placeholder-panel h2 {
+    font-size: 20px;
+  }
+  
+  .admin-placeholder-icon {
+    font-size: 48px;
+  }
+}

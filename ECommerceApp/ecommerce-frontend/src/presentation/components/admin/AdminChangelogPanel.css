@@ -1,0 +1,157 @@
+.admin-changelog-panel {
+  width: 100%;
+}
+
+.admin-changelog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-changelog-title {
+  font-size: 22px;
+  color: #2c3e50;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-changelog-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-changelog-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #f8f9fa;
+  color: #2c3e50;
+}
+
+.admin-changelog-button:hover {
+  background-color: #e9ecef;
+}
+
+.admin-changelog-button.primary {
+  background-color: #27ae60;
+  color: white;
+}
+
+.admin-changelog-button.primary:hover {
+  background-color: #219653;
+}
+
+.admin-changelog-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-changelog-table th,
+.admin-changelog-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.admin-changelog-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.admin-changelog-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-changelog-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.admin-changelog-actions-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.admin-changelog-action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-changelog-action-button:hover {
+  background-color: #f0f0f0;
+}
+
+.admin-changelog-action-button.view {
+  color: #3498db;
+}
+
+.admin-changelog-action-button.edit {
+  color: #f39c12;
+}
+
+.admin-changelog-action-button.delete {
+  color: #e74c3c;
+}
+
+.admin-changelog-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.admin-changelog-loading {
+  text-align: center;
+  padding: 40px 0;
+  color: #7f8c8d;
+}
+
+.admin-changelog-error {
+  text-align: center;
+  padding: 20px;
+  color: #e74c3c;
+  background-color: #fdf2f2;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .admin-changelog-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .admin-changelog-actions {
+    width: 100%;
+  }
+  
+  .admin-changelog-button {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .admin-changelog-table th:nth-child(3),
+  .admin-changelog-table td:nth-child(3) {
+    display: none;
+  }
+}
