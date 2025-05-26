@@ -53,6 +53,143 @@
   align-items: center;
 }
 
+/* Changelog Button Styles */
+.changelog-btn {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  padding: 8px;
+  margin: 0 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.changelog-btn:hover {
+  color: #2c8d8a;
+  background-color: rgba(44, 141, 138, 0.1);
+}
+
+/* Changelog Modal Styles */
+.changelog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.changelog-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.changelog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.changelog-header h2 {
+  margin: 0;
+  color: #2c8d8a;
+  font-size: 1.5rem;
+}
+
+.changelog-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.changelog-close-btn:hover {
+  color: #2c8d8a;
+}
+
+.changelog-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.changelog-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+.changelog-markdown {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.changelog-markdown h1 {
+  font-size: 1.8rem;
+  margin-top: 0;
+  color: #2c8d8a;
+}
+
+.changelog-markdown h2 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  color: #2c8d8a;
+}
+
+.changelog-markdown h3 {
+  font-size: 1.2rem;
+  margin-top: 1.2rem;
+}
+
+.changelog-markdown code {
+  background-color: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.changelog-markdown pre {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .search-btn, .cart-btn, .user-btn {
   background: none;
   border: none;

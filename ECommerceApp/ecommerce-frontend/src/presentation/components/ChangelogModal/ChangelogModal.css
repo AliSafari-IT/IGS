@@ -1,0 +1,242 @@
+/* Changelog Modal Overlay */
+.changelog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Changelog Modal Container */
+.changelog-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  width: 99%;
+  max-width: 1200px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal with Sidebar Layout */
+.changelog-modal-with-sidebar {
+  height: 90vh;
+}
+
+/* Changelog Header */
+.changelog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.changelog-header h2 {
+  margin: 0;
+  color: #2c8d8a;
+  font-size: 1.5rem;
+}
+
+.changelog-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.changelog-close-btn:hover {
+  color: #2c8d8a;
+}
+
+/* Changelog Body - Contains Sidebar and Content */
+.changelog-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100% - 60px); /* Subtract header height */
+}
+
+/* Changelog Sidebar */
+.changelog-sidebar {
+  width: 250px;
+  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+/* Changelog Search */
+.changelog-search {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.changelog-search-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.changelog-search-input:focus {
+  outline: none;
+  border-color: #2c8d8a;
+  box-shadow: 0 0 0 2px rgba(44, 141, 138, 0.2);
+}
+
+/* Changelog File List */
+.changelog-file-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.changelog-file-item {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.changelog-file-item:hover {
+  background-color: rgba(44, 141, 138, 0.05);
+}
+
+.changelog-file-item.active {
+  background-color: rgba(44, 141, 138, 0.1);
+  border-left: 3px solid #2c8d8a;
+}
+
+.changelog-file-name {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+.changelog-file-date {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.changelog-no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* Changelog Content */
+.changelog-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  position: relative;
+}
+
+.changelog-selected-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+  color: #2c8d8a;
+}
+
+.changelog-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Markdown Content Styling */
+.changelog-markdown {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.changelog-markdown h1 {
+  font-size: 1.8rem;
+  margin-top: 0;
+  color: #2c8d8a;
+}
+
+.changelog-markdown h2 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  color: #2c8d8a;
+}
+
+.changelog-markdown h3 {
+  font-size: 1.2rem;
+  margin-top: 1.2rem;
+}
+
+.changelog-markdown code {
+  background-color: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.changelog-markdown pre {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+.changelog-markdown ul, .changelog-markdown ol {
+  padding-left: 1.5rem;
+}
+
+.changelog-markdown blockquote {
+  border-left: 4px solid #2c8d8a;
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #555;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 968px) {
+  .changelog-body {
+    flex-direction: column;
+  }
+  
+  .changelog-sidebar {
+    width: 100%;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .changelog-modal-with-sidebar {
+    height: 90vh;
+  }
+}
