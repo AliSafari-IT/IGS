@@ -231,8 +231,9 @@ namespace IGSPharma.Infrastructure.Services
             try
             {
                 var smtpSection = _configuration.GetSection("EmailSettings");
+                // Use the frontend URL for password reset links
                 var baseUrl =
-                    smtpSection["WebsiteBaseUrl"]?.TrimEnd('/') ?? "https://localhost:5001";
+                    smtpSection["FrontendBaseUrl"]?.TrimEnd('/') ?? "http://localhost:3000";
 
                 var resetUrl =
                     $"{baseUrl}/reset-password?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(resetToken)}";
