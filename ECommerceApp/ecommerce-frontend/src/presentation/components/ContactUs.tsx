@@ -162,7 +162,17 @@ const ContactUs: React.FC = () => {
               <div className="form-group privacy-policy">
                 <input type="checkbox" id="privacy" required />
                 <label htmlFor="privacy">
-                  I agree to the processing of my personal data in accordance with the <a href="#">Privacy Policy</a>
+                  I agree to the processing of my personal data in accordance with the <a 
+                    href="/privacy-policy" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open('/privacy-policy', '_blank');
+                    }}
+                  >
+                    Privacy Policy
+                  </a>
                 </label>
               </div>
 

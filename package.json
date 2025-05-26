@@ -6,6 +6,7 @@
   "scripts": {
     "frontend": "pnpm --filter igs-pharma-frontend start",
     "backend": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet run",
+    "backend:build": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet build",
     "frontend:alt": "pnpm --filter igs-pharma-frontend start:alt",
     "build:frontend": "pnpm --filter igs-pharma-frontend build",
     "test:frontend": "pnpm --filter igs-pharma-frontend test",

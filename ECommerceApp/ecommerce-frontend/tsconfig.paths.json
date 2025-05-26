@@ -7,7 +7,14 @@
       "@domain/*": ["src/domain/*"],
       "@application/*": ["src/application/*"],
       "@infrastructure/*": ["src/infrastructure/*"],
-      "@main/*": ["src/main/*"]
+      "@main/*": ["src/main/*"],
+      "@presentation/*": ["src/presentation/*"],
+      "@shared/*": ["src/shared/*"],
+      "@utils/*": ["src/utils/*"],
+      "@api/*": ["src/api/*"],
+      "@tests/*": ["src/tests/*"],
+      "@docs/*": ["../docs/*"],
+      "@legalDocs/*": ["../docs/legalDocs/*"]
     }
   }
 }

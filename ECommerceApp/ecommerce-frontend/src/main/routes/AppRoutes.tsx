@@ -7,6 +7,7 @@ import ForgotPassword from '../../presentation/components/auth/ForgotPassword';
 import ResetPassword from '../../presentation/components/auth/ResetPassword';
 import UserAccount from '../../presentation/components/auth/UserAccount';
 import { useAuth } from '../../infrastructure/auth/AuthContext';
+import PrivacyPolicy from '../../presentation/docs/legalDocs/PrivacyPolicy';
 
 // Protected route component
 const ProtectedRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
@@ -51,6 +52,8 @@ const AppRoutes: React.FC = () => {
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="account" element={<ProtectedRoute element={<UserAccount />} />} />
         
+        {/* Legal docs */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<div>Page not found</div>} />
       </Route>
     </Routes>

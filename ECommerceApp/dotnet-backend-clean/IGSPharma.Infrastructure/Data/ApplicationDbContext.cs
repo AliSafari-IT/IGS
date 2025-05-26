@@ -1,13 +1,12 @@
-using Microsoft.EntityFrameworkCore;
 using IGSPharma.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGSPharma.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
@@ -45,24 +44,27 @@ namespace IGSPharma.Infrastructure.Data
                 entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.PhoneNumber).HasMaxLength(20);
                 entity.Property(e => e.Role).IsRequired().HasMaxLength(20);
-                
+
                 // Configure relationships
-                entity.HasMany(u => u.Addresses)
+                entity
+                    .HasMany(u => u.Addresses)
                     .WithOne(a => a.User)
                     .HasForeignKey(a => a.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
-                
-                entity.HasMany(u => u.Orders)
+
+                entity
+                    .HasMany(u => u.Orders)
                     .WithOne(o => o.User)
                     .HasForeignKey(o => o.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
-                
-                entity.HasMany(u => u.Prescriptions)
+
+                entity
+                    .HasMany(u => u.Prescriptions)
                     .WithOne(p => p.User)
                     .HasForeignKey(p => p.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
-            
+
             // Configure Address entity
             modelBuilder.Entity<Address>(entity =>
             {
@@ -75,7 +77,7 @@ namespace IGSPharma.Infrastructure.Data
                 entity.Property(e => e.Country).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.AddressType).IsRequired().HasMaxLength(20);
             });
-            
+
             // Configure Order entity
             modelBuilder.Entity<Order>(entity =>
             {
@@ -91,14 +93,15 @@ namespace IGSPharma.Infrastructure.Data
                 entity.Property(e => e.TrackingNumber).HasMaxLength(50);
                 entity.Property(e => e.ShippingMethod).HasMaxLength(50);
                 entity.Property(e => e.Notes).HasMaxLength(500);
-                
+
                 // Configure relationships
-                entity.HasMany(o => o.Items)
+                entity
+                    .HasMany(o => o.Items)
                     .WithOne(i => i.Order)
                     .HasForeignKey(i => i.OrderId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-            
+
             // Configure OrderItem entity
             modelBuilder.Entity<OrderItem>(entity =>
             {
@@ -106,20 +109,22 @@ namespace IGSPharma.Infrastructure.Data
                 entity.Property(e => e.ProductName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.TotalPrice).HasColumnType("decimal(18,2)");
-                
+
                 // Configure relationships
-                entity.HasOne(i => i.Product)
+                entity
+                    .HasOne(i => i.Product)
                     .WithMany()
                     .HasForeignKey(i => i.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
-                
-                entity.HasOne(i => i.Prescription)
+
+                entity
+                    .HasOne(i => i.Prescription)
                     .WithMany()
                     .HasForeignKey(i => i.PrescriptionId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired(false);
             });
-            
+
             // Configure Prescription entity
             modelBuilder.Entity<Prescription>(entity =>
             {
@@ -130,14 +135,15 @@ namespace IGSPharma.Infrastructure.Data
                 entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
                 entity.Property(e => e.Notes).HasMaxLength(500);
                 entity.Property(e => e.ImageUrl).HasMaxLength(255);
-                
+
                 // Configure relationships
-                entity.HasMany(p => p.Items)
+                entity
+                    .HasMany(p => p.Items)
                     .WithOne(i => i.Prescription)
                     .HasForeignKey(i => i.PrescriptionId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-            
+
             // Configure PrescriptionItem entity
             modelBuilder.Entity<PrescriptionItem>(entity =>
             {
@@ -146,9 +152,10 @@ namespace IGSPharma.Infrastructure.Data
                 entity.Property(e => e.Dosage).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Frequency).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Instructions).HasMaxLength(500);
-                
+
                 // Configure relationships
-                entity.HasOne(i => i.Product)
+                entity
+                    .HasOne(i => i.Product)
                     .WithMany()
                     .HasForeignKey(i => i.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
@@ -168,24 +175,32 @@ namespace IGSPharma.Infrastructure.Data
             for (int categoryIndex = 0; categoryIndex < categories.Length; categoryIndex++)
             {
                 var category = categories[categoryIndex];
-                for (int i = 1; i <= 5; i++)
+                for (int i = 1; i <= 10; i++)
                 {
                     var id = $"{category}-{i}";
                     var name = GetProductName(category, i);
-                    
-                    products.Add(new Product
-                    {
-                        Id = id,
-                        Name = name,
-                        Price = Math.Round((decimal)(random.NextDouble() * 50 + 10), 2),
-                        ImageUrl = $"https://placehold.co/200x200?text={category}+{i}",
-                        Category = category,
-                        Description = GetProductDescription(category, name),
-                        InStock = random.NextDouble() > 0.2,
-                        RequiresPrescription = category == "prescription",
-                        Dosage = category != "personal-care" ? $"{random.Next(1, 4)} tablet(s) daily" : null,
-                        Manufacturer = GetManufacturerName(category, random)
-                    });
+
+                    products.Add(
+                        new Product
+                        {
+                            Id = id,
+                            Name = name,
+                            Price = Math.Round((decimal)(random.NextDouble() * 50 + 10), 2),
+                            Category = category,
+                            Description = GetProductDescription(category, name),
+                            InStock = random.NextDouble() > 0.2,
+                            RequiresPrescription = category == "prescription",
+                            Dosage =
+                                category != "personal-care"
+                                    ? $"{random.Next(1, 4)} tablet(s) daily"
+                                    : null,
+                            Manufacturer = GetManufacturerName(category, random),
+                            ImageUrl = $"https://placehold.co/200x200?text={category}+{i}",
+                            ExpiryDate = DateTime.Now.AddYears((int)(random.NextDouble() * 10 + 1)),
+                            StockQuantity = random.Next(1, 100),
+                            Barcode = $"{category}-{i}"
+                        }
+                    );
                 }
             }
 
@@ -194,32 +209,27 @@ namespace IGSPharma.Infrastructure.Data
 
         private string GetProductName(string category, int index)
         {
+            // Ensure index is within valid range (1-5)
+            var safeIndex = Math.Clamp(index, 1, 5) - 1;
+
             switch (category)
             {
                 case "prescription":
-                    var prescriptionNames = new[] { 
-                        "Lisinopril", "Atorvastatin", "Levothyroxine", "Metformin", "Amlodipine" 
-                    };
-                    return $"{prescriptionNames[index - 1]} {(index * 10) + 10}mg";
-                
+                    var prescriptionNames = new[] { "Lisinopril", "Atorvastatin", "Levothyroxine", "Metformin", "Amlodipine" };
+                    return $"{prescriptionNames[safeIndex]} {(safeIndex + 1) * 10 + 10}mg";
+
                 case "otc":
-                    var otcNames = new[] { 
-                        "Ibuprofen", "Acetaminophen", "Aspirin", "Loratadine", "Cetirizine" 
-                    };
-                    return $"{otcNames[index - 1]} {(index * 100) + 100}mg";
-                
+                    var otcNames = new[] { "Ibuprofen", "Acetaminophen", "Aspirin", "Loratadine", "Cetirizine" };
+                    return $"{otcNames[safeIndex]} {(safeIndex + 1) * 100 + 100}mg";
+
                 case "vitamins":
-                    var vitaminNames = new[] { 
-                        "Vitamin D3", "Vitamin B12", "Multivitamin", "Vitamin C", "Omega-3" 
-                    };
-                    return $"{vitaminNames[index - 1]} {(index * 500) + 500}IU";
-                
+                    var vitaminNames = new[] { "Vitamin D3", "Vitamin B12", "Multivitamin", "Vitamin C", "Omega-3" };
+                    return $"{vitaminNames[safeIndex]} {(safeIndex + 1) * 500 + 500}IU";
+
                 case "personal-care":
-                    var personalCareNames = new[] { 
-                        "Hand Sanitizer", "Moisturizing Lotion", "Sunscreen", "Dental Floss", "Antiseptic Spray" 
-                    };
-                    return personalCareNames[index - 1];
-                
+                    var personalCareNames = new[] { "Hand Sanitizer", "Moisturizing Lotion", "Sunscreen", "Dental Floss", "Antiseptic Spray" };
+                    return personalCareNames[safeIndex];
+
                 default:
                     return $"Product {index}";
             }
@@ -244,23 +254,27 @@ namespace IGSPharma.Infrastructure.Data
 
         private string GetManufacturerName(string category, Random random)
         {
+            string[] manufacturers;
+
             switch (category)
             {
                 case "prescription":
-                    var pharmaCompanies = new[] { "PharmaCorp", "MediPharm", "HealthRx", "VitaLabs", "CureTech" };
-                    return pharmaCompanies[random.Next(pharmaCompanies.Length)];
+                    manufacturers = new[] { "PharmaCorp", "MediPharm", "HealthRx", "VitaLabs", "CureTech" };
+                    break;
                 case "otc":
-                    var otcCompanies = new[] { "ConsumerHealth", "WellnessCare", "ReliefMed", "DailyHealth", "ComfortPharm" };
-                    return otcCompanies[random.Next(otcCompanies.Length)];
+                    manufacturers = new[] { "ConsumerHealth", "WellnessCare", "ReliefMed", "DailyHealth", "ComfortPharm" };
+                    break;
                 case "vitamins":
-                    var vitaminCompanies = new[] { "NaturalHealth", "VitaEssentials", "PureNutrition", "OrganicLife", "WellnessPlus" };
-                    return vitaminCompanies[random.Next(vitaminCompanies.Length)];
+                    manufacturers = new[] { "NaturalHealth", "VitaEssentials", "PureNutrition", "OrganicLife", "WellnessPlus" };
+                    break;
                 case "personal-care":
-                    var careCompanies = new[] { "CareProducts", "DailyCare", "PureSkin", "HygieneFirst", "CleanLiving" };
-                    return careCompanies[random.Next(careCompanies.Length)];
+                    manufacturers = new[] { "CareProducts", "DailyCare", "PureSkin", "HygieneFirst", "CleanLiving" };
+                    break;
                 default:
                     return "Generic Manufacturer";
             }
+
+            return manufacturers[random.Next(0, manufacturers.Length)];
         }
     }
 }
