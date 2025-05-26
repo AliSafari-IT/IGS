@@ -1,4 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import axios from 'axios';
+import { ChangelogFile } from '../../../utils/changelogUtils';
 import './ChangelogModal.css';
 
 // Lazy load the MarkdownDisplay component
@@ -9,43 +11,58 @@ interface ChangelogModalProps {
   onClose: () => void;
 }
 
-interface ChangelogFile {
-  id: string;
-  name: string;
-  path: string;
-  date: string;
-}
+// Using the ChangelogFile type from changelogUtils
 
 const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
-  const [changelogFiles, setChangelogFiles] = useState<ChangelogFile[]>([
-    { 
-      id: 'changelog-main', 
-      name: 'Main Changelog', 
-      path: '/change-logs/CHANGELOG.md',
-      date: 'May 26, 2025'
-    },
-    { 
-      id: 'changelog-v2-0', 
-      name: 'Version 2.0', 
-      path: '/change-logs/v2.0.md',
-      date: 'April 15, 2025'
-    },
-    { 
-      id: 'changelog-v1-5', 
-      name: 'Version 1.5', 
-      path: '/change-logs/v1.5.md',
-      date: 'March 3, 2025'
-    },
-    { 
-      id: 'changelog-v1-0', 
-      name: 'Version 1.0', 
-      path: '/change-logs/v1.0.md',
-      date: 'January 10, 2025'
-    }
-  ]);
-  
-  const [selectedChangelog, setSelectedChangelog] = useState<ChangelogFile>(changelogFiles[0]);
+  const [changelogFiles, setChangelogFiles] = useState<ChangelogFile[]>([]);
+  const [selectedChangelog, setSelectedChangelog] = useState<ChangelogFile | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch changelog files from the database
+  useEffect(() => {
+    if (isOpen) {
+      fetchChangelogFiles();
+    }
+  }, [isOpen]);
+
+  const fetchChangelogFiles = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await axios.get('/api/changelog');
+      // Check for different possible response formats
+      let files = [];
+      
+      if (response.data && Array.isArray(response.data)) {
+        files = response.data;
+      } else if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        files = response.data.data;
+      } else if (response.data && typeof response.data === 'object') {
+        // If it's an object with changelog files as properties
+        files = Object.values(response.data);
+      }
+      
+      if (files.length > 0) {
+        setChangelogFiles(files);
+        
+        // Set the first file as selected if there are files and no file is currently selected
+        if (!selectedChangelog) {
+          setSelectedChangelog(files[0]);
+        }
+      } else {
+        console.warn('No changelog files found in response:', response.data);
+        setError('No changelog files found.');
+      }
+    } catch (err) {
+      console.error('Error fetching changelog files:', err);
+      setError('Failed to load changelog files. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   // Filter changelog files based on search term
   const filteredChangelogFiles = changelogFiles.filter(file => 
@@ -92,7 +109,7 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
                 filteredChangelogFiles.map(file => (
                   <div 
                     key={file.id} 
-                    className={`changelog-file-item ${selectedChangelog.id === file.id ? 'active' : ''}`}
+                    className={`changelog-file-item ${selectedChangelog && selectedChangelog.id === file.id ? 'active' : ''}`}
                     onClick={() => setSelectedChangelog(file)}
                   >
                     <div className="changelog-file-name">{file.name}</div>
@@ -105,15 +122,37 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
           <div className="changelog-content">
-            <div className="changelog-selected-title">{selectedChangelog.name}</div>
-            <Suspense fallback={<div className="changelog-loading">Loading changelog...</div>}>
-              <MarkdownDisplay 
-                url={selectedChangelog.path} 
-                loadingMessage="Loading changelog..." 
-                errorMessage="Failed to load changelog. Please try again later."
-                className="changelog-markdown"
-              />
-            </Suspense>
+            {isLoading ? (
+              <div className="changelog-loading">Loading changelogs...</div>
+            ) : error ? (
+              <div className="changelog-error">{error}</div>
+            ) : selectedChangelog ? (
+              <>
+                <div className="changelog-selected-title">{selectedChangelog.name}</div>
+                <Suspense fallback={<div className="changelog-loading">Loading changelog...</div>}>
+                  {selectedChangelog.content ? (
+                    <MarkdownDisplay 
+                      content={selectedChangelog.content}
+                      loadingMessage="Loading changelog..." 
+                      errorMessage="Failed to load changelog. Please try again later."
+                      className="changelog-markdown"
+                    />
+                  ) : (
+                    <div className="changelog-content-wrapper">
+                      <p>Loading changelog content...</p>
+                      <button 
+                        className="changelog-retry-button"
+                        onClick={() => fetchChangelogFiles()}
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  )}  
+                </Suspense>
+              </>
+            ) : (
+              <div className="changelog-no-selection">No changelog selected</div>
+            )}
           </div>
         </div>
       </div>

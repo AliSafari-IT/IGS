@@ -15,10 +15,25 @@ namespace IGSPharma.Infrastructure.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
         public DbSet<PrescriptionItem> PrescriptionItems { get; set; }
+        public DbSet<Changelog> Changelogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure Changelog entity
+            modelBuilder.Entity<Changelog>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Path).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Version).HasMaxLength(50);
+                entity.Property(e => e.Content).IsRequired();
+                entity.Property(e => e.Size).HasMaxLength(20);
+                entity.Property(e => e.CreatedBy).HasMaxLength(100);
+                entity.Property(e => e.LastModifiedBy).HasMaxLength(100);
+                entity.HasIndex(e => e.Path).IsUnique();
+            });
 
             // Configure Product entity
             modelBuilder.Entity<Product>(entity =>

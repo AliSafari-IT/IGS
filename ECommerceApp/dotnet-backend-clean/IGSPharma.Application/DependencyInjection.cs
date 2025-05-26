@@ -14,6 +14,7 @@ namespace IGSPharma.Application
         {
             // Register application services
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IChangelogService, ChangelogService>();
             return services;
         }
     }

@@ -1,0 +1,255 @@
+/* Changelog Editor Modal */
+.changelog-editor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 1200px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Header Section */
+.changelog-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.changelog-editor-header h2 {
+  margin: 0;
+  color: #2c8d8a;
+  font-size: 1.5rem;
+}
+
+.changelog-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.changelog-editor-mode-button {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.changelog-editor-mode-button:hover {
+  background-color: #e9ecef;
+}
+
+.changelog-editor-mode-button.active {
+  background-color: #2c8d8a;
+  color: white;
+  border-color: #2c8d8a;
+}
+
+.changelog-editor-save-button {
+  background-color: #2c8d8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.changelog-editor-save-button:hover {
+  background-color: #1a5e5c;
+}
+
+.changelog-editor-save-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+.changelog-editor-close-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0.5rem;
+}
+
+.changelog-editor-close-btn:hover {
+  color: #333;
+}
+
+/* Error Message */
+.changelog-editor-error {
+  background-color: #fee;
+  color: #e74c3c;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* Content Section */
+.changelog-editor-content {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.changelog-editor-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #666;
+  gap: 1rem;
+}
+
+.changelog-editor-loading i {
+  font-size: 1.5rem;
+  color: #2c8d8a;
+}
+
+.changelog-editor-textarea {
+  flex: 1;
+  padding: 1.5rem;
+  border: none;
+  resize: none;
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  outline: none;
+}
+
+.changelog-editor-preview {
+  flex: 1;
+  padding: 1.5rem;
+  overflow: auto;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Markdown Preview Styles */
+.markdown-content h1 {
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #2c8d8a;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.markdown-content h3 {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.markdown-content strong {
+  font-weight: bold;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+/* Footer Section */
+.changelog-editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #eee;
+  background-color: #f8f9fa;
+}
+
+.changelog-editor-info {
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.changelog-editor-cancel-button {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.changelog-editor-cancel-button:hover {
+  background-color: #e9ecef;
+}
+
+.changelog-editor-cancel-button:disabled {
+  color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .changelog-editor {
+    width: 95%;
+    height: 90vh;
+  }
+  
+  .changelog-editor-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .changelog-editor-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

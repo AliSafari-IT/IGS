@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth, User } from '../../../infrastructure/auth/AuthContext';
 import './Auth.css';
 import './UserAccount.css';
+import AdminChangelogPanel from '../admin/AdminChangelogPanel';
 
 const UserAccount: React.FC = () => {
   const { user, logout, updateProfile, changePassword, isAuthenticated } = useAuth();
@@ -10,11 +11,16 @@ const UserAccount: React.FC = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+  // Admin state variables
 
   useEffect(() => {
     if (location.hash === '#profile') setActiveTab('profile');
     else if (location.hash === '#orders') setActiveTab('orders');
     else if (location.hash === '#recipes') setActiveTab('recipes');
+    else if (location.hash === '#admin-users') setActiveTab('admin-users');
+    else if (location.hash === '#admin-products') setActiveTab('admin-products');
+    else if (location.hash === '#admin-orders') setActiveTab('admin-orders');
   }, [location.hash]);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({});
@@ -219,6 +225,49 @@ const UserAccount: React.FC = () => {
           >
             <i className="fas fa-cog"></i> Instellingen
           </button>
+          
+          {/* Admin Menu - Only visible for admin roles */}
+          {user.role === 'admin' && (
+            <div className="admin-menu-container">
+              <button 
+                className={`nav-item admin-toggle ${isAdminMenuOpen ? 'open' : ''}`}
+                onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
+              >
+                <i className="fas fa-shield-alt"></i> Admin Beheer
+                <i className={`fas fa-chevron-${isAdminMenuOpen ? 'up' : 'down'} admin-toggle-icon`}></i>
+              </button>
+              
+              {isAdminMenuOpen && (
+                <div className="admin-submenu">
+                  <button 
+                    className={`nav-item submenu-item ${activeTab === 'admin-users' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('admin-users')}
+                  >
+                    <i className="fas fa-users"></i> Gebruikers beheren
+                  </button>
+                  <button 
+                    className={`nav-item submenu-item ${activeTab === 'admin-products' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('admin-products')}
+                  >
+                    <i className="fas fa-pills"></i> Producten beheren
+                  </button>
+                  <button 
+                    className={`nav-item submenu-item ${activeTab === 'admin-orders' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('admin-orders')}
+                  >
+                    <i className="fas fa-shopping-cart"></i> Bestellingen beheren
+                  </button>
+                  <button 
+                    className={`nav-item submenu-item ${activeTab === 'admin-changelog' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('admin-changelog')}
+                  >
+                    <i className="fas fa-file-alt"></i> Changelog beheren
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+          
           <button 
             className="nav-item logout"
             onClick={handleLogout}
@@ -422,6 +471,257 @@ const UserAccount: React.FC = () => {
           </div>
         )}
         
+        {/* Admin Sections - Only visible for admin roles */}
+        {activeTab === 'admin-changelog' && user && user.role === 'admin' && (
+          <AdminChangelogPanel />
+        )}
+        {activeTab === 'admin-users' && user && user.role === 'admin' && (
+          <div className="account-section">
+            <h2>Gebruikers beheren</h2>
+            <div className="admin-dashboard">
+              <div className="admin-stats">
+                <div className="stat-card">
+                  <div className="stat-value">248</div>
+                  <div className="stat-label">Totaal gebruikers</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">15</div>
+                  <div className="stat-label">Nieuwe gebruikers (deze week)</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">3</div>
+                  <div className="stat-label">Apothekers</div>
+                </div>
+              </div>
+              
+              <div className="admin-actions">
+                <button className="admin-action-button">
+                  <i className="fas fa-user-plus"></i> Nieuwe gebruiker toevoegen
+                </button>
+                <button className="admin-action-button">
+                  <i className="fas fa-file-export"></i> Exporteer gebruikerslijst
+                </button>
+              </div>
+              
+              <div className="admin-table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Naam</th>
+                      <th>Email</th>
+                      <th>Rol</th>
+                      <th>Registratie datum</th>
+                      <th>Acties</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#001</td>
+                      <td>Jan Jansen</td>
+                      <td>jan.jansen@example.com</td>
+                      <td>Klant</td>
+                      <td>24-05-2025</td>
+                      <td>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                        <button className="table-action-btn delete"><i className="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#002</td>
+                      <td>Maria Smit</td>
+                      <td>maria.smit@example.com</td>
+                      <td>Apotheker</td>
+                      <td>20-05-2025</td>
+                      <td>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                        <button className="table-action-btn delete"><i className="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#003</td>
+                      <td>Pieter de Vries</td>
+                      <td>pieter.devries@example.com</td>
+                      <td>Klant</td>
+                      <td>18-05-2025</td>
+                      <td>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                        <button className="table-action-btn delete"><i className="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'admin-products' && user && user.role === 'admin' && (
+          <div className="account-section">
+            <h2>Producten beheren</h2>
+            <div className="admin-dashboard">
+              <div className="admin-stats">
+                <div className="stat-card">
+                  <div className="stat-value">1,245</div>
+                  <div className="stat-label">Totaal producten</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">32</div>
+                  <div className="stat-label">Uitverkochte producten</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">18</div>
+                  <div className="stat-label">Nieuwe producten (deze maand)</div>
+                </div>
+              </div>
+              
+              <div className="admin-actions">
+                <button className="admin-action-button">
+                  <i className="fas fa-plus-circle"></i> Nieuw product toevoegen
+                </button>
+                <button className="admin-action-button">
+                  <i className="fas fa-file-import"></i> Importeer producten
+                </button>
+              </div>
+              
+              <div className="admin-table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Afbeelding</th>
+                      <th>Naam</th>
+                      <th>Categorie</th>
+                      <th>Prijs</th>
+                      <th>Voorraad</th>
+                      <th>Acties</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#P001</td>
+                      <td><img src="/images/products/paracetamol.webp" alt="Paracetamol" className="product-thumbnail" /></td>
+                      <td>Paracetamol 500mg</td>
+                      <td>Pijnstillers</td>
+                      <td>€4.95</td>
+                      <td>145</td>
+                      <td>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                        <button className="table-action-btn delete"><i className="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#P002</td>
+                      <td><img src="/images/products/ibuprofen.webp" alt="Ibuprofen" className="product-thumbnail" /></td>
+                      <td>Ibuprofen 400mg</td>
+                      <td>Pijnstillers</td>
+                      <td>€6.50</td>
+                      <td>78</td>
+                      <td>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                        <button className="table-action-btn delete"><i className="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#P003</td>
+                      <td><img src="/images/products/vitamin-c.webp" alt="Vitamine C" className="product-thumbnail" /></td>
+                      <td>Vitamine C 1000mg</td>
+                      <td>Vitamines</td>
+                      <td>€12.95</td>
+                      <td>0</td>
+                      <td>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                        <button className="table-action-btn delete"><i className="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'admin-orders' && user && user.role === 'admin' && (
+          <div className="account-section">
+            <h2>Bestellingen beheren</h2>
+            <div className="admin-dashboard">
+              <div className="admin-stats">
+                <div className="stat-card">
+                  <div className="stat-value">87</div>
+                  <div className="stat-label">Totaal bestellingen (deze maand)</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">12</div>
+                  <div className="stat-label">Openstaande bestellingen</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">€4,325</div>
+                  <div className="stat-label">Omzet (deze maand)</div>
+                </div>
+              </div>
+              
+              <div className="admin-actions">
+                <button className="admin-action-button">
+                  <i className="fas fa-file-export"></i> Exporteer bestellingen
+                </button>
+                <button className="admin-action-button">
+                  <i className="fas fa-chart-line"></i> Verkooprapport genereren
+                </button>
+              </div>
+              
+              <div className="admin-table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Klant</th>
+                      <th>Datum</th>
+                      <th>Totaalbedrag</th>
+                      <th>Status</th>
+                      <th>Acties</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#O1025</td>
+                      <td>Jan Jansen</td>
+                      <td>26-05-2025</td>
+                      <td>€78.50</td>
+                      <td><span className="status-badge pending">In behandeling</span></td>
+                      <td>
+                        <button className="table-action-btn view"><i className="fas fa-eye"></i></button>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#O1024</td>
+                      <td>Maria Smit</td>
+                      <td>25-05-2025</td>
+                      <td>€125.95</td>
+                      <td><span className="status-badge shipped">Verzonden</span></td>
+                      <td>
+                        <button className="table-action-btn view"><i className="fas fa-eye"></i></button>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#O1023</td>
+                      <td>Pieter de Vries</td>
+                      <td>24-05-2025</td>
+                      <td>€42.25</td>
+                      <td><span className="status-badge completed">Afgerond</span></td>
+                      <td>
+                        <button className="table-action-btn view"><i className="fas fa-eye"></i></button>
+                        <button className="table-action-btn edit"><i className="fas fa-edit"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {activeTab === 'settings' && (
           <div className="account-section">
             <h2>Instellingen</h2>
@@ -516,6 +816,8 @@ const UserAccount: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {/* No need for Changelog Manager here, it's included in AdminChangelogPanel */}
     </div>
   );
 };

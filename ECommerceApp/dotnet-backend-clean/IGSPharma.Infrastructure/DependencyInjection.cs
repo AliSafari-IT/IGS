@@ -34,6 +34,7 @@ namespace IGSPharma.Infrastructure
             // Register repositories
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IChangelogRepository, ChangelogRepository>();
 
             // Register services
             services.AddScoped<IJwtService, JwtService>();
