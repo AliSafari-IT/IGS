@@ -4,6 +4,7 @@ import { Layout, ProductList, HomePage, CategoryPage, CategoriesPage, ProductDet
 import Login from '../../presentation/components/auth/Login';
 import Register from '../../presentation/components/auth/Register';
 import ForgotPassword from '../../presentation/components/auth/ForgotPassword';
+import ResetPassword from '../../presentation/components/auth/ResetPassword';
 import UserAccount from '../../presentation/components/auth/UserAccount';
 import { useAuth } from '../../infrastructure/auth/AuthContext';
 
@@ -47,6 +48,7 @@ const AppRoutes: React.FC = () => {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route path="account" element={<ProtectedRoute element={<UserAccount />} />} />
         
         <Route path="*" element={<div>Page not found</div>} />

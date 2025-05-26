@@ -5,6 +5,7 @@ using IGSPharma.Application.Models.Auth;
 using IGSPharma.Core.Interfaces;
 using IGSPharma.Domain.Entities;
 using IGSPharma.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using BC = BCrypt.Net.BCrypt;
 
 namespace IGSPharma.Application.Services
@@ -13,11 +14,19 @@ namespace IGSPharma.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
+        private readonly IEmailService _emailService;
+        private readonly ILogger<AuthService> _logger;
 
-        public AuthService(IUserRepository userRepository, IJwtService jwtService)
+        public AuthService(
+            IUserRepository userRepository, 
+            IJwtService jwtService,
+            IEmailService emailService,
+            ILogger<AuthService> logger)
         {
             _userRepository = userRepository;
             _jwtService = jwtService;
+            _emailService = emailService;
+            _logger = logger;
         }
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
@@ -168,8 +177,17 @@ namespace IGSPharma.Application.Services
             // Update user with reset token
             await _userRepository.UpdateAsync(user);
 
-            // In a real app, you would send an email with the reset link
-            // For this example, we'll just return true
+            try
+            {
+                // Send password reset email
+                await _emailService.SendPasswordResetEmailAsync(request.Email, resetToken);
+                _logger.LogInformation($"Password reset email sent to {request.Email}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to send password reset email to {request.Email}");
+                // We still return true even if email fails, for security reasons
+            }
 
             return true;
         }

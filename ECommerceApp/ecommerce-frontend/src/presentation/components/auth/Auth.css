@@ -271,6 +271,17 @@ input[type="tel"]:focus {
   padding: 1rem;
   background-color: #f8f9fa;
   border-radius: 4px;
+  border-left: 3px solid #2e8b57;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.requirements-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #444;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
 }
 
 .password-requirements p {
@@ -281,14 +292,61 @@ input[type="tel"]:focus {
 
 .password-requirements ul {
   margin: 0;
-  padding-left: 1.5rem;
+  padding-left: 0;
   list-style-type: none;
 }
 
 .password-requirements li {
-  margin-bottom: 0.25rem;
-  color: #777;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
   position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.requirement-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.75rem;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.requirement-met {
+  color: #2e8b57;
+  font-weight: 500;
+}
+
+.requirement-not-met {
+  color: #666;
+}
+
+/* Animation for when requirements change */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.requirement-met .requirement-icon {
+  animation: pulse 0.3s ease-in-out;
+}
+
+/* Keep the old classes for backward compatibility */
+.password-requirements li.valid {
+  color: #2e8b57;
+}
+
+.password-requirements li.valid::before {
+  content: "✓";
+  color: #2e8b57;
 }
 
 .password-requirements li::before {
@@ -297,15 +355,7 @@ input[type="tel"]:focus {
   left: -1.25rem;
   color: #e74c3c;
   font-weight: bold;
-}
-
-.password-requirements li.valid {
-  color: #2e8b57;
-}
-
-.password-requirements li.valid::before {
-  content: "✓";
-  color: #2e8b57;
+  display: none; /* Hide this since we're using the icon span instead */
 }
 
 /* Responsive Styles */

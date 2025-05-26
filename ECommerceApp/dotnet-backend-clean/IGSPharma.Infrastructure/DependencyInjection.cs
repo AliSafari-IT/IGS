@@ -1,12 +1,15 @@
+using IGSPharma.Application.Interfaces;
 using IGSPharma.Core.Interfaces;
 using IGSPharma.Domain.Interfaces;
 using IGSPharma.Domain.Repositories;
 using IGSPharma.Infrastructure.Data;
 using IGSPharma.Infrastructure.Repositories;
 using IGSPharma.Infrastructure.Services;
+using IGSPharma.Infrastructure.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace IGSPharma.Infrastructure
 {
@@ -31,9 +34,12 @@ namespace IGSPharma.Infrastructure
             // Register repositories
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            
+
             // Register services
             services.AddScoped<IJwtService, JwtService>();
+
+            // Register email service
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }
