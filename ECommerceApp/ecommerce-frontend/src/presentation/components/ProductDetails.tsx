@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Product } from '../../domain/models/Product';
 import { getProductById } from '../../application/useCases/getProducts';
+import { useCart } from '../../context/CartContext';
 import './ProductDetails.css';
 
 const ProductDetails: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [addedToCart, setAddedToCart] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   // Generate a mock product based on the product ID
   const generateMockProduct = (id: string): Product => {
@@ -151,7 +154,20 @@ const ProductDetails: React.FC = () => {
           </div>
           
           <div className="product-actions">
-            <button className="add-to-cart-btn" disabled={!product.inStock}>Add to Cart</button>
+            <button 
+              className={`add-to-cart-btn ${addedToCart ? 'added' : ''}`} 
+              disabled={!product.inStock}
+              onClick={() => {
+                if (product && product.inStock) {
+                  addToCart(product, 1);
+                  setAddedToCart(true);
+                  // Reset the 'added' state after 2 seconds
+                  setTimeout(() => setAddedToCart(false), 2000);
+                }
+              }}
+            >
+              {addedToCart ? 'Added to Cart ✓' : 'Add to Cart'}
+            </button>
             <button className="buy-now-btn" disabled={!product.inStock}>Buy Now</button>
           </div>
         </div>

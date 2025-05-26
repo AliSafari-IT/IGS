@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../infrastructure/auth/AuthContext";
+import { CartButton } from "./Cart";
 import "./Header.css";
 
 const Header: React.FC = () => {
@@ -89,10 +90,7 @@ const Header: React.FC = () => {
           <button className="search-btn">
             <i className="fa fa-search"></i>
           </button>
-          <button className="cart-btn">
-            <i className="fa fa-prescription-bottle-alt"></i>
-            <span className="cart-count">0</span>
-          </button>
+          <CartButton />
           <div className="user-menu" ref={menuRef}>
             <button className="user-btn" onClick={handleUserButtonClick}>
               {user ? (

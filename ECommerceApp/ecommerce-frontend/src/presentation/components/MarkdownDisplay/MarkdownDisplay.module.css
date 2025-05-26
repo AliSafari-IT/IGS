@@ -1,0 +1,88 @@
+.markdownContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.markdownContainer h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.markdownContainer h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.markdownContainer h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #555;
+}
+
+.markdownContainer p {
+  margin-bottom: 1rem;
+}
+
+.markdownContainer ul, 
+.markdownContainer ol {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdownContainer li {
+  margin-bottom: 0.5rem;
+}
+
+.markdownContainer a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.markdownContainer a:hover {
+  text-decoration: underline;
+}
+
+.markdownContainer blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #666;
+}
+
+.markdownContainer code {
+  background-color: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.markdownContainer pre {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+.loadingContainer {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.errorContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #d32f2f;
+  text-align: center;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  background-color: #ffebee;
+}
