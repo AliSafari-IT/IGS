@@ -103,3 +103,7 @@ ECommerceApp/dotnet-backend-clean/.vs/IGSPharma/**
 
 # System Files
 .DS_Store
+
+# .NET Core
+appsettings.{json,Development.json,Staging.json,Production.json,Testing.json}
+

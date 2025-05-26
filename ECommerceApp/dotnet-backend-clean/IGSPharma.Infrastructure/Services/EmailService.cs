@@ -451,6 +451,14 @@ namespace IGSPharma.Infrastructure.Services
             }
         }
 
+        public Task<string> GetIGSContactEmailAsync()
+        {
+            return Task.FromResult(
+                _configuration["EmailSettings:IGSContactEmail"]
+                    ?? throw new InvalidOperationException("Sender email is not configured")
+            );
+        }
+
         ~EmailService()
         {
             Dispose(false);

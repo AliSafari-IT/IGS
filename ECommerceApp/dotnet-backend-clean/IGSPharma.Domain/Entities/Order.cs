@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IGSPharma.Domain.Entities
 {
@@ -14,7 +16,16 @@ namespace IGSPharma.Domain.Entities
         public decimal ShippingCost { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal DiscountAmount { get; set; } = 0; // Applied discounts
-        public decimal TotalAmount => SubTotal + ShippingCost + TaxAmount - DiscountAmount;
+
+        // Stored property that EF Core can map
+        public decimal TotalAmount { get; set; }
+        
+
+        // Method to calculate total (not mapped by EF)
+        public decimal CalculateTotalAmount()
+        {
+            return SubTotal + ShippingCost + TaxAmount - DiscountAmount;
+        }
         public string PaymentMethod { get; set; }
         public string PaymentStatus { get; set; } = "pending"; // pending, completed, failed, refunded
         public string ShippingAddressId { get; set; }
@@ -31,6 +42,7 @@ namespace IGSPharma.Domain.Entities
         public bool IsFirstOrder { get; set; }
 
         // Navigation properties
+           
         public virtual User User { get; set; }
         public virtual Address ShippingAddress { get; set; }
         public virtual Address BillingAddress { get; set; }
@@ -42,11 +54,18 @@ namespace IGSPharma.Domain.Entities
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string OrderId { get; set; }
-        public string ProductId { get; set; }
+public string ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public decimal TotalPrice => Price * Quantity;
+
+        public decimal TotalPrice { get; set; }
+        
+        // Method to calculate total price (not mapped by EF)
+        public decimal CalculateTotalPrice()
+        {
+            return Price * Quantity;
+        }
         public string PrescriptionId { get; set; }
         public bool IsDiscountApplied { get; set; } = false; // Discount tracking
 
@@ -60,7 +79,8 @@ namespace IGSPharma.Domain.Entities
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string OrderId { get; set; }
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+ 
+       public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public string Action { get; set; } // Created, Updated, Cancelled, Refunded, Delivered
         public string Notes { get; set; }
 

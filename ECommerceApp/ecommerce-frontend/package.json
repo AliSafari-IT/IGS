@@ -2,6 +2,7 @@
   "name": "igs-pharma-frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://localhost:5001",
   "dependencies": {
     "@igs/ui-components": "workspace:*",
     "@testing-library/dom": "^10.4.0",

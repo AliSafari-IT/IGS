@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ContactUs.css';
+import { sendContactMessage } from './api';
 
 const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ const ContactUs: React.FC = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -19,22 +22,25 @@ const ContactUs: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to your backend
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false);
+    setSending(true);
+    setError(null);
+    try {
+      await sendContactMessage(formData);
+      setSubmitted(true);
       setFormData({
         name: '',
         email: '',
         subject: '',
         message: ''
       });
-    }, 3000);
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (err: any) {
+      setError(err?.response?.data?.message || 'Failed to send message. Please try again later.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -160,7 +166,8 @@ const ContactUs: React.FC = () => {
                 </label>
               </div>
 
-              <button type="submit" className="submit-button">Send Message</button>
+              <button type="submit" className="submit-button" disabled={sending}>{sending ? 'Sending...' : 'Send Message'}</button>
+              {error && <div className="error-message">{error}</div>}
             </form>
           )}
         </div>
