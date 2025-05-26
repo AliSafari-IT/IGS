@@ -169,8 +169,16 @@ const ContactUs: React.FC = () => {
       <div className="map-container">
         <h2>Find Us</h2>
         <div className="map-placeholder">
-          <p>Map integration would be displayed here in a production environment.</p>
-          <p>For this demo, imagine an embedded Google Maps showing the pharmacy location.</p>
+          <iframe
+            title="IGS Pharma Location"
+            src="https://www.google.com/maps?q=Rue+de+Bosnie+104,+1060+Sint-Gillis,+Belgium&output=embed"
+            width="100%"
+            height="475"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
     </div>

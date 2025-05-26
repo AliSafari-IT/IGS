@@ -200,15 +200,15 @@
 }
 
 .map-placeholder {
-  height: 300px;
-  background-color: #f7fafc;
+  height: 500px;
+  background-color: #4c7022;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  border: 1px dashed #cbd5e0;
+  border: 1px solid #82b2e5;
   padding: 1rem;
 }
 
@@ -223,5 +223,9 @@
   
   .hours-list li {
     flex-direction: column;
+  }
+
+  .map-placeholder {
+    height: 300px;
   }
 }
