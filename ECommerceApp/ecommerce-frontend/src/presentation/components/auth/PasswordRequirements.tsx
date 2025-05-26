@@ -9,9 +9,6 @@ interface PasswordRequirementsProps {
 const PasswordRequirements: React.FC<PasswordRequirementsProps> = ({ password }) => {
   const validation = validatePassword(password);
   
-  // For debugging - log the validation result to console
-  console.log("Password validation:", validation);
-  
   return (
     <div className="password-requirements" data-testid="password-requirements">
       <p className="requirements-title">Wachtwoord moet bevatten:</p>

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace IGSPharma.Domain.Entities
 {
     public class Prescription
@@ -17,12 +14,13 @@ namespace IGSPharma.Domain.Entities
         public string ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
-        
+        public string DigitalSignature { get; set; } = string.Empty; // Security & validation
+
         // Navigation properties
         public virtual User User { get; set; }
         public virtual ICollection<PrescriptionItem> Items { get; set; } = new List<PrescriptionItem>();
     }
-    
+
     public class PrescriptionItem
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -34,7 +32,8 @@ namespace IGSPharma.Domain.Entities
         public int Quantity { get; set; }
         public int Refills { get; set; }
         public string Instructions { get; set; }
-        
+        public bool RequiresApproval { get; set; } = false;
+
         // Navigation properties
         public virtual Prescription Prescription { get; set; }
         public virtual Product Product { get; set; }
