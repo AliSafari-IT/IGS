@@ -17,6 +17,18 @@
   overflow: hidden; /* Prevent content from overflowing */
 }
 
+@media (max-height: 800px) {
+  .changelog-files-viewer {
+    height: 90vh;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-files-viewer {
+    height: 95vh;
+  }
+}
+
 /* Header Section */
 .changelog-files-header {
   display: flex;
@@ -115,9 +127,22 @@
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: #2c8d8a #f0f0f0; /* For Firefox */
   -ms-overflow-style: -ms-autohiding-scrollbar; /* For IE/Edge */
-  max-height: calc(85vh - 70px); /* Ensure content is scrollable */
+  max-height: none; /* Remove fixed max-height to allow proper flex behavior */
   display: flex;
   flex-direction: column;
+  min-height: 0; /* Important for flex child to be able to shrink below content size */
+}
+
+@media (max-height: 800px) {
+  .changelog-files-content {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-files-content {
+    padding: 1rem;
+  }
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -258,6 +283,28 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0; /* Important for flex child to be able to shrink below content size */
+}
+
+/* Changelog Files List */
+.changelog-files-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0; /* Important for flex child to be able to shrink below content size */
+}
+
+@media (max-height: 800px) {
+  .changelog-files-container {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-files-container {
+    margin-bottom: 1rem;
+  }
 }
 
 /* Changelog Files Grid */
@@ -268,7 +315,27 @@
   padding: 10px 0;
   width: 100%;
   overflow-y: auto;
-  max-height: calc(85vh - 250px); /* Reduced to make room for pagination */
+  flex: 1;
+  min-height: 0; /* Important for flex child to be able to shrink below content size */
+}
+
+@media (max-height: 800px) {
+  .changelog-files-grid {
+    gap: 15px;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-files-grid {
+    gap: 10px;
+  }
+}
+
+/* Changelog Files Grid in Modal with Sidebar */
+.changelog-modal-with-sidebar .changelog-files-grid {
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 /* Responsive grid adjustments */
@@ -366,6 +433,28 @@
   cursor: pointer;
   border: 1px solid #eaeaea;
   height: 100%;
+  min-height: 200px; /* Minimum height for consistent appearance */
+  max-height: 250px; /* Maximum height to prevent overly tall items */
+}
+
+@media (max-height: 800px) {
+  .changelog-file-item {
+    min-height: 180px;
+    max-height: 220px;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-file-item {
+    min-height: 160px;
+    max-height: 200px;
+  }
+}
+
+/* Changelog File Item in Modal with Sidebar */
+.changelog-modal-with-sidebar .changelog-file-item {
+  min-height: 180px;
+  max-height: 220px;
 }
 
 .changelog-file-item:hover {
@@ -378,11 +467,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 15px;
   background-color: #f8f9fa;
   color: #2c8d8a;
   font-size: 2rem;
   border-bottom: 1px solid #eaeaea;
+  height: 60px; /* Fixed height for consistency */
+}
+
+.changelog-modal-with-sidebar .changelog-file-icon {
+  padding: 12px;
+  height: 50px;
+  font-size: 1.75rem;
 }
 
 .changelog-file-info {
@@ -390,6 +486,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 80px; /* Minimum height for content area */
+  overflow: hidden; /* Prevent overflow */
+}
+
+.changelog-modal-with-sidebar .changelog-file-info {
+  padding: 12px;
+  min-height: 70px;
 }
 
 .changelog-file-name {
@@ -430,6 +533,12 @@
   background-color: #f8f9fa;
   justify-content: flex-end;
   gap: 8px;
+  height: 52px; /* Fixed height for action area */
+}
+
+.changelog-modal-with-sidebar .changelog-file-actions {
+  padding: 8px 12px;
+  height: 48px;
 }
 
 .changelog-file-action {

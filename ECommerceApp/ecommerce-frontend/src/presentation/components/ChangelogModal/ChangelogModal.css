@@ -31,6 +31,9 @@
 /* Modal with Sidebar Layout */
 .changelog-modal-with-sidebar {
   height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Changelog Header */
@@ -67,6 +70,7 @@
   flex: 1;
   overflow: hidden;
   height: calc(100% - 60px); /* Subtract header height */
+  min-height: 0; /* Allows flex children to shrink below content size */
 }
 
 /* Changelog Sidebar */
@@ -102,13 +106,22 @@
 .changelog-file-list {
   flex: 1;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: calc(100vh - 180px);
 }
 
-.changelog-file-item {
+.changelog-modal-with-sidebar .changelog-file-list .changelog-file-item {
   padding: 0.8rem 1rem;
   border-bottom: 1px solid #eee;
   cursor: pointer;
   transition: background-color 0.2s;
+  min-height: 70px;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .changelog-file-item:hover {
