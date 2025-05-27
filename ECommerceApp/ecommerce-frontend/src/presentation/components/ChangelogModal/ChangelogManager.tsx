@@ -25,6 +25,10 @@ const ChangelogManager: React.FC<ChangelogManagerProps> = ({ isOpen, onClose, in
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Maximum 4 items per page
+  
   // Editor state
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [fileToEdit, setFileToEdit] = useState<ChangelogFile | null>(null);
@@ -101,20 +105,35 @@ const ChangelogManager: React.FC<ChangelogManagerProps> = ({ isOpen, onClose, in
     }
   }, [isOpen, initialFileId, refreshTrigger]);
   
-  // Filter and sort changelog files based on search term and sort order
+  // Filter and sort changelog files
   const filteredAndSortedFiles = changelogFiles
     .filter(file => 
       file.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       file.version.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
-      // Parse dates for comparison
+      // Convert dates to timestamps for comparison
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
       
-      // Sort by date
       return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
     });
+    
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredAndSortedFiles.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredAndSortedFiles.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // Handle page changes
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  // Reset to first page when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
   
   // Handle file creation
   const handleCreateFile = () => {
@@ -287,60 +306,102 @@ Enter changelog content here...`
               </button>
             </div>
           ) : (
-            <div className="changelog-files-grid">
-              {filteredAndSortedFiles.map((file) => (
-                <div 
-                  key={file.id} 
-                  className="changelog-file-item"
-                  onClick={() => handleEditFile(file)}
-                >
-                  <div className="changelog-file-icon">
-                    <i className="fas fa-file-alt"></i>
-                  </div>
-                  <div className="changelog-file-info">
-                    <div className="changelog-file-name">{file.name}</div>
-                    <div className="changelog-file-meta">
-                      <span className="changelog-file-version">{file.version}</span>
-                      <span className="changelog-file-date">{file.date}</span>
-                      <span className="changelog-file-size">{file.size}</span>
+            <>
+              <div className="changelog-files-grid">
+                {currentItems.map((file) => (
+                  <div 
+                    key={file.id} 
+                    className="changelog-file-item"
+                    onClick={() => handleEditFile(file)}
+                  >
+                    <div className="changelog-file-icon">
+                      <i className="fas fa-file-alt"></i>
+                    </div>
+                    <div className="changelog-file-info">
+                      <div className="changelog-file-name">{file.name}</div>
+                      <div className="changelog-file-meta">
+                        <span className="changelog-file-version">{file.version}</span>
+                        <span className="changelog-file-date">{file.date}</span>
+                        <span className="changelog-file-size">{file.size}</span>
+                      </div>
+                    </div>
+                    <div className="changelog-file-actions">
+                      <button 
+                        className="changelog-file-action view"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Instead of navigating to the file path, open it in the editor in read-only mode
+                          handleEditFile({...file, readOnly: true});
+                        }}
+                        title="View"
+                      >
+                        <i className="fas fa-eye"></i>
+                      </button>
+                      <button 
+                        className="changelog-file-action edit"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditFile(file);
+                        }}
+                        title="Edit"
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button 
+                        className="changelog-file-action delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteFile(file.id);
+                        }}
+                        title="Delete"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
                     </div>
                   </div>
-                  <div className="changelog-file-actions">
-                    <button 
-                      className="changelog-file-action view"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // Instead of navigating to the file path, open it in the editor in read-only mode
-                        handleEditFile({...file, readOnly: true});
-                      }}
-                      title="View"
-                    >
-                      <i className="fas fa-eye"></i>
-                    </button>
-                    <button 
-                      className="changelog-file-action edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditFile(file);
-                      }}
-                      title="Edit"
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button 
-                      className="changelog-file-action delete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteFile(file.id);
-                      }}
-                      title="Delete"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+                ))}
+              </div>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="changelog-pagination">
+                  <button 
+                    className="changelog-pagination-button"
+                    onClick={() => handlePageChange(1)}
+                    disabled={currentPage === 1}
+                  >
+                    <i className="fas fa-angle-double-left"></i>
+                  </button>
+                  <button 
+                    className="changelog-pagination-button"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    <i className="fas fa-angle-left"></i>
+                  </button>
+                  
+                  <div className="changelog-pagination-info">
+                    <span>Page {currentPage} of {totalPages}</span>
+                    <span className="changelog-pagination-total">{filteredAndSortedFiles.length} items</span>
                   </div>
+                  
+                  <button 
+                    className="changelog-pagination-button"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    <i className="fas fa-angle-right"></i>
+                  </button>
+                  <button 
+                    className="changelog-pagination-button"
+                    onClick={() => handlePageChange(totalPages)}
+                    disabled={currentPage === totalPages}
+                  >
+                    <i className="fas fa-angle-double-right"></i>
+                  </button>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>

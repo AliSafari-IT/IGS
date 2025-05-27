@@ -22,6 +22,10 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [searchTerm, setSearchTerm] = useState('');
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Maximum 4 items per page
+  
   // Fetch changelog files when the modal is opened
   useEffect(() => {
     if (isOpen) {
@@ -96,6 +100,22 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
       return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
     });
   
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredAndSortedFiles.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredAndSortedFiles.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // Handle page changes
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  // Reset to first page when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+  
   // Handle ESC key to close modal
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -125,13 +145,23 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
           <h2>Changelog Bestanden</h2>
           <div className="changelog-files-actions">
             <div className="changelog-search-container">
+              <i className="fas fa-search changelog-search-icon"></i>
               <input 
                 type="text" 
-                placeholder="Zoeken..." 
+                placeholder="Zoeken op naam of versie..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="changelog-search-input"
               />
+              {searchTerm && (
+                <button 
+                  className="changelog-search-clear" 
+                  onClick={() => setSearchTerm('')}
+                  title="Zoekopdracht wissen"
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              )}
             </div>
             <button 
               className="changelog-sort-button" 
@@ -139,8 +169,11 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
               title={sortOrder === 'desc' ? 'Sorteer oplopend' : 'Sorteer aflopend'}
             >
               <i className={`fas fa-sort-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
+              <span className="changelog-sort-label">Datum</span>
             </button>
-            <button className="changelog-close-btn" onClick={onClose}>×</button>
+            <button className="changelog-close-btn" onClick={onClose}>
+              <i className="fas fa-times"></i>
+            </button>
           </div>
         </div>
         
@@ -170,123 +203,140 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
                   className="changelog-back-button"
                   onClick={() => setSelectedFile(null)}
                 >
-                  <i className="fas fa-arrow-left"></i> Terug naar lijst
+                  <i className="fas fa-arrow-left"></i> Terug naar overzicht
                 </button>
-                <h3>{selectedFile.name} <span className="changelog-version-badge">{selectedFile.version}</span></h3>
-                <div className="changelog-file-info">
-                  <span><i className="fas fa-calendar"></i> {selectedFile.date}</span>
-                  <span><i className="fas fa-file"></i> {selectedFile.size}</span>
+                <h3>{selectedFile.name}</h3>
+                <div className="changelog-file-viewer-meta">
+                  <span className="changelog-version-tag">{selectedFile.version}</span>
+                  <span className="changelog-date">{selectedFile.date}</span>
                 </div>
               </div>
-              <div className="changelog-file-content">
-                <Suspense fallback={<div className="changelog-loading"><i className="fas fa-spinner fa-spin"></i> Loading changelog...</div>}>
-                  <MarkdownDisplay 
-                    url={selectedFile.path} 
-                    loadingMessage="Loading changelog..." 
-                    errorMessage="Failed to load changelog. Please try again later."
-                    className="changelog-markdown"
-                  />
+              <div className="changelog-file-viewer-content">
+                <Suspense fallback={<div className="loading">Loading content...</div>}>
+                  <MarkdownDisplay content={selectedFile.content || 'No content available'} />
                 </Suspense>
               </div>
             </div>
-          ) : changelogFiles.length === 0 ? (
-            <div className="changelog-empty-container">
-              <div className="changelog-empty">
-                <i className="fas fa-file-alt"></i>
-                <h3>No Changelog Files Found</h3>
-                <p>There are no changelog files available. Create your first changelog file to get started.</p>
-                <button className="changelog-create-button">
-                  <i className="fas fa-plus-circle"></i> Create Changelog File
-                </button>
-              </div>
-            </div>
           ) : (
-            <div className="changelog-files-list-container">
-              <table className="changelog-files-table">
-                <thead>
-                  <tr>
-                    <th className="changelog-files-th-index">#</th>
-                    <th className="changelog-files-th-name">Bestandsnaam</th>
-                    <th className="changelog-files-th-version">Versie</th>
-                    <th className="changelog-files-th-date">
-                      Datum
-                      <button 
-                        className="changelog-sort-button-inline" 
-                        onClick={toggleSortOrder}
-                      >
-                        <i className={`fas fa-sort-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
-                      </button>
-                    </th>
-                    <th className="changelog-files-th-size">Grootte</th>
-                    <th className="changelog-files-th-actions">Acties</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredAndSortedFiles.map((file, index) => (
-                    <tr key={file.id} className="changelog-files-tr">
-                      <td className="changelog-files-td-index">{index + 1}</td>
-                      <td className="changelog-files-td-name">
-                        <button 
-                          className="changelog-file-name-button"
-                          onClick={() => setSelectedFile(file)}
-                        >
-                          {file.name}
-                        </button>
-                      </td>
-                      <td className="changelog-files-td-version">{file.version}</td>
-                      <td className="changelog-files-td-date">{file.date}</td>
-                      <td className="changelog-files-td-size">{file.size}</td>
-                      <td className="changelog-files-td-actions">
-                        <button 
-                          className="changelog-file-action-button view"
-                          onClick={() => setSelectedFile(file)}
-                          title="Bekijken"
-                        >
-                          <i className="fas fa-eye"></i>
-                        </button>
-                        <a 
-                          href={file.path} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="changelog-file-action-button download"
-                          title="Downloaden"
-                        >
-                          <i className="fas fa-download"></i>
-                        </a>
-                        <button 
-                          className="changelog-file-action-button edit"
-                          title="Bewerken"
-                          onClick={() => handleEditFile(file)}
-                        >
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button 
-                          className="changelog-file-action-button delete"
-                          title="Verwijderen"
-                          onClick={() => handleDeleteFile(file.id)}
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              
-              <div className="changelog-files-info">
-                <h3>Changelog Bestanden Beheer</h3>
-                <p>
-                  Changelog bestanden worden opgeslagen in de <code>/public/change-logs/</code> map en zijn geschreven in Markdown formaat.
-                  Wijzigingen in deze bestanden worden direct weergegeven in de changelog modal die toegankelijk is via de header van de website.
-                </p>
-                <p>
-                  <strong>Bestandsconventies:</strong>
-                </p>
-                <ul>
-                  <li><code>CHANGELOG.md</code> - Hoofdbestand met alle wijzigingen</li>
-                  <li><code>vX.Y.md</code> - Specifieke versie changelog (bijv. v2.0.md)</li>
-                </ul>
+            <div className="changelog-files-container">
+              <div className="changelog-files-header-row">
+                <div className="changelog-files-count">
+                  {filteredAndSortedFiles.length} {filteredAndSortedFiles.length === 1 ? 'bestand' : 'bestanden'} gevonden
+                  {searchTerm && <span> voor "{searchTerm}"</span>}
+                </div>
+                {filteredAndSortedFiles.length > 0 && (
+                  <button 
+                    className="changelog-view-latest-button"
+                    onClick={() => setSelectedFile(filteredAndSortedFiles[0])}
+                    title="Bekijk meest recente changelog"
+                  >
+                    <i className="fas fa-clock"></i> Meest recente bekijken
+                  </button>
+                )}
               </div>
+              
+              {filteredAndSortedFiles.length === 0 ? (
+                <div className="changelog-empty-message">
+                  <i className="fas fa-search"></i>
+                  <p>Geen bestanden gevonden{searchTerm && ` voor "${searchTerm}"`}</p>
+                </div>
+              ) : (
+                <>
+                  <div className="changelog-files-grid">
+                    {currentItems.map((file) => (
+                      <div 
+                        key={file.id} 
+                        className="changelog-file-item"
+                        onClick={() => setSelectedFile(file)}
+                      >
+                        <div className="changelog-file-icon">
+                          <i className="fas fa-file-alt"></i>
+                        </div>
+                        <div className="changelog-file-info">
+                          <div className="changelog-file-name">{file.name}</div>
+                          <div className="changelog-file-meta">
+                            <span className="changelog-file-version">{file.version}</span>
+                            <span className="changelog-file-date">{file.date}</span>
+                            <span className="changelog-file-size">{file.size}</span>
+                          </div>
+                        </div>
+                        <div className="changelog-file-actions">
+                          <button 
+                            className="changelog-file-action view"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedFile(file);
+                            }}
+                            title="View"
+                          >
+                            <i className="fas fa-eye"></i>
+                          </button>
+                          <button 
+                            className="changelog-file-action edit"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditFile(file);
+                            }}
+                            title="Edit"
+                          >
+                            <i className="fas fa-edit"></i>
+                          </button>
+                          <button 
+                            className="changelog-file-action delete"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteFile(file.id);
+                            }}
+                            title="Delete"
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="changelog-pagination">
+                      <button 
+                        className="changelog-pagination-button"
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1}
+                      >
+                        <i className="fas fa-angle-double-left"></i>
+                      </button>
+                      <button 
+                        className="changelog-pagination-button"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        <i className="fas fa-angle-left"></i>
+                      </button>
+                      
+                      <div className="changelog-pagination-info">
+                        <span>Page {currentPage} of {totalPages}</span>
+                        <span className="changelog-pagination-total">{filteredAndSortedFiles.length} items</span>
+                      </div>
+                      
+                      <button 
+                        className="changelog-pagination-button"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <i className="fas fa-angle-right"></i>
+                      </button>
+                      <button 
+                        className="changelog-pagination-button"
+                        onClick={() => handlePageChange(totalPages)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <i className="fas fa-angle-double-right"></i>
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
         </div>
