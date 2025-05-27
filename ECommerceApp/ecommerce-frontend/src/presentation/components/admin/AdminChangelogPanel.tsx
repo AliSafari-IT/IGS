@@ -73,20 +73,20 @@ const AdminChangelogPanel: React.FC = () => {
         </div>
       </div>
       
-      <div>
-        {isLoading ? (
-          <div className="admin-changelog-loading">
-            <i className="fas fa-spinner fa-spin"></i> Changelogs laden...
-          </div>
-        ) : error ? (
-          <div className="admin-changelog-error">
-            <i className="fas fa-exclamation-circle"></i> {error}
-          </div>
-        ) : changelogFiles.length === 0 ? (
-          <div className="admin-changelog-empty">
-            <i className="fas fa-file-alt"></i> Geen changelog bestanden gevonden.
-          </div>
-        ) : (
+      {isLoading ? (
+        <div className="admin-changelog-loading">
+          <i className="fas fa-spinner fa-spin"></i> Changelogs laden...
+        </div>
+      ) : error ? (
+        <div className="admin-changelog-error">
+          <i className="fas fa-exclamation-circle"></i> {error}
+        </div>
+      ) : changelogFiles.length === 0 ? (
+        <div className="admin-changelog-empty">
+          <i className="fas fa-file-alt"></i> Geen changelog bestanden gevonden.
+        </div>
+      ) : (
+        <div className="admin-changelog-table-container">
           <table className="admin-changelog-table">
             <thead>
               <tr>
@@ -139,8 +139,8 @@ const AdminChangelogPanel: React.FC = () => {
               ))}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
       
       {/* Changelog Manager Modal */}
       <ChangelogManager 
