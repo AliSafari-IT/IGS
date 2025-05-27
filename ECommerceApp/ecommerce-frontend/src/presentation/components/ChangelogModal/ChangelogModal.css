@@ -36,6 +36,24 @@
   overflow: hidden;
 }
 
+@media (max-height: 800px) {
+  .changelog-modal-with-sidebar {
+    height: 92vh;
+  }
+}
+
+@media (max-height: 700px) {
+  .changelog-modal-with-sidebar {
+    height: 94vh;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-modal-with-sidebar {
+    height: 96vh;
+  }
+}
+
 /* Changelog Header */
 .changelog-header {
   display: flex;
@@ -43,6 +61,27 @@
   align-items: center;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+@media (max-height: 800px) {
+  .changelog-header {
+    padding: 0.8rem 1.2rem;
+  }
+  
+  .changelog-header h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-header {
+    padding: 0.6rem 1rem;
+  }
+  
+  .changelog-header h2 {
+    font-size: 1.2rem;
+  }
 }
 
 .changelog-header h2 {
@@ -69,8 +108,19 @@
   display: flex;
   flex: 1;
   overflow: hidden;
-  height: calc(100% - 60px); /* Subtract header height */
   min-height: 0; /* Allows flex children to shrink below content size */
+}
+
+@media (max-height: 800px) {
+  .changelog-body {
+    min-height: 0;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-body {
+    min-height: 0;
+  }
 }
 
 /* Changelog Sidebar */
@@ -80,12 +130,38 @@
   display: flex;
   flex-direction: column;
   background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .changelog-sidebar {
+    width: 220px;
+  }
+}
+
+@media (max-width: 576px) {
+  .changelog-sidebar {
+    width: 200px;
+  }
 }
 
 /* Changelog Search */
 .changelog-search {
   padding: 1rem;
   border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+@media (max-height: 800px) {
+  .changelog-search {
+    padding: 0.8rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-search {
+    padding: 0.6rem;
+  }
 }
 
 .changelog-search-input {
@@ -108,8 +184,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  max-height: calc(100vh - 180px);
+  min-height: 0; /* Important for flex child to shrink below content size */
 }
 
 .changelog-modal-with-sidebar .changelog-file-list .changelog-file-item {
@@ -122,6 +197,27 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+@media (max-height: 800px) {
+  .changelog-modal-with-sidebar .changelog-file-list .changelog-file-item {
+    padding: 0.7rem 0.9rem;
+    min-height: 65px;
+  }
+}
+
+@media (max-height: 700px) {
+  .changelog-modal-with-sidebar .changelog-file-list .changelog-file-item {
+    padding: 0.6rem 0.8rem;
+    min-height: 60px;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-modal-with-sidebar .changelog-file-list .changelog-file-item {
+    padding: 0.5rem 0.7rem;
+    min-height: 55px;
+  }
 }
 
 .changelog-file-item:hover {
@@ -157,6 +253,25 @@
   padding: 1.5rem;
   overflow-y: auto;
   position: relative;
+  min-height: 0; /* Important for flex child to shrink below content size */
+}
+
+@media (max-height: 800px) {
+  .changelog-content {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .changelog-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-content {
+    padding: 0.8rem;
+  }
 }
 
 .changelog-selected-title {
@@ -168,6 +283,22 @@
   color: #2c8d8a;
 }
 
+@media (max-height: 800px) {
+  .changelog-selected-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.4rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-selected-title {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.3rem;
+  }
+}
+
 .changelog-loading {
   display: flex;
   justify-content: center;
@@ -175,6 +306,18 @@
   padding: 2rem;
   color: #666;
   font-size: 1rem;
+}
+
+@media (max-height: 800px) {
+  .changelog-loading {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .changelog-loading {
+    padding: 1rem;
+  }
 }
 
 /* Markdown Content Styling */
