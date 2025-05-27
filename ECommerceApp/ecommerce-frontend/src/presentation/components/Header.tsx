@@ -67,25 +67,25 @@ const Header: React.FC = () => {
         <nav className="main-nav">
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/" data-discover="true">Home</Link>
             </li>
             <li>
-              <Link to="/categories">Categories</Link>
+              <Link to="/categories" data-discover="true">Categories</Link>
             </li>
             <li>
-              <Link to="/medications">Medications</Link>
+              <Link to="/medications" data-discover="true">Medications</Link>
             </li>
             <li>
-              <Link to="/prescriptions">Prescriptions</Link>
+              <Link to="/prescriptions" data-discover="true">Prescriptions</Link>
             </li>
             <li>
-              <Link to="/health-advice">Health Advice</Link>
+              <Link to="/health-advice" data-discover="true">Health Advice</Link>
             </li>
             <li>
-              <Link to="/about-us">About</Link>
+              <Link to="/about-us" data-discover="true">About</Link>
             </li>
             <li>
-              <Link to="/contact-us">Contact</Link>
+              <Link to="/contact-us" data-discover="true">Contact</Link>
             </li>
           </ul>
         </nav>
@@ -113,8 +113,9 @@ const Header: React.FC = () => {
                   {user.lastName.charAt(0)}
                 </div>
               ) : (
-                <Link to="/login">
+                <Link to="/login" title="Login">
                   <i className="fa fa-user-circle"></i>
+                  <span className="login-text"> Login</span>
                 </Link>
               )}
             </button>

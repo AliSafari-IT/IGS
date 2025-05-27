@@ -1,6 +1,6 @@
-using Xunit;
 using FluentAssertions;
 using IGSPharma.Domain.Entities;
+using Xunit;
 
 namespace IGSPharma.Domain.Tests.Entities
 {
@@ -21,7 +21,7 @@ namespace IGSPharma.Domain.Tests.Entities
                 InStock = true,
                 RequiresPrescription = false,
                 Dosage = "500mg",
-                Manufacturer = "Bayer"
+                Manufacturer = "Bayer",
             };
 
             // Assert
@@ -44,7 +44,7 @@ namespace IGSPharma.Domain.Tests.Entities
             var product = new Product();
 
             // Assert
-            product.Id.Should().BeEmpty();
+            product.Id.Should().NotBeEmpty(); // ID is auto-generated
             product.Name.Should().BeEmpty();
             product.Price.Should().Be(0);
             product.ImageUrl.Should().BeEmpty();

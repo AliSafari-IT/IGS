@@ -61,7 +61,7 @@
 }
 
 .changelog-editor-save-button {
-  background-color: #2c8d8a;
+  background-color: #27ae60;
   color: white;
   border: none;
   border-radius: 4px;
@@ -71,11 +71,29 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+}
+
+.changelog-editor-edit-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
 .changelog-editor-save-button:hover {
-  background-color: #1a5e5c;
+  background-color: #219653;
+}
+
+.changelog-editor-edit-button:hover {
+  background-color: #2980b9;
 }
 
 .changelog-editor-save-button:disabled {
@@ -109,10 +127,44 @@
 }
 
 /* Content Section */
+.changelog-editor-metadata {
+  display: flex;
+  gap: 20px;
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.changelog-editor-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.changelog-editor-field label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+.changelog-editor-field input {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.changelog-editor-field input:focus {
+  outline: none;
+  border-color: #27ae60;
+  box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+}
+
 .changelog-editor-content {
   flex: 1;
-  overflow: auto;
-  padding: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }

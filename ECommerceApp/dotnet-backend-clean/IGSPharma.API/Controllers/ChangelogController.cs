@@ -67,7 +67,7 @@ namespace IGSPharma.API.Controllers
                 return BadRequest(response);
             }
 
-            return CreatedAtAction(nameof(GetChangelog), new { id = response.Data.Id }, response);
+            return CreatedAtAction(nameof(GetChangelog), new { id = response.Data?.Id ?? string.Empty }, response);
         }
 
         // PUT: api/changelog/{id}
@@ -119,7 +119,9 @@ namespace IGSPharma.API.Controllers
             var response = await _changelogService.SaveFileAsync(
                 request.Path,
                 request.Content,
-                username
+                username,
+                request.Name,
+                request.Version
             );
 
             if (!response.Success)
@@ -135,5 +137,7 @@ namespace IGSPharma.API.Controllers
     {
         public string Path { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+        public string? Name { get; set; }
+        public string? Version { get; set; }
     }
 }

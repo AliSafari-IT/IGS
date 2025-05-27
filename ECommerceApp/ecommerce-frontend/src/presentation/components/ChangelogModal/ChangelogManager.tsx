@@ -181,6 +181,18 @@ Enter changelog content here...`
     setIsEditorOpen(true);
   };
   
+  // Handle edit request from read-only mode
+  const handleEditRequest = (fileId: string) => {
+    // Find the file by ID
+    const fileToEdit = changelogFiles.find(file => file.id === fileId);
+    if (fileToEdit) {
+      // Open the file in edit mode (not read-only)
+      setFileToEdit({...fileToEdit, readOnly: false});
+      setIsCreatingNew(false);
+      setIsEditorOpen(true);
+    }
+  };
+  
   // Handle file save after editing
   const handleSaveFile = async (updatedFile: ChangelogFile) => {
     setIsSaving(true);
@@ -340,6 +352,7 @@ Enter changelog content here...`
         file={fileToEdit}
         onSave={handleSaveFile}
         isSaving={isSaving}
+        onEditRequest={handleEditRequest}
       />
     </>
   );

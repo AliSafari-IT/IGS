@@ -15,7 +15,7 @@
     "test:backend:application": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Application.Tests/IGSPharma.Application.Tests.csproj",
     "test:backend:infrastructure": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Infrastructure.Tests/IGSPharma.Infrastructure.Tests.csproj",
     "test:backend:api": "dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.API.Tests/IGSPharma.API.Tests.csproj",
-                   "test:backend": "concurrently \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Domain.Tests/IGSPharma.Domain.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Application.Tests/IGSPharma.Application.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Infrastructure.Tests/IGSPharma.Infrastructure.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.API.Tests/IGSPharma.API.Tests.csproj\"",
+    "test:backend": "concurrently \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Domain.Tests/IGSPharma.Domain.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Application.Tests/IGSPharma.Application.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.Infrastructure.Tests/IGSPharma.Infrastructure.Tests.csproj\" \"dotnet test ECommerceApp/dotnet-backend-clean/IGSPharma.API.Tests/IGSPharma.API.Tests.csproj\"",
     "test:all": "concurrently \"pnpm run test:backend\" \"pnpm run test:frontend\""
   },
   "keywords": [

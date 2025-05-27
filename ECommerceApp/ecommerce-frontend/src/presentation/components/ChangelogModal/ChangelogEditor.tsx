@@ -8,10 +8,13 @@ interface ChangelogEditorProps {
   file: ChangelogFile | null;
   onSave: (updatedFile: ChangelogFile) => void;
   isSaving?: boolean;
+  onEditRequest?: (fileId: string) => void;
 }
 
-const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file, onSave, isSaving: externalIsSaving }) => {
+const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file, onSave, isSaving: externalIsSaving, onEditRequest }) => {
   const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [version, setVersion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,19 +31,57 @@ const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file
         setPreviewMode(true);
       }
       
+      // Set the version from the file
+      setVersion(file.version || 'v1.0.0');
+      
+      // Set the title from the file name
+      setTitle(file.name);
+      
       // If the file already has content, use it directly
       if (file.content) {
         console.log('Using existing content from file object');
         setContent(file.content);
+        
+        // Try to extract version and title from YAML frontmatter
+        try {
+          const yamlMatch = file.content.match(/---\s*([\s\S]*?)\s*---/);
+          if (yamlMatch && yamlMatch[1]) {
+            const yaml = yamlMatch[1];
+            
+            // Extract version
+            const versionMatch = yaml.match(/version:\s*([^\n]+)/);
+            if (versionMatch && versionMatch[1]) {
+              setVersion(versionMatch[1].trim());
+            }
+            
+            // Extract name/title
+            const nameMatch = yaml.match(/name:\s*([^\n]+)/);
+            if (nameMatch && nameMatch[1]) {
+              setTitle(nameMatch[1].trim());
+            }
+          }
+          
+          // If no YAML frontmatter, try to extract title from first heading
+          if (!yamlMatch) {
+            const h1Match = file.content.match(/# ([^\n]+)/);
+            if (h1Match && h1Match[1]) {
+              setTitle(h1Match[1].trim());
+            }
+          }
+        } catch (err) {
+          console.error('Error parsing frontmatter:', err);
+          // Fallback to file name if parsing fails
+          setTitle(file.name);
+        }
       } else if (file.id && file.id !== 'new') {
         // For existing files without content, we would need to fetch it
         // But in our case, the content should already be loaded by the parent component
         console.log('File should have content loaded by parent');
-        setContent('# ' + file.name + '\n\nEnter changelog content here...');
+        setContent(`---\nname: ${file.name}\nversion: ${file.version || 'v1.0.0'}\ndate: ${file.date}\n---\n\n# ${file.name}\n\nEnter changelog content here...`);
       } else {
         // For new files, set a template
         console.log('Setting template for new file');
-        setContent('# ' + file.name + '\n\nEnter changelog content here...');
+        setContent(`---\nname: ${file.name}\nversion: ${file.version || 'v1.0.0'}\ndate: ${file.date}\n---\n\n# ${file.name}\n\nEnter changelog content here...`);
       }
     }
   }, [isOpen, file]);
@@ -56,14 +97,96 @@ const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file
     setError(null);
     
     try {
+      // Update the content with the new title and version
+      let updatedContent = content;
+      
+      // Get current date for frontmatter
+      const currentDate = new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      
+      // Check if content has YAML frontmatter
+      const hasFrontmatter = /^---\s*[\s\S]*?\s*---/.test(content);
+      
+      if (hasFrontmatter) {
+        // Extract the existing frontmatter
+        const frontmatterMatch = content.match(/^---(\s*[\s\S]*?)\s*---/);
+        if (frontmatterMatch && frontmatterMatch[1]) {
+          // Create a new frontmatter with updated values
+          let frontmatterContent = frontmatterMatch[1];
+          
+          // Update or add name field
+          if (frontmatterContent.includes('name:')) {
+            frontmatterContent = frontmatterContent.replace(/name:\s*([^\n]+)/, `name: ${title}`);
+          } else {
+            frontmatterContent += `\nname: ${title}`;
+          }
+          
+          // Update or add version field
+          if (frontmatterContent.includes('version:')) {
+            frontmatterContent = frontmatterContent.replace(/version:\s*([^\n]+)/, `version: ${version}`);
+          } else {
+            frontmatterContent += `\nversion: ${version}`;
+          }
+          
+          // Update or add date field
+          if (frontmatterContent.includes('date:')) {
+            frontmatterContent = frontmatterContent.replace(/date:\s*([^\n]+)/, `date: ${currentDate}`);
+          } else {
+            frontmatterContent += `\ndate: ${currentDate}`;
+          }
+          
+          // Create the new frontmatter
+          const newFrontmatter = `---${frontmatterContent}---`;
+          
+          // Replace the old frontmatter with the new one
+          updatedContent = updatedContent.replace(/^---\s*[\s\S]*?\s*---/, newFrontmatter);
+        }
+        
+        // Update the first heading to match the title
+        const contentAfterFrontmatter = updatedContent.replace(/^---\s*[\s\S]*?\s*---\s*/, '');
+        const hasHeading = /^#\s+([^\n]+)/.test(contentAfterFrontmatter);
+        
+        if (hasHeading) {
+          // Replace the first heading
+          updatedContent = updatedContent.replace(/^(---\s*[\s\S]*?\s*---)\s*#\s+([^\n]+)/, `$1\n\n# ${title}`);
+        } else {
+          // Add a heading if none exists
+          updatedContent = updatedContent.replace(/^(---\s*[\s\S]*?\s*---)\s*/, `$1\n\n# ${title}\n`);
+        }
+      } else {
+        // No frontmatter, add it
+        // Create a well-formatted frontmatter block
+        const frontmatter = `---
+name: ${title}
+version: ${version}
+date: ${currentDate}
+---
+
+`;
+        
+        // Check if content starts with a heading
+        if (/^#\s+([^\n]+)/.test(updatedContent)) {
+          // Replace the heading with frontmatter and new heading
+          updatedContent = updatedContent.replace(/^#\s+([^\n]+)/, `${frontmatter}# ${title}`);
+        } else {
+          // Add frontmatter and heading at the beginning
+          updatedContent = `${frontmatter}# ${title}\n\n${updatedContent}`;
+        }
+      }
+      
       // Calculate new file size based on content length
       // This is a simple approximation - in a real app, the server would calculate the actual size
-      const contentSizeKB = Math.round((content.length * 2) / 1024 * 10) / 10;
+      const contentSizeKB = Math.round((updatedContent.length * 2) / 1024 * 10) / 10;
       
       // Create updated file object
       const updatedFile = {
         ...file,
-        content: content,
+        name: title, // Update the file name to match the title
+        version: version, // Update the version
+        content: updatedContent,
         // Update the date to current date
         date: new Date().toLocaleDateString('en-US', { 
           year: 'numeric', 
@@ -124,7 +247,7 @@ const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file
         <div className="changelog-editor-header">
           <h2>{file?.readOnly ? 'View' : 'Edit'} Changelog: {file?.name}</h2>
           <div className="changelog-editor-actions">
-            {!file?.readOnly && (
+            {!file?.readOnly ? (
               <>
                 <button 
                   className={`changelog-editor-mode-button ${!previewMode ? 'active' : ''}`}
@@ -154,6 +277,19 @@ const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file
                   )}
                 </button>
               </>
+            ) : (
+              <button 
+                className="changelog-editor-edit-button"
+                onClick={() => {
+                  // Create a function to handle switching to edit mode
+                  // This will need to be implemented in the parent component
+                  if (file && onEditRequest) {
+                    onEditRequest(file.id);
+                  }
+                }}
+              >
+                <i className="fas fa-edit"></i> Edit
+              </button>
             )}
             <button className="changelog-editor-close-btn" onClick={onClose}>×</button>
           </div>
@@ -162,6 +298,33 @@ const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file
         {error && (
           <div className="changelog-editor-error">
             <i className="fas fa-exclamation-triangle"></i> {error}
+          </div>
+        )}
+        
+        {!file?.readOnly && (
+          <div className="changelog-editor-metadata">
+            <div className="changelog-editor-field">
+              <label htmlFor="changelog-title">Title:</label>
+              <input
+                id="changelog-title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter changelog title"
+                disabled={file?.readOnly}
+              />
+            </div>
+            <div className="changelog-editor-field">
+              <label htmlFor="changelog-version">Version:</label>
+              <input
+                id="changelog-version"
+                type="text"
+                value={version}
+                onChange={(e) => setVersion(e.target.value)}
+                placeholder="e.g., v1.0.0"
+                disabled={file?.readOnly}
+              />
+            </div>
           </div>
         )}
         
@@ -180,7 +343,7 @@ const ChangelogEditor: React.FC<ChangelogEditorProps> = ({ isOpen, onClose, file
               className="changelog-editor-textarea"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="# Changelog\n\nEnter your markdown content here..."
+              placeholder="Enter your markdown content here..."
               spellCheck="false"
               autoFocus
             />

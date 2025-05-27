@@ -234,7 +234,9 @@ namespace IGSPharma.Application.Services
         public async Task<ApiResponse<ChangelogDto>> SaveFileAsync(
             string path,
             string content,
-            string username
+            string username,
+            string? name = null,
+            string? version = null
         )
         {
             try
@@ -247,8 +249,8 @@ namespace IGSPharma.Application.Services
                     // Update existing file
                     var updateDto = new UpdateChangelogDto
                     {
-                        Name = existingChangelog.Name,
-                        Version = existingChangelog.Version,
+                        Name = name ?? existingChangelog.Name,
+                        Version = version ?? existingChangelog.Version,
                         Content = content,
                         LastModifiedBy = username,
                     };
@@ -261,9 +263,9 @@ namespace IGSPharma.Application.Services
                     var fileName = System.IO.Path.GetFileName(path);
                     var createDto = new CreateChangelogDto
                     {
-                        Name = fileName,
+                        Name = name ?? fileName,
                         Path = path,
-                        Version = "1.0.0",
+                        Version = version ?? "1.0.0",
                         Content = content,
                         CreatedBy = username,
                     };

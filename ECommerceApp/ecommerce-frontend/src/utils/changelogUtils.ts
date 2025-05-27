@@ -314,7 +314,9 @@ export const updateChangelogFile = async (id: string, file: Partial<ChangelogFil
         // Make an API call to save the file to the database using our new endpoint
         const response = await axios.post('/api/changelog/save-file', {
           path: filePath,
-          content: file.content
+          content: file.content,
+          name: file.name,
+          version: file.version
         });
         
         if (response.data && response.data.success) {

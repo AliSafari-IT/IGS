@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.paths.json",
+  "extends": ["./tsconfig.paths.json", "./tsconfig.app.json"],
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -20,11 +20,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["jest"],
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types", "./src/custom.d.ts"]
-
-  },
-  "include": [
-    "src"
-  ]
+  }
 }

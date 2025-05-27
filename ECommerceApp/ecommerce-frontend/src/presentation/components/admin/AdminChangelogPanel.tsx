@@ -149,6 +149,8 @@ const AdminChangelogPanel: React.FC = () => {
           setIsChangelogManagerOpen(false);
           setSelectedChangelogId(null);
           setIsReadOnly(false);
+          // Refresh the changelog files list after closing the manager
+          refreshChangelogFiles();
         }} 
         initialFileId={selectedChangelogId}
         initialReadOnly={isReadOnly}
