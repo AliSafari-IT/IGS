@@ -11,8 +11,8 @@ const Login: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { login } = useAuth();
+  // We'll use navigate in the handleSubmit function
   const navigate = useNavigate();
-  const location = useLocation();
   
   // Get the redirect path from sessionStorage or default to home
   const [redirectPath, setRedirectPath] = useState('/');
@@ -44,12 +44,9 @@ const Login: React.FC = () => {
       
       if (success) {
         console.log('Login successful, redirecting to:', redirectPath || '/');
-        // Use a single window.location.href to navigate without calling reload()
-        // This prevents the authentication state from being reset
+        // Use navigate to redirect after successful login
         setTimeout(() => {
-          // Using just window.location.href is sufficient to navigate
-          // and will maintain the authentication state
-          window.location.href = redirectPath || '/';
+          navigate(redirectPath || '/');
         }, 300);
       } else {
         setError('Invalid email or password');

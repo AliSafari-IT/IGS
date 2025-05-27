@@ -107,3 +107,6 @@ ECommerceApp/dotnet-backend-clean/.vs/IGSPharma/**
 # .NET Core
 appsettings.{json,Development.json,Staging.json,Production.json,Testing.json}
 
+# Windsurf
+.windsurf/rules
+.windsurf/config

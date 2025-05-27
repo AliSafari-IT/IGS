@@ -51,6 +51,7 @@ describe('App', () => {
     expect(screen.getByText(/Medical Supplies/)).toBeInTheDocument();
   });
 });
+
 describe("Navbar", () => {
   it("renders the logo image", () => {
     render(<App />);

@@ -158,7 +158,7 @@ const ResetPassword: React.FC = () => {
                 Voer uw nieuwe wachtwoord in om uw account te beveiligen.
               </p>
 
-              <form onSubmit={handleSubmit} role="form">
+              <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="email">E-mailadres</label>
                   <input

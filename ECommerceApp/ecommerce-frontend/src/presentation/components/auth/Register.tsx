@@ -63,11 +63,9 @@ const Register: React.FC = () => {
       
       if (success) {
         console.log('Registration successful, navigating to home');
-        // Use a single window.location.href to navigate without calling reload()
-        // This prevents the authentication state from being reset
+        // Use navigate to redirect after successful registration
         setTimeout(() => {
-          // Using just window.location.href is sufficient to navigate
-          window.location.href = '/';
+          navigate('/');
         }, 300);
       } else {
         console.log('Registration failed with success=false');
