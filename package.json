@@ -8,7 +8,7 @@
     "postinstall": "echo 'Installation completed successfully'",  
     "deploy": "pnpm install && bash deploy-igs-pharma.sh",
     "frontend": "pnpm --filter igs-pharma-frontend start",
-    "backend": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet run",
+    "backend": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet run --urls \"http://localhost:8100;https://localhost:8101\"",
     "backend:build": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet build",
     "frontend:alt": "pnpm --filter igs-pharma-frontend start:alt",
     "build:frontend": "pnpm --filter igs-pharma-frontend build",
