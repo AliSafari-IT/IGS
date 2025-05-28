@@ -345,7 +345,7 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
                       </button>
                       
                       <span className="changelog-pagination-info">
-                        Page {currentPage} of {totalPages} ({filteredAndSortedFiles.length} items)
+                        Page {currentPage} of {totalPages} - ({filteredAndSortedFiles.length} items)
                       </span>
                     </div>
                   )}
