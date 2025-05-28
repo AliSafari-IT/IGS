@@ -6,14 +6,15 @@
   "scripts": {
     "start": "dotnet run",
     "start:alt": "PORT=7001 dotnet run",
-    "build": "dotnet build",
     "test": "dotnet test",
-    "publish": "dotnet publish -c Release -o ./publish && pnpm daemon:reload && pnpm daemon:start",
+    "igs:publish": "dotnet publish -c Release -o ./publish && pnpm daemon:reload && pnpm daemon:start",
     "daemon:reload": "sudo systemctl daemon-reload",
     "daemon:restart": "sudo systemctl restart igs-pharma-backend",
     "daemon:stop": "sudo systemctl stop igs-pharma-backend",
     "daemon:start": "sudo systemctl start igs-pharma-backend",
-    "daemon:status": "sudo systemctl status igs-pharma-backend"
+    "daemon:status": "sudo systemctl status igs-pharma-backend",
+    "mig:up": "dotnet ef migrations add --project ../IGSPharma.Infrastructure/IGSPharma.Infrastructure.csproj --startup-project ./IGSPharma.API.csproj --verbose",
+    "mig:down": "dotnet ef migrations remove --project ../IGSPharma.Infrastructure/IGSPharma.Infrastructure.csproj --startup-project ./IGSPharma.API.csproj --verbose"
   },
   "keywords": [],
   "author": "",
