@@ -52,7 +52,7 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.27.3))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.27.3))(@types/babel__core@7.20.5)(eslint@8.57.1)(react@19.1.0)(ts-node@10.9.2(@types/node@16.18.126)(typescript@5.8.3))(type-fest@4.41.0)(typescript@5.8.3)
       typescript:
-        specifier: ^5.8.3
+        specifier: ^5.2.0
         version: 5.8.3
       web-vitals:
         specifier: ^5.0.1

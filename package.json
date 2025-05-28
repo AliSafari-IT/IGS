@@ -4,6 +4,8 @@
   "description": "IGS-Pharma Workspace for Pharmacy Management System",
   "private": true,
   "scripts": {
+    "postinstall": "echo 'Installation completed successfully'",  
+    "deploy": "pnpm install && bash deploy-igs-pharma.sh",
     "frontend": "pnpm --filter igs-pharma-frontend start",
     "backend": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet run",
     "backend:build": "cd ECommerceApp/dotnet-backend-clean/IGSPharma.API && dotnet build",
