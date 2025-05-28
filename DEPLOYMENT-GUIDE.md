@@ -18,7 +18,7 @@ Run the deployment script to create a deployment package:
 
 ```powershell
 # From the project root
-./deploy-to-asafarim.ps1
+./deploy-to-asafarim.sh
 ```
 
 This script will:
@@ -30,7 +30,7 @@ This script will:
 
 Upload the generated deployment package to your server using SCP, SFTP, or any file transfer method:
 
-```bash
+```sh
 # Example using SCP
 scp IGSPharma-Deployment-*.zip user@igs.asafarim.com:/path/to/deployment/
 ```
@@ -39,7 +39,7 @@ scp IGSPharma-Deployment-*.zip user@igs.asafarim.com:/path/to/deployment/
 
 SSH into your server and extract the deployment package:
 
-```bash
+```sh
 ssh user@igs.asafarim.com
 
 # Navigate to deployment directory
@@ -111,7 +111,7 @@ server {
 
 Create a service for the .NET backend:
 
-```bash
+```sh
 # Create a systemd service file (for Linux)
 sudo nano /etc/systemd/system/igspharma-api.service
 ```
@@ -139,7 +139,7 @@ WantedBy=multi-user.target
 
 Enable and start the service:
 
-```bash
+```sh
 sudo systemctl enable igspharma-api.service
 sudo systemctl start igspharma-api.service
 ```
@@ -147,9 +147,10 @@ sudo systemctl start igspharma-api.service
 ### 6. Verify Deployment
 
 1. Check if the backend service is running:
-   ```bash
+
+```sh
    sudo systemctl status igspharma-api.service
-   ```
+```
 
 2. Verify the frontend is accessible by visiting https://igs.asafarim.com
 
@@ -177,9 +178,10 @@ sudo systemctl start igspharma-api.service
 2. Run the deployment script again
 3. Upload and extract the new package
 4. Restart the backend service:
-   ```bash
+
+```sh
    sudo systemctl restart igspharma-api.service
-   ```
+```
 
 ## Security Considerations
 

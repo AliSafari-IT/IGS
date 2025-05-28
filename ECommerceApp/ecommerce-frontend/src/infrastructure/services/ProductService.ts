@@ -1,16 +1,13 @@
 import axios from 'axios';
 import { Product } from '../../domain/models/Product';
+import { API_BASE_URL } from './ApiConfig';
 
 // Configure axios to handle CORS and SSL issues
 axios.defaults.withCredentials = false;
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-// Production API URL for igs.asafarim.com
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://igs.asafarim.com/api'
-  : 'http://localhost:7000/api';
-// Alternative HTTPS URL for local development if needed
-// const API_URL = `https://localhost:${process.env.ASPNETCORE_HTTPS_PORT || 7001}/api`;
+// Use the API_BASE_URL from ApiConfig.ts
+const API_URL = API_BASE_URL;
 
 // Define the API response interface to match the backend format
 interface PagedResponse<T> {

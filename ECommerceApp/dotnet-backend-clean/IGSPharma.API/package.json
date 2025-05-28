@@ -5,9 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "dotnet run",
-    "start:alt": "set PORT=5001 && dotnet run",
+    "start:alt": "PORT=7001 dotnet run",
     "build": "dotnet build",
-    "test": "dotnet test"
+    "test": "dotnet test",
+    "publish": "dotnet publish -c Release -o ./publish && pnpm daemon:reload && pnpm daemon:start",
+    "daemon:reload": "sudo systemctl daemon-reload",
+    "daemon:restart": "sudo systemctl restart igs-pharma-backend",
+    "daemon:stop": "sudo systemctl stop igs-pharma-backend",
+    "daemon:start": "sudo systemctl start igs-pharma-backend",
+    "daemon:status": "sudo systemctl status igs-pharma-backend"
   },
   "keywords": [],
   "author": "",

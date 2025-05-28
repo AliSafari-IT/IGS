@@ -1,4 +1,12 @@
 #!/bin/bash
+###################################
+# Prerequisites
+
+# Update the list of packages
+sudo apt-get update
+sudo apt install git
+git --version
+
 
 # Deployment script for IGS Pharma to igs.asafarim.com (Linux version)
 echo -e "\e[32mStarting deployment process for IGS Pharma to igs.asafarim.com...\e[0m"

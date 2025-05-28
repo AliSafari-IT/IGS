@@ -53,7 +53,15 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:3000", "http://127.0.0.1:54831")
+                .WithOrigins(
+                    "http://localhost:8100", 
+                    "https://localhost:8101", 
+                    "http://localhost:3006", 
+                    "http://localhost:3007", 
+                    "http://127.0.0.1:54831",
+                    "https://igs.asafarim.com",
+                    "http://igs.asafarim.com")
+                .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials(); // Important for cookies/auth
         }
@@ -86,9 +94,10 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    // In production, use HTTPS redirection but ensure CORS is applied first
+    // In production, apply CORS but disable HTTPS redirection to avoid issues with nginx proxy
     app.UseCors("AllowAll");
-    app.UseHttpsRedirection();
+    // Disable HTTPS redirection as nginx handles this
+    // app.UseHttpsRedirection();
 }
 
 // Add authentication middleware

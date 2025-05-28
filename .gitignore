@@ -110,3 +110,7 @@ appsettings.{json,Development.json,Staging.json,Production.json,Testing.json}
 # Windsurf
 .windsurf/rules
 .windsurf/config
+backups/*
+deploy-packages/*
+deployment/backend/*
+deployment/frontend/*

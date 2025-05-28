@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5000",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:8100",
+      "sslPort": 8101
     }
   },
   "profiles": {
@@ -14,7 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5000;https://localhost:5001",
+      "applicationUrl": "http://localhost:8100;https://localhost:8101",
       "environmentVariables": {
         "IGSPHARMA_ENV": "$IGSPHARMA_ENV"
       }
@@ -24,7 +24,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5000;https://localhost:5001",
+      "applicationUrl": "http://localhost:8100;https://localhost:8101",
       "environmentVariables": {
         "IGSPHARMA_ENV": "$IGSPHARMA_ENV"
       }
