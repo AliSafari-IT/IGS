@@ -24,7 +24,7 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Maximum 4 items per page
+  const itemsPerPage = 3; // Maximum 3 items per page
   
   // Fetch changelog files when the modal is opened
   useEffect(() => {
@@ -296,43 +296,57 @@ const ChangelogFilesViewer: React.FC<ChangelogFilesViewerProps> = ({ isOpen, onC
                     ))}
                   </div>
                   
-                  {/* Pagination Controls */}
-                  {totalPages > 1 && (
+                  {/* Pagination Controls - Always visible */}
+                  {(
                     <div className="changelog-pagination">
                       <button 
-                        className="changelog-pagination-button"
+                        className="changelog-pagination-button first"
                         onClick={() => handlePageChange(1)}
                         disabled={currentPage === 1}
+                        title="First Page"
                       >
                         <i className="fas fa-angle-double-left"></i>
                       </button>
                       <button 
-                        className="changelog-pagination-button"
+                        className="changelog-pagination-button prev"
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
+                        title="Previous Page"
                       >
                         <i className="fas fa-angle-left"></i>
                       </button>
                       
-                      <div className="changelog-pagination-info">
-                        <span>Page {currentPage} of {totalPages}</span>
-                        <span className="changelog-pagination-total">{filteredAndSortedFiles.length} items</span>
-                      </div>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                        <button
+                          key={page}
+                          className={`changelog-pagination-page ${page === currentPage ? 'active' : ''}`}
+                          onClick={() => handlePageChange(page)}
+                          disabled={page === currentPage}
+                        >
+                          {page}
+                        </button>
+                      ))}
                       
                       <button 
-                        className="changelog-pagination-button"
+                        className="changelog-pagination-button next"
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
+                        title="Next Page"
                       >
                         <i className="fas fa-angle-right"></i>
                       </button>
                       <button 
-                        className="changelog-pagination-button"
+                        className="changelog-pagination-button last"
                         onClick={() => handlePageChange(totalPages)}
                         disabled={currentPage === totalPages}
+                        title="Last Page"
                       >
                         <i className="fas fa-angle-double-right"></i>
                       </button>
+                      
+                      <span className="changelog-pagination-info">
+                        Page {currentPage} of {totalPages} ({filteredAndSortedFiles.length} items)
+                      </span>
                     </div>
                   )}
                 </>

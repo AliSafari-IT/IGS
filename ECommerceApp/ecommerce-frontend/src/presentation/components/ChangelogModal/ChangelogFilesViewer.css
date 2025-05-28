@@ -4,10 +4,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 1200px;
-  height: 90vh;
-  max-height: 800px;
+  width: 80%;
+  max-width: 900px;
+  height: 80vh;
+  max-height: 600px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -17,24 +17,38 @@
   overflow: hidden;
 }
 
-@media (max-height: 800px) {
-  .changelog-files-viewer {
-    height: 92vh;
-    max-height: 700px;
-  }
-}
-
 @media (max-height: 700px) {
   .changelog-files-viewer {
-    height: 94vh;
-    max-height: 650px;
+    height: 85vh;
+    max-height: 550px;
   }
 }
 
 @media (max-height: 600px) {
   .changelog-files-viewer {
-    height: 96vh;
-    max-height: 580px;
+    height: 90vh;
+    max-height: 500px;
+  }
+}
+
+@media (max-height: 500px) {
+  .changelog-files-viewer {
+    height: 95vh;
+    max-height: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+  .changelog-files-viewer {
+    width: 90%;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 576px) {
+  .changelog-files-viewer {
+    width: 95%;
+    max-width: 450px;
   }
 }
 
@@ -289,12 +303,10 @@
 /* Changelog Files Grid */
 .changelog-files-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px; /* Reduced gap to fit more items */
-  margin-top: 10px; /* Reduced top margin */
-  flex: 1;
-  min-height: 0;
-  align-content: start; /* Align items to the start of the container */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1.25rem;
+  overflow-y: auto;
 }
 @media (max-height: 800px) {
   .changelog-files-grid {
@@ -318,54 +330,69 @@
 /* Responsive grid adjustments */
 @media (max-width: 1200px) {
   .changelog-files-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .changelog-files-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 }
 
 @media (max-width: 576px) {
   .changelog-files-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 10px;
   }
 }
 
 /* Pagination Controls */
 .changelog-pagination {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
-  padding: 8px 0 5px;
+  margin-top: 1rem;
+  padding: 0.8rem 0;
   border-top: 1px solid #eaeaea;
   flex-shrink: 0;
 }
 
+.changelog-pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.changelog-pagination-pages {
+  display: flex;
+  align-items: center;
+  margin: 0 0.5rem;
+}
+
 .changelog-pagination-button {
-  background: none;
-  border: 1px solid #eaeaea;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
   width: 32px;
   height: 32px;
-  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #555;
   transition: all 0.2s ease;
-  margin: 0 3px;
-  color: #333;
+  margin: 0 2px;
+  font-size: 0.8rem;
 }
 
 .changelog-pagination-button:hover:not(:disabled) {
-  background-color: #f8f9fa;
-  border-color: #2c8d8a;
+  background-color: #f8f8f8;
   color: #2c8d8a;
+  border-color: #2c8d8a;
 }
 
 .changelog-pagination-button:disabled {
@@ -373,18 +400,46 @@
   cursor: not-allowed;
 }
 
-.changelog-pagination-info {
+.changelog-pagination-page {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 0 10px;
-  font-size: 0.85rem;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s ease;
+  margin: 0 2px;
+  font-size: 0.8rem;
 }
 
-.changelog-pagination-total {
-  font-size: 0.75rem;
-  color: #777;
-  margin-top: 2px;
+.changelog-pagination-page:hover:not(:disabled) {
+  background-color: #f8f8f8;
+  color: #2c8d8a;
+  border-color: #2c8d8a;
+}
+
+.changelog-pagination-page.active {
+  background-color: #2c8d8a;
+  color: white;
+  border-color: #2c8d8a;
+}
+
+.changelog-pagination-page:disabled {
+  cursor: default;
+}
+
+.changelog-pagination-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #666;
+  margin-left: 1rem;
+  white-space: nowrap;
 }
 
 @media (max-width: 576px) {
@@ -411,8 +466,9 @@
   cursor: pointer;
   border: 1px solid #eaeaea;
   height: 100%;
-  min-height: 160px; /* Further reduced minimum height */
-  max-height: 200px; /* Further reduced maximum height */
+  min-height: 140px; /* Reduced minimum height */
+  max-height: 180px; /* Reduced maximum height */
+  padding: 0.8rem; /* Reduced padding */
 }
 
 @media (max-height: 800px) {
@@ -794,6 +850,21 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #eaeaea;
+}
+
+.changelog-file-item {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0.9rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid #eee;
+  height: 100%;
+  max-height: 180px;
 }
 
 .changelog-file-viewer-header {
