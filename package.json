@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "IGS-Pharma Workspace for Pharmacy Management System",
   "private": true,
+  "packageManager": "pnpm@10.11.0",
   "scripts": {
     "postinstall": "echo 'Installation completed successfully'",  
     "deploy": "pnpm install && bash deploy-igs-pharma.sh",
@@ -36,7 +37,6 @@
   },
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.11.0",
   "dependencies": {
     "sharp": "^0.34.2"
   }
