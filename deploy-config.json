@@ -1,0 +1,12 @@
+{
+  "site": "igs.asafarim.com",
+  "frontend": {
+    "buildPath": "ECommerceApp/ecommerce-frontend/build",
+    "apiEndpoint": "https://igs.asafarim.com/api"
+  },
+  "backend": {
+    "publishPath": "publish",
+    "apiPort": 443,
+    "environment": "Production"
+  }
+}
