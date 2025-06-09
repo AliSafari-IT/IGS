@@ -28,7 +28,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
 // Configure JWT Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder
+    .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -40,7 +41,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["Jwt:SecretKey"]
+                        ?? "TestSecretKeyForDevelopment12345678901234"
+                )
             ),
         };
     });
@@ -54,13 +58,16 @@ builder.Services.AddCors(options =>
         {
             policy
                 .WithOrigins(
-                    "http://localhost:8100", 
-                    "https://localhost:8101", 
-                    "http://localhost:3006", 
-                    "http://localhost:3007", 
+                    "http://localhost:8100",
+                    "https://localhost:8101",
+                    "http://localhost:6200",
+                    "https://localhost:6201",
+                    "http://localhost:3006",
+                    "http://localhost:3007",
                     "http://127.0.0.1:54831",
                     "https://igs.asafarim.com",
-                    "http://igs.asafarim.com")
+                    "http://igs.asafarim.com"
+                )
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials(); // Important for cookies/auth
@@ -85,10 +92,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
+
     // Use CORS first in development
     app.UseCors("AllowAll");
-    
+
     // Skip HTTPS redirection in development to avoid CORS preflight issues
     // app.UseHttpsRedirection();
 }

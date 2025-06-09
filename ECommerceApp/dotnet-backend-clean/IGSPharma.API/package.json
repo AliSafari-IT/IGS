@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "dotnet run --urls \"http://localhost:8100;https://localhost:8101\"",
-    "start:alt": "dotnet run --urls \"http://localhost:8100;https://localhost:8101\"",
+    "start": "dotnet run --urls \"http://localhost:6200;https://localhost:6201\"",
+    "start:alt": "dotnet run --urls \"http://localhost:6200;https://localhost:6201\"",
     "build": "dotnet build",
     "test": "dotnet test",
     "publish": "dotnet publish -c Release -o ./publish && pnpm daemon:reload && pnpm daemon:start",
