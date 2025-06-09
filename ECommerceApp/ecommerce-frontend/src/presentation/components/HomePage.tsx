@@ -7,7 +7,8 @@ const HomePage: React.FC = () => {
     <div className="home-page">
       <section className="hero-section">
         <div className="hero-content">
-          <h1>Medical Supplies<br />And Equipment</h1>
+          <h1>IGS-Pharma</h1>
+          <h2>Medical Supplies And Equipment</h2>
           <p>Trusted by healthcare professionals and patients alike, IGS-Pharma offers a comprehensive range of medical supplies and equipment</p>
           <div className="hero-buttons">
             <Link to="/medications" className="cta-button">Shop Now</Link>

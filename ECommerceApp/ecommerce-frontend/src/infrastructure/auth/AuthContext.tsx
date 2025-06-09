@@ -12,7 +12,7 @@ export interface User {
   firstName: string;
   lastName: string;
   phoneNumber?: string;
-  role: 'customer' | 'pharmacist' | 'admin';
+  role: 'customer' | 'pharmacist' | 'admin' | 'superadmin' | 'beheerder';
   prescriptionAccess?: boolean;
   createdAt?: string;
   lastLoginAt?: string;

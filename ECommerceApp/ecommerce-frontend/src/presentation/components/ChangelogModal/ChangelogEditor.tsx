@@ -264,7 +264,7 @@ date: ${currentDate}
                 <button 
                   className="changelog-editor-save-button"
                   onClick={handleSave}
-                  disabled={isSaving}
+                  disabled={isSaving || previewMode}
                 >
                   {isSaving ? (
                     <>

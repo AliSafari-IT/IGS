@@ -1,7 +1,7 @@
 {
   "name": "igs-pharma-backend",
   "version": "1.2.5",
-  "description": "",
+  "description": "Medical Supplies And Equipment\nTrusted by healthcare professionals and patients alike, IGS-Pharma offers a comprehensive range of medical supplies and equipment",
   "main": "index.js",
   "scripts": {
     "start": "dotnet run --urls \"http://localhost:6200;https://localhost:6201\"",
@@ -13,7 +13,9 @@
     "daemon:restart": "sudo systemctl restart igs-pharma-backend",
     "daemon:stop": "sudo systemctl stop igs-pharma-backend",
     "daemon:start": "sudo systemctl start igs-pharma-backend",
-    "daemon:status": "sudo systemctl status igs-pharma-backend"
+    "daemon:status": "sudo systemctl status igs-pharma-backend",
+    "mig:up": "dotnet ef migrations add --project ../IGSPharma.Infrastructure/IGSPharma.Infrastructure.csproj --startup-project ./IGSPharma.API.csproj --verbose",
+    "mig:down": "dotnet ef migrations remove --project ../IGSPharma.Infrastructure/IGSPharma.Infrastructure.csproj --startup-project ./IGSPharma.API.csproj --verbose"
   },
   "keywords": [],
   "author": "",

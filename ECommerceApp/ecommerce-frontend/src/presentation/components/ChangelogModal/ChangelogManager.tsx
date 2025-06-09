@@ -27,7 +27,7 @@ const ChangelogManager: React.FC<ChangelogManagerProps> = ({ isOpen, onClose, in
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Maximum 4 items per page
+  const itemsPerPage = 3; // Maximum 4 items per page
   
   // Editor state
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -381,8 +381,7 @@ Enter changelog content here...`
                   </button>
                   
                   <div className="changelog-pagination-info">
-                    <span>Page {currentPage} of {totalPages}</span>
-                    <span className="changelog-pagination-total">{filteredAndSortedFiles.length} items</span>
+                    <span>Page {currentPage} of {totalPages} - ({filteredAndSortedFiles.length} items)</span>
                   </div>
                   
                   <button 

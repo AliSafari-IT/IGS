@@ -153,7 +153,7 @@ const Header: React.FC = () => {
                     </Link>
                   </li>
                   {/* Only show Admin Beheer if user has admin role */}
-                  {user && user.role === 'admin' && (
+                  {user && (user.role.toLocaleLowerCase() === 'admin' || user.role.toLocaleLowerCase() === 'superadmin' || user.role.toLocaleLowerCase() === 'beheerder') && (
                     <li>
                       <Link
                         to="/admin"
