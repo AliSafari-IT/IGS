@@ -75,16 +75,22 @@ export const useWindowSize = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const handleResize = useThrottle(() => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }, 100);
+    let timeoutId: NodeJS.Timeout;
+    
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 100);
+    };
 
     window.addEventListener('resize', handleResize);
     
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener('resize', handleResize);
     };
   }, []);

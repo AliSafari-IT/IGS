@@ -22,7 +22,7 @@ const HeroVideo: React.FC<HeroVideoProps> = memo(({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Use intersection observer to only load video when in view
-  const isInView = useIntersectionObserver(containerRef, {
+  const isInView = useIntersectionObserver(containerRef as React.RefObject<Element>, {
     threshold: 0.3,
     rootMargin: '50px'
   });

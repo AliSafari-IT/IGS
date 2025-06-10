@@ -14,7 +14,7 @@
 .main-content {
   flex: 1;
   padding: 1.25rem;
-  background-color: var(--background-color, #f8f9fa);
+  background-color: var(--color-background-alt);
   min-height: 0; /* Allow flex child to shrink */
   overflow-x: hidden;
   contain: layout style paint;
@@ -32,20 +32,20 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(44, 141, 138, 0.1);
+  background: var(--color-surface-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(44, 141, 138, 0.3);
+  border: 3px solid var(--color-border);
   border-radius: 50%;
-  border-top-color: var(--primary-color, #2c8d8a);
+  border-top-color: var(--color-primary);
   animation: spin 1s ease-in-out infinite;
 }
 
@@ -89,15 +89,25 @@
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .main-content {
-    background-color: white;
-    border: 1px solid black;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-text-primary);
   }
 }
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0f172a;
+    --color-background-alt: #1e293b;
+    --color-surface: #1e293b;
+    --color-surface-2: #334155;
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #cbd5e1;
+    --color-border: #334155;
+  }
+  
   .main-content {
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: var(--color-background-alt);
+    color: var(--color-text-primary);
   }
 }
