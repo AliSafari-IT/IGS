@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { ChangelogFile, fetchChangelogFiles as fetchChangelogFilesUtil } from '../../../utils/changelogUtils';
+import { type ChangelogFile, fetchChangelogFiles as fetchChangelogFilesUtil } from '../../../utils/changelogUtils';
 import './ChangelogModal.css';
 
 // Lazy load the MarkdownDisplay component

@@ -1,4 +1,4 @@
-import { Product } from '../../domain/models/Product';
+import { type Product } from '../../domain/models/Product';
 import { ProductService } from '../../infrastructure/services/ProductService';
 
 export const getProducts = async (category?: string, page: number = 1, limit: number = 20): Promise<Product[]> => {

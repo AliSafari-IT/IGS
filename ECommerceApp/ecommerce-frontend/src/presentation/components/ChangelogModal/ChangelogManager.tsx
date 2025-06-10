@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ChangelogFilesViewer.css';
 import './ChangelogEditor.css';
 import { 
-  ChangelogFile, 
+  type ChangelogFile, 
   fetchChangelogFiles, 
   createChangelogFile, 
   updateChangelogFile, 

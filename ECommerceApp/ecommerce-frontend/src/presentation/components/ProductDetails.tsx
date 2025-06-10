@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Product } from '../../domain/models/Product';
+import { type Product } from '../../domain/models/Product';
 import { getProductById } from '../../application/useCases/getProducts';
 import { useCart } from '../../context/CartContext';
 import './ProductDetails.css';

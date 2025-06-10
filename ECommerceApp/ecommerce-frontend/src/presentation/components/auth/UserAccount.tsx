@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth, User } from "../../../infrastructure/auth/AuthContext";
+import { useAuth, type User } from "../../../infrastructure/auth/AuthContext";
 import "./Auth.css";
 import "./UserAccount.css";
 import AdminChangelogPanel from "../admin/AdminChangelogPanel";

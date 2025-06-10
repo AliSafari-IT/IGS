@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ChangelogManager from '../ChangelogModal/ChangelogManager';
-import { ChangelogFile, fetchChangelogFiles, deleteChangelogFile } from '../../../utils/changelogUtils';
+import { type ChangelogFile, fetchChangelogFiles, deleteChangelogFile } from '../../../utils/changelogUtils';
 import './AdminChangelogPanel.css';
 
 const AdminChangelogPanel: React.FC = () => {

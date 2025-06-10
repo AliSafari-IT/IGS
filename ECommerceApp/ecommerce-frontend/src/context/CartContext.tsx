@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { Product } from '../domain/models/Product';
+import type { Product } from '../domain/models/Product';
 
 // Define the cart item type
 export interface CartItem {

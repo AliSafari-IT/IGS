@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Product } from '../../domain/models/Product';
+import { type Product } from '../../domain/models/Product';
 import { API_BASE_URL } from './ApiConfig';
 
 // Configure axios to handle CORS and SSL issues
@@ -34,10 +34,10 @@ export class ProductService {
       if (category) {
         url += `&category=${encodeURIComponent(category)}`;
       }
-      
+
       // Make the API call
       const response = await axios.get<PagedResponse<Product>>(url);
-      
+
       // Check if the request was successful
       if (response.data.success) {
         return response.data.data;
@@ -50,11 +50,11 @@ export class ProductService {
       throw error; // Throw the error instead of returning empty array
     }
   }
-  
+
   async getById(id: string): Promise<Product | null> {
     try {
       const response = await axios.get<ApiResponse<Product>>(`${API_URL}/products/${id}`);
-      
+
       if (response.data.success) {
         return response.data.data;
       } else {
@@ -66,13 +66,13 @@ export class ProductService {
       throw error;
     }
   }
-  
+
   async searchProducts(query: string, page: number = 1, limit: number = 20): Promise<Product[]> {
     try {
       const response = await axios.get<PagedResponse<Product>>(
         `${API_URL}/products/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
       );
-      
+
       if (response.data.success) {
         return response.data.data;
       } else {
