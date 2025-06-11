@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../infrastructure/auth/AuthContext";
 import { CartButton } from "./Cart";
 import { SearchButton } from "./Search";
+import { ThemeToggle } from "./ThemeToggle/ThemeToggle";
 import { useMediaQuery, useDebounce, usePerformanceMonitor } from "../../utils/performanceHooks";
 import "./HeaderNew.css";
 
@@ -171,10 +172,10 @@ const Header: React.FC = memo(() => {
             </li>
           </ul>
         </nav>
-        
-        <div className="header-actions">
+          <div className="header-actions">
           <SearchButton />
           <CartButton />
+          <ThemeToggle className="header-theme-toggle" />
           <button 
             className="changelog-btn" 
             onClick={handleChangelogOpen} 
