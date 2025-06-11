@@ -56,6 +56,10 @@
   background-color: var(--color-background);
   color: var(--color-text-primary);
 }
+.theme-dark {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
 
 .theme-surface {
   background-color: var(--color-surface);

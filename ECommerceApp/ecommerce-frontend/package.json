@@ -23,13 +23,13 @@
     "react-intersection-observer": "^9.4.3",
     "react-virtualized": "^9.22.3",
     "react-window": "^1.8.8"
-  },  "scripts": {
+  },  "scripts": {    
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:analyze": "pnpm run build && npx vite-bundle-analyzer dist",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "set PORT=3007 && react-scripts start",
+    "start": "pnpm run dev",
     "start:alt": "set PORT=3008 && react-scripts start",
     "test": "jest --config=jest.config.js",
     "eject": "react-scripts eject",
@@ -40,14 +40,7 @@
     "performance": "pnpm run build && pnpm run lighthouse",
     "performance:dev": "lighthouse http://localhost:5173 --output=html --output-path=./lighthouse-dev-report.html",
     "type-check": "tsc --noEmit",
-    "size-limit": "npx size-limit"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
+    "size-limit": "npx size-limit"  },
   "browserslist": {
     "production": [
       ">0.2%",

@@ -1,5 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+<<<<<<< HEAD
 import { type ChangelogFile, fetchChangelogFiles as fetchChangelogFilesUtil } from '../../../utils/changelogUtils';
+=======
+import axios from 'axios';
+import { ChangelogFile } from '../../../utils/changelogUtils';
+>>>>>>> parent of 75c8cca (refactor: streamline changelog file fetching by utilizing utility function)
 import './ChangelogModal.css';
 
 // Lazy load the MarkdownDisplay component
@@ -25,14 +30,26 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
       fetchChangelogFiles();
     }
   }, [isOpen]);
+
   const fetchChangelogFiles = async () => {
     setIsLoading(true);
     setError(null);
     
     try {
-      const files = await fetchChangelogFilesUtil();
+      const response = await axios.get('/api/changelog');
+      // Check for different possible response formats
+      let files = [];
       
-      if (files && files.length > 0) {
+      if (response.data && Array.isArray(response.data)) {
+        files = response.data;
+      } else if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        files = response.data.data;
+      } else if (response.data && typeof response.data === 'object') {
+        // If it's an object with changelog files as properties
+        files = Object.values(response.data);
+      }
+      
+      if (files.length > 0) {
         setChangelogFiles(files);
         
         // Set the first file as selected if there are files and no file is currently selected
@@ -40,7 +57,7 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
           setSelectedChangelog(files[0]);
         }
       } else {
-        console.warn('No changelog files found in response:', files);
+        console.warn('No changelog files found in response:', response.data);
         setError('No changelog files found.');
       }
     } catch (err) {
