@@ -1,12 +1,18 @@
 #!/bin/bash
 
 # Set Variables
-BASE_DIR="/var/www"
-REPO_DIR="$BASE_DIR/asafarim-igs"
+BASE_DIR="/var/www/my-projects"
+# Ensure the base directory exists
+if [ ! -d "$BASE_DIR" ]; then
+  echo "Base directory $BASE_DIR does not exist. Creating it..."
+  sudo mkdir -p "$BASE_DIR"
+  sudo chown $(whoami):$(whoami) "$BASE_DIR"
+fi
+REPO_DIR="$BASE_DIR/IGS"
 FRONTEND_DIR="$REPO_DIR/ECommerceApp/ecommerce-frontend"
 BACKEND_DIR="$REPO_DIR/ECommerceApp/dotnet-backend-clean/IGSPharma.API"
-FRONTEND_DEPLOY_DIR="$BASE_DIR/igs.asafarim.com/public_html"
-BACKEND_DEPLOY_DIR="$BASE_DIR/igs-api.asafarim.com"
+FRONTEND_DEPLOY_DIR="/var/www/asafarim.com/igs"
+BACKEND_DEPLOY_DIR="/var/www/asafarim.com/igs-api"
 FRONTEND_BACKUP_DIR="$REPO_DIR/backups/frontend"
 BACKEND_BACKUP_DIR="$REPO_DIR/backups/backend"
 LOG_DIR="$REPO_DIR/logs"
@@ -27,7 +33,7 @@ BACKEND_BACKUP_PATH="$BACKEND_BACKUP_DIR/$BACKEND_BACKUP_FILE"
 mkdir -p "$FRONTEND_BACKUP_DIR"
 mkdir -p "$BACKEND_BACKUP_DIR"
 mkdir -p "$LOG_DIR"
-DEPLOY_LOG="$LOG_DIR/deploy_$(date +%Y%m%d_%H%M%S).log"
+DEPLOY_LOG="$LOG_DIR/deploy_${TIMESTAMP}.log"
 
 # Log function
 log() {
@@ -137,11 +143,29 @@ deploy_frontend() {
   create_backup "$FRONTEND_DEPLOY_DIR" "$FRONTEND_BACKUP_PATH" "frontend"
 
   # Navigate to frontend project
-  cd "$FRONTEND_DIR" || handle_error "Frontend directory not found!" "exit"
+  if [ ! -d "$FRONTEND_DIR" ]; then
+    handle_error "Frontend directory $FRONTEND_DIR not found!" "exit"
+  fi
+  cd "$FRONTEND_DIR" || handle_error "Cannot navigate to frontend directory!" "exit"
+
+  # Install dependencies first
+  log "Installing frontend dependencies..."
+  pnpm install || handle_error "Frontend dependency installation failed!" "exit"
 
   # Build the frontend
   log "Building frontend with pnpm..."
   pnpm build || handle_error "Frontend build failed!" "exit"
+
+  # Check if build directory exists
+  if [ ! -d "build" ] && [ ! -d "dist" ]; then
+    handle_error "Neither 'build' nor 'dist' directory found after build" "exit"
+  fi
+
+  # Determine build output directory
+  BUILD_OUTPUT_DIR="build"
+  if [ ! -d "build" ] && [ -d "dist" ]; then
+    BUILD_OUTPUT_DIR="dist"
+  fi
 
   # Ensure Deployment Directory Exists
   log "Ensuring deployment directory exists..."
@@ -152,16 +176,14 @@ deploy_frontend() {
   sudo rm -rf "$FRONTEND_DEPLOY_DIR"/* || true
 
   # Move new build files
-  log "Deploying new build files..."
-  if [ -d "build" ]; then
-    sudo cp -r build/* "$FRONTEND_DEPLOY_DIR"/ || {
-      log "Error: Moving files failed, rolling back..."
+  log "Deploying new build files from $BUILD_OUTPUT_DIR..."
+  sudo cp -r "$BUILD_OUTPUT_DIR"/* "$FRONTEND_DEPLOY_DIR"/ || {
+    log "Error: Moving files failed, rolling back..."
+    if [ -f "$FRONTEND_BACKUP_PATH" ]; then
       sudo tar -xzf "$FRONTEND_BACKUP_PATH" -C "$FRONTEND_DEPLOY_DIR"
-      handle_error "Frontend deployment failed" "exit"
-    }
-  else
-    handle_error "Build directory 'build' not found" "exit"
-  fi
+    fi
+    handle_error "Frontend deployment failed" "exit"
+  }
 
   # Set correct permissions
   log "Setting correct file permissions..."
@@ -186,19 +208,35 @@ deploy_backend() {
   create_backup "$BACKEND_DEPLOY_DIR" "$BACKEND_BACKUP_PATH" "backend"
 
   # Navigate to backend project
-  cd "$BACKEND_DIR" || handle_error "Backend directory not found!" "exit"
+  if [ ! -d "$BACKEND_DIR" ]; then
+    handle_error "Backend directory $BACKEND_DIR not found!" "exit"
+  fi
+  cd "$BACKEND_DIR" || handle_error "Cannot navigate to backend directory!" "exit"
+
+  # Check if the project file exists
+  if [ ! -f "IGSPharma.API.csproj" ]; then
+    handle_error "IGSPharma.API.csproj not found in $BACKEND_DIR" "exit"
+  fi
 
   # Stop the service before deployment
   log "Stopping backend service..."
-  sudo systemctl stop $SERVICE_NAME
+  sudo systemctl stop $SERVICE_NAME 2>/dev/null || true
   sleep 2
 
   # Ensure the publish directory exists
   log "Ensuring publish directory exists..."
   sudo mkdir -p "$BACKEND_DEPLOY_DIR" || true
 
-  # Build and publish the backend
-  log "Building and publishing backend..."
+  # Restore packages first
+  log "Restoring NuGet packages..."
+  dotnet restore || handle_error "Package restore failed" "exit"
+
+  # Build the project
+  log "Building backend project..."
+  dotnet build --configuration Release || handle_error "Backend build failed" "exit"
+
+  # Publish the backend
+  log "Publishing backend..."
   dotnet publish --configuration Release --output "$BACKEND_DEPLOY_DIR" --verbosity normal || {
     log "Publish failed, rolling back..."
     rollback
@@ -206,10 +244,16 @@ deploy_backend() {
   }
   log "Backend published successfully to $BACKEND_DEPLOY_DIR"
 
+  # Verify the main DLL exists
+  if [ ! -f "$BACKEND_DEPLOY_DIR/IGSPharma.API.dll" ]; then
+    handle_error "IGSPharma.API.dll not found after publish" "exit"
+  fi
+
   # Set correct permissions
   log "Setting correct permissions..."
   sudo chown -R www-data:www-data "$BACKEND_DEPLOY_DIR" || true
   sudo chmod -R 755 "$BACKEND_DEPLOY_DIR"
+  sudo chmod +x "$BACKEND_DEPLOY_DIR/IGSPharma.API" 2>/dev/null || true
   log "Backend permissions set successfully"
 
   # Update systemd service
@@ -221,15 +265,22 @@ deploy_backend() {
   sudo systemctl daemon-reload || true
   log "Systemd daemon reloaded successfully"
 
-  # Restart backend service
-  log "Restarting backend service..."
-  sudo systemctl restart "$SERVICE_NAME" || handle_error "Failed to restart backend service!" "exit"
-  log "Backend service restarted successfully"
+  # Start backend service
+  log "Starting backend service..."
+  sudo systemctl start "$SERVICE_NAME" || {
+    log "Failed to start service, checking logs..."
+    sudo journalctl -u "$SERVICE_NAME" -n 20 --no-pager >> "$DEPLOY_LOG"
+    handle_error "Failed to start backend service!" "exit"
+  }
+  log "Backend service started successfully"
 
   # Enable service to start at boot
   log "Enabling service to start at boot..."
   sudo systemctl enable "$SERVICE_NAME" || handle_error "Failed to enable backend service!" "continue"
   log "Backend service enabled successfully"
+
+  # Wait a moment for service to fully start
+  sleep 5
 
   # Check health
   if check_health; then
