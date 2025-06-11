@@ -1,56 +1,64 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './HomePage.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./HomePage.css";
+import HomeHeroSection from "./HomeHeroSection";
 
 const HomePage: React.FC = () => {
   return (
     <div className="home-page">
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1>IGS-Pharma</h1>
-          <h2>Medical Supplies And Equipment</h2>
-          <p>Trusted by healthcare professionals and patients alike, IGS-Pharma offers a comprehensive range of medical supplies and equipment</p>
-          <div className="hero-buttons">
-            <Link to="/medications" className="cta-button">Shop Now</Link>
-            <button className="video-btn"><i className="fa fa-play"></i></button>
-          </div>
-        </div>
-      </section>
       
+      <HomeHeroSection />
+
       <section className="featured-categories">
         <h2>Featured Categories</h2>
         <div className="category-cards">
           <div className="category-card">
-            <img src="https://placehold.co/300x200?text=Prescription+Medications" alt="Prescription Medications" />
+            <img
+              src="https://placehold.co/300x200?text=Prescription+Medications"
+              alt="Prescription Medications"
+            />
             <h3>Prescription Medications</h3>
             <Link to="/category/prescription">View Medications</Link>
           </div>
           <div className="category-card">
-            <img src="https://placehold.co/300x200?text=Over-the-Counter" alt="Over-the-Counter" />
+            <img
+              src="https://placehold.co/300x200?text=Over-the-Counter"
+              alt="Over-the-Counter"
+            />
             <h3>Over-the-Counter</h3>
             <Link to="/category/otc">View Medications</Link>
           </div>
           <div className="category-card">
-            <img src="https://placehold.co/300x200?text=Vitamins+and+Supplements" alt="Vitamins and Supplements" />
+            <img
+              src="https://placehold.co/300x200?text=Vitamins+and+Supplements"
+              alt="Vitamins and Supplements"
+            />
             <h3>Vitamins & Supplements</h3>
             <Link to="/category/vitamins">View Products</Link>
           </div>
           <div className="category-card">
-            <img src="https://placehold.co/300x200?text=Personal+Care" alt="Personal Care" />
+            <img
+              src="https://placehold.co/300x200?text=Personal+Care"
+              alt="Personal Care"
+            />
             <h3>Personal Care</h3>
             <Link to="/category/personal-care">View Products</Link>
           </div>
         </div>
       </section>
-      
+
       <section className="promotion-section">
         <div className="promotion-content">
           <h2>Health Services</h2>
-          <p>Schedule a consultation with our pharmacists for personalized advice</p>
-          <Link to="/services" className="promo-button">Book Appointment</Link>
+          <p>
+            Schedule a consultation with our pharmacists for personalized advice
+          </p>
+          <Link to="/services" className="promo-button">
+            Book Appointment
+          </Link>
         </div>
       </section>
-      
+
       <section className="info-section">
         <div className="info-columns">
           <div className="info-column">
