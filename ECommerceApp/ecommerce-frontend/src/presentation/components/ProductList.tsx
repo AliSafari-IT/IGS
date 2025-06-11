@@ -13,7 +13,7 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalPages] = useState<number>(1);
   const navigate = useNavigate();
   
   const handleViewDetails = (productId: string) => {
