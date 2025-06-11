@@ -4,7 +4,7 @@ import { type Product } from '../../domain/models/Product';
 import { getProducts } from '../../application/useCases/getProducts';
 import LazyImage from './LazyImage';
 import ResponsiveGrid from './ResponsiveGrid';
-import { useDebounce, useMediaQuery, usePerformanceMonitor } from '../../utils/performanceHooks';
+import { useDebounce, useMediaQuery } from '../../utils/performanceHooks';
 import './ProductList.css';
 
 // Lazy load components that might not be immediately needed
@@ -40,6 +40,53 @@ const ProductList: React.FC<ProductListProps> = memo(({
   
   // Debounce search term for better performance
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  
+  // Use the performance monitor hook directly
+  // usePerformanceMonitor('ProductList');
+
+  // Use useMemo to optimize performance by memoizing the filtered products
+  // This prevents unnecessary recalculations on every render
+  // It only recalculates when the products, debouncedSearchTerm, filterInStock, or sortBy change
+  // This is important for performance, especially in large lists
+  // It also helps to avoid unnecessary re-renders of child components that depend on filteredProducts
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        console.log('Fetching products from API with category:', category);
+        // Pass the category directly to the getProducts function
+        // The backend will handle the filtering
+        const data = await getProducts(category, page, 20);
+        console.log('API response:', data);
+        if (data && data.length > 0) {
+          console.log(`Found ${data.length} products for category: ${category}`);
+          setProducts(data);
+          setTotalPages(Math.ceil(data.length / 20)); // Calculate total pages
+          setError(null);
+        } else {
+          console.log(`No products found for category: ${category}`);
+          setProducts([]);
+          setTotalPages(1);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setError('Failed to fetch products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [category, page]);
+
+  // Handle view details action
+  // Use useCallback to memoize the function and prevent unnecessary re-renders
+  // This is important for performance, especially in large lists
+  // and when passing down to child components
+  // This function navigates to the product details page when a product is clicked
+  // It uses the navigate function from react-router-dom to change the URL
+  // The productId is passed as a parameter to the function
   
   const handleViewDetails = useCallback((productId: string) => {
     navigate(`/product/${productId}`);
