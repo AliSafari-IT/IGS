@@ -97,7 +97,7 @@
   .categories-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
-  
+
   .categories-header h1 {
     font-size: 2rem;
   }
@@ -107,7 +107,7 @@
   .categories-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .categories-page {
     padding: 1rem;
   }

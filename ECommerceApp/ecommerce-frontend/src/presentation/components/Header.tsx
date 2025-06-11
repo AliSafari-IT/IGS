@@ -67,37 +67,61 @@ const Header: React.FC = () => {
         <nav className="main-nav">
           <ul>
             <li>
-              <Link to="/" data-discover="true">Home</Link>
+              <Link to="/" data-discover="true">
+                Home
+              </Link>
             </li>
             <li>
-              <Link to="/categories" data-discover="true">Categories</Link>
+              <Link to="/categories" data-discover="true">
+                Categories
+              </Link>
             </li>
             <li>
-              <Link to="/medications" data-discover="true">Medications</Link>
+              <Link to="/medications" data-discover="true">
+                Medications
+              </Link>
             </li>
             <li>
-              <Link to="/prescriptions" data-discover="true">Prescriptions</Link>
+              <Link to="/prescriptions" data-discover="true">
+                Prescriptions
+              </Link>
             </li>
             <li>
-              <Link to="/health-advice" data-discover="true">Health Advice</Link>
+              <Link to="/health-advice" data-discover="true">
+                Health Advice
+              </Link>
             </li>
             <li>
-              <Link to="/about-us" data-discover="true">About</Link>
+              <Link to="/about-us" data-discover="true">
+                About
+              </Link>
             </li>
             <li>
-              <Link to="/contact-us" data-discover="true">Contact</Link>
+              <Link to="/contact-us" data-discover="true">
+                Contact
+              </Link>
             </li>
           </ul>
         </nav>
         <div className="header-actions">
           <SearchButton />
           <CartButton />
-          <button 
-            className="changelog-btn" 
-            onClick={() => setChangelogOpen(true)} 
+          <button
+            className="changelog-btn"
+            onClick={() => setChangelogOpen(true)}
             title="View Changelog"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
               <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -153,17 +177,20 @@ const Header: React.FC = () => {
                     </Link>
                   </li>
                   {/* Only show Admin Beheer if user has admin role */}
-                  {user && (user.role.toLocaleLowerCase() === 'admin' || user.role.toLocaleLowerCase() === 'superadmin' || user.role.toLocaleLowerCase() === 'beheerder') && (
-                    <li>
-                      <Link
-                        to="/admin"
-                        onClick={() => setMenuOpen(false)}
-                        className="admin-link"
-                      >
-                        Admin Beheer
-                      </Link>
-                    </li>
-                  )}
+                  {user &&
+                    (user.role.toLocaleLowerCase() === "admin" ||
+                      user.role.toLocaleLowerCase() === "superadmin" ||
+                      user.role.toLocaleLowerCase() === "beheerder") && (
+                      <li>
+                        <Link
+                          to="/admin"
+                          onClick={() => setMenuOpen(false)}
+                          className="admin-link"
+                        >
+                          Admin Beheer
+                        </Link>
+                      </li>
+                    )}
                   <li>
                     <button onClick={handleLogout}>Uitloggen</button>
                   </li>
@@ -175,13 +202,16 @@ const Header: React.FC = () => {
       </div>
     </header>
   );
-  
+
   // We no longer need the renderChangelogModal function as we're using the ChangelogModal component
-  
+
   return (
     <>
       {renderHeader()}
-      <ChangelogModal isOpen={changelogOpen} onClose={() => setChangelogOpen(false)} />
+      <ChangelogModal
+        isOpen={changelogOpen}
+        onClose={() => setChangelogOpen(false)}
+      />
     </>
   );
 };

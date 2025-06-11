@@ -49,12 +49,14 @@
   border-bottom: 2px solid #e2e8f0;
 }
 
-.hours-list, .contact-list {
+.hours-list,
+.contact-list {
   list-style: none;
   padding: 0;
 }
 
-.hours-list li, .contact-list li {
+.hours-list li,
+.contact-list li {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
@@ -84,7 +86,7 @@
 }
 
 .whatsapp-icon {
-  fill: #25D366;
+  fill: #25d366;
 }
 
 .contact-form-container {
@@ -216,11 +218,12 @@
   .contact-us-content {
     flex-direction: column;
   }
-  
-  .contact-info, .contact-form-container {
+
+  .contact-info,
+  .contact-form-container {
     width: 100%;
   }
-  
+
   .hours-list li {
     flex-direction: column;
   }

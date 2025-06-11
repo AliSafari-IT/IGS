@@ -190,7 +190,9 @@
   }
 }
 
-.search-btn, .cart-btn, .user-btn {
+.search-btn,
+.cart-btn,
+.user-btn {
   background: none;
   border: none;
   font-size: 18px;
@@ -322,12 +324,12 @@
 }
 
 .admin-link {
-  color: #4CAF50; /* Green color to indicate admin functionality */
+  color: #4caf50; /* Green color to indicate admin functionality */
   font-weight: 600;
 }
 
 .admin-link:hover {
-  color: #388E3C; /* Darker green on hover */
+  color: #388e3c; /* Darker green on hover */
 }
 
 /* Responsive Design */
@@ -335,7 +337,7 @@
   .main-nav {
     display: none;
   }
-  
+
   .user-dropdown {
     width: 200px;
   }
