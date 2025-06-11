@@ -1,6 +1,4 @@
-import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import CategoryPage from "./CategoryPage";
 import { getProducts } from "../../application/useCases/getProducts";
@@ -168,7 +166,8 @@ describe("CategoryPage Component", () => {
 
   it("displays products filtered by category", async () => {
     // Mock only 2 OTC products
-    const otcProducts = mockProducts.filter((p) => p.category === "otc");
+
+
     (getProducts as jest.Mock).mockResolvedValue(mockProducts);
 
     renderWithRouter("otc");

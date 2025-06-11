@@ -1,10 +1,9 @@
 .header {
-  background-color: var(--color-header-bg);
-  box-shadow: var(--shadow-md);
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid var(--color-border-light);
 }
 
 .header-container {
@@ -39,14 +38,14 @@
 }
 
 .main-nav a {
-  color: var(--color-nav-link);
+  color: #333;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .main-nav a:hover {
-  color: var(--color-nav-link-hover);
+  color: #2a9d8f;
 }
 
 .header-actions {
@@ -58,7 +57,7 @@
 .changelog-btn {
   background: none;
   border: none;
-  color: var(--color-text-secondary);
+  color: #555;
   cursor: pointer;
   padding: 8px;
   margin: 0 10px;
@@ -70,8 +69,8 @@
 }
 
 .changelog-btn:hover {
-  color: var(--color-primary);
-  background-color: var(--color-surface-2);
+  color: #2c8d8a;
+  background-color: rgba(44, 141, 138, 0.1);
 }
 
 /* Changelog Modal Styles */
@@ -81,8 +80,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--color-surface-overlay);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   animation: fadeIn 0.3s ease;
 }
@@ -92,9 +90,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--color-surface);
+  background-color: white;
   border-radius: 8px;
-  box-shadow: var(--shadow-2xl);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
@@ -109,15 +107,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-surface-2);
+  border-bottom: 1px solid #eee;
 }
 
 .changelog-header h2 {
   margin: 0;
-  color: var(--color-primary);
+  color: #2c8d8a;
   font-size: 1.5rem;
-  font-weight: 600;
 }
 
 .changelog-close-btn {
@@ -125,22 +121,18 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: var(--color-text-secondary);
+  color: #666;
   transition: color 0.2s;
-  padding: 4px;
-  border-radius: 4px;
 }
 
 .changelog-close-btn:hover {
-  color: var(--color-primary);
-  background-color: var(--color-surface-3);
+  color: #2c8d8a;
 }
 
 .changelog-content {
   padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
-  background-color: var(--color-surface);
 }
 
 .changelog-loading {
@@ -148,52 +140,45 @@
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  color: var(--color-text-secondary);
+  color: #666;
   font-size: 1rem;
 }
 
 .changelog-markdown {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--color-text-primary);
 }
 
 .changelog-markdown h1 {
   font-size: 1.8rem;
   margin-top: 0;
-  color: var(--color-primary);
-  font-weight: 600;
+  color: #2c8d8a;
 }
 
 .changelog-markdown h2 {
   font-size: 1.5rem;
   margin-top: 1.5rem;
-  color: var(--color-primary);
-  font-weight: 600;
+  color: #2c8d8a;
 }
 
 .changelog-markdown h3 {
   font-size: 1.2rem;
   margin-top: 1.2rem;
-  color: var(--color-text-primary);
-  font-weight: 500;
 }
 
 .changelog-markdown code {
-  background-color: var(--color-surface-3);
+  background-color: #f5f5f5;
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
   font-family: monospace;
   font-size: 0.9rem;
-  color: var(--color-text-primary);
 }
 
 .changelog-markdown pre {
-  background-color: var(--color-surface-3);
+  background-color: #f5f5f5;
   padding: 1rem;
   border-radius: 5px;
   overflow-x: auto;
-  border: 1px solid var(--color-border);
 }
 
 @keyframes fadeIn {
@@ -205,32 +190,22 @@
   }
 }
 
-.search-btn,
-.cart-btn,
-.user-btn {
+.search-btn, .cart-btn, .user-btn {
   background: none;
   border: none;
   font-size: 18px;
-  color: var(--color-text-primary);
+  color: #333;
   margin-left: 15px;
   cursor: pointer;
   position: relative;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.search-btn:hover, .cart-btn:hover, .user-btn:hover {
-  background-color: var(--color-surface-2);
-  color: var(--color-primary);
 }
 
 .cart-count {
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: var(--color-error);
-  color: var(--color-text-inverse);
+  background-color: #e76f51;
+  color: white;
   font-size: 12px;
   width: 18px;
   height: 18px;
@@ -238,7 +213,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
 }
 
 /* User Menu Styles */
@@ -250,8 +224,8 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
+  background-color: #2e8b57;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,10 +238,9 @@
   top: 100%;
   right: 0;
   width: 250px;
-  background-color: var(--color-surface);
+  background-color: white;
   border-radius: 8px;
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   margin-top: 10px;
   z-index: 1000;
   overflow: hidden;
@@ -294,19 +267,18 @@
 
 .dropdown-user-info {
   padding: 15px;
-  border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-surface-2);
+  border-bottom: 1px solid #eaeaea;
 }
 
 .dropdown-user-name {
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: #333;
   margin-bottom: 5px;
 }
 
 .dropdown-user-email {
   font-size: 0.85rem;
-  color: var(--color-text-secondary);
+  color: #666;
 }
 
 .dropdown-menu {
@@ -323,9 +295,9 @@
 .dropdown-menu li button {
   display: block;
   padding: 12px 15px;
-  color: var(--color-text-primary);
+  color: #555;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
   width: 100%;
   text-align: left;
   background: none;
@@ -336,26 +308,26 @@
 
 .dropdown-menu li a:hover,
 .dropdown-menu li button:hover {
-  background-color: var(--color-surface-2);
-  color: var(--color-primary);
+  background-color: #f8f9fa;
+  color: #2e8b57;
 }
 
 .dropdown-menu li:last-child button {
-  color: var(--color-error);
+  color: #e74c3c;
 }
 
 .dropdown-menu li:last-child button:hover {
-  background-color: var(--color-error-light);
-  color: var(--color-error-dark);
+  background-color: #fdf3f2;
+  color: #e74c3c;
 }
 
 .admin-link {
-  color: var(--color-secondary) !important;
+  color: #4CAF50; /* Green color to indicate admin functionality */
   font-weight: 600;
 }
 
 .admin-link:hover {
-  color: var(--color-secondary-dark) !important;
+  color: #388E3C; /* Darker green on hover */
 }
 
 /* Responsive Design */
@@ -363,7 +335,7 @@
   .main-nav {
     display: none;
   }
-
+  
   .user-dropdown {
     width: 200px;
   }

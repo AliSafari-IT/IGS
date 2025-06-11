@@ -1,4 +1,4 @@
-import { Product } from '../../domain/models/Product';
+import type { Product } from '../../domain/models/Product';
 import axios from 'axios';
 
 // API base URL

@@ -14,12 +14,16 @@ import SearchResults from '../../presentation/pages/SearchResults';
 // Protected route component
 const ProtectedRoute: React.FC<{ element: React.ReactElement }> = ({ element }) => {
   const { user, isAuthenticated, isLoading } = useAuth();
-  
-  // Show loading state while authentication is being checked
-  if (isLoading) {
-    return <div className="loading">Loading...</div>;
+
+  // Check if user is authenticated and loading state
+  if (!user && isLoading) {
+    // If user is not authenticated and still loading, show a loading state
+    return <div className="loading">Checking authentication...</div>;
   }
-  
+  // If user is authenticated, return the requested element
+  if (user && isAuthenticated) {
+    return element;
+  }  
   // If not authenticated, redirect to login
   if (!isAuthenticated) {
     // Store the current path for redirect after login

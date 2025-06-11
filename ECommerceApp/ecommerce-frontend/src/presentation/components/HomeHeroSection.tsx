@@ -117,7 +117,7 @@ function HomeHeroSection() {
                 </svg>
               </button>
             </div>
-            <Link to="/contact-us" className="action-button">
+            <Link to="/contact" className="action-button">
               Contact Us
               <svg viewBox="0 0 24 24" className="icon-arrow">
                 <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
@@ -242,12 +242,11 @@ function HomeHeroSection() {
             {/* Slider navigation */}
             <div className="slider-navigation">
               <div className="slider-dots">
-                {heroSlides.map((_, index) => (                  <button
+                {heroSlides.map((_, index) => (
+                  <button
                     key={index}
                     className={`slider-dot ${index === activeSlide ? 'active' : ''}`}
-                    onClick={() => {
-                      goToSlide(index);
-                    }}
+                    onClick={() => goToSlide(index)}
                     aria-label={`Go to slide ${index + 1}`}
                   >
                     <span className="dot-inner"></span>

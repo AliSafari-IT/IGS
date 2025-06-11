@@ -12,7 +12,7 @@ const UserAccount: React.FC = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+  // const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
   // Admin state variables
 
   useEffect(() => {

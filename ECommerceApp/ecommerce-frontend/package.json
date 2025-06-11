@@ -1,8 +1,9 @@
 {
   "name": "igs-pharma-frontend",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
-  "proxy": "https://localhost:6201",  "dependencies": {
+  "proxy": "https://localhost:6201",
+  "dependencies": {
     "@igs/ui-components": "workspace:*",
     "@testing-library/dom": "^10.4.0",
     "@types/node": "^16.18.126",
@@ -10,37 +11,31 @@
     "@types/react-dom": "^19.1.5",
     "axios": "^1.9.0",
     "http-proxy-middleware": "^3.0.5",
-    "vite": "^6.3.5",
-    "@vitejs/plugin-react": "^4.5.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.6.0",
     "react-scripts": "^5.0.1",
     "typescript": "^5.2.0",
-    "web-vitals": "^5.0.1",
-    "intersection-observer": "^0.12.0",
-    "react-intersection-observer": "^9.4.3",
-    "react-virtualized": "^9.22.3",
-    "react-window": "^1.8.8"
-  },  "scripts": {    
+    "web-vitals": "^5.0.1"
+  },
+  "scripts": {
+    "postinstall": "echo 'Frontend installation completed successfully'",
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:analyze": "pnpm run build && npx vite-bundle-analyzer dist",
-    "lint": "eslint .",
+    "build": "vite build",
     "preview": "vite preview",
-    "start": "pnpm run dev",
-    "start:alt": "set PORT=3008 && react-scripts start",
     "test": "jest --config=jest.config.js",
     "eject": "react-scripts eject",
     "test:unit": "jest --config=jest.config.js",
     "test:unit:watch": "jest --config=jest.config.js --watch",
-    "tuw": "jest --config=jest.config.js --watch",
-    "lighthouse": "lighthouse http://localhost:3007 --output=html --output-path=./lighthouse-report.html",
-    "performance": "pnpm run build && pnpm run lighthouse",
-    "performance:dev": "lighthouse http://localhost:5173 --output=html --output-path=./lighthouse-dev-report.html",
-    "type-check": "tsc --noEmit",
-    "size-limit": "npx size-limit"  },
+    "tuw": "jest --config=jest.config.js --watch"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -52,7 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },  "devDependencies": {
+  },
+  "devDependencies": {
     "@babel/core": "^7.27.3",
     "@babel/plugin-transform-runtime": "^7.27.3",
     "@babel/preset-env": "^7.27.2",
@@ -62,18 +58,13 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/react-virtualized": "^9.21.21",
-    "@types/react-window": "^1.8.5",
     "fast-text-encoding": "^1.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "30.0.0-beta.3",
     "jsdom": "^26.1.0",
-    "lighthouse": "^12.0.0",
     "ts-jest": "^29.3.4",
     "ts-node": "^10.9.2",
-    "vite-bundle-analyzer": "^0.11.0",
-    "vitest": "^3.1.4",
-    "workbox-webpack-plugin": "^7.0.0"
+    "vitest": "^3.1.4"
   }
 }

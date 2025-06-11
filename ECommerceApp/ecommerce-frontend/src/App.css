@@ -1,7 +1,7 @@
+
 /* Add Font Awesome for icons */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
-/* App.css */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,28 +9,15 @@
 }
 
 body {
-  font-family: var(--font-family-base);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: var(--color-text-primary) !important;
-  background-color: var(--color-background) !important;
-  transition: var(--theme-transition);
-}
-
-#root {
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
-  min-height: 100vh;
-  transition: var(--theme-transition);
+  color: #333;
+  background-color: #f8f9fa;
 }
 
 a {
   text-decoration: none;
-  color: var(--color-primary);
-  transition: var(--theme-transition);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
+  color: #2a9d8f;
 }
 
 button {

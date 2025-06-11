@@ -394,6 +394,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // Call the forgot password API endpoint
       const response = await axios.post(`${AUTH_ENDPOINT}/forgot-password`, { email });
+      console.log('Forgot password response:', response.data);
+      if (response.status !== 200) {
+        console.error('Forgot password request failed with status:', response.status);
+        return false;
+      }
       return true; // API always returns success for security reasons
     } catch (error) {
       console.error('Forgot password request failed:', error);

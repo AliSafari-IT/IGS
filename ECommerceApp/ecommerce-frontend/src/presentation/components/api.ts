@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../../infrastructure/services/ApiConfig';
 
 export interface ContactForm {
   name: string;
@@ -8,6 +9,6 @@ export interface ContactForm {
 }
 
 export async function sendContactMessage(form: ContactForm) {
-  const response = await axios.post('/api/contact', form);
+  const response = await axios.post(`${API_BASE_URL}/contact`, form);
   return response.data;
 }
