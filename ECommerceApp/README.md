@@ -61,7 +61,7 @@ The frontend follows a layered architecture:
 ## Features
 
 - Product listing with images, names, and prices
-- Responsive layout similar to newpharma.be
+- Responsive layout
 - Type-safe components using TypeScript
 - Clean architecture in both frontend and backend
 - RESTful API endpoints

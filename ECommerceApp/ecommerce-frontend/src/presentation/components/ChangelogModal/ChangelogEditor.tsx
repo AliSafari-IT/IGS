@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ChangelogEditor.css';
-import { ChangelogFile } from '../../../utils/changelogUtils';
+import { type ChangelogFile } from '../../../utils/changelogUtils';
 
 interface ChangelogEditorProps {
   isOpen: boolean;

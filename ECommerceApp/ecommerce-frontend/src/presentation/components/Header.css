@@ -1,9 +1,10 @@
 .header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-header-bg);
+  box-shadow: var(--shadow-md);
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .header-container {
@@ -38,14 +39,14 @@
 }
 
 .main-nav a {
-  color: #333;
+  color: var(--color-nav-link);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .main-nav a:hover {
-  color: #2a9d8f;
+  color: var(--color-nav-link-hover);
 }
 
 .header-actions {
@@ -57,7 +58,7 @@
 .changelog-btn {
   background: none;
   border: none;
-  color: #555;
+  color: var(--color-text-secondary);
   cursor: pointer;
   padding: 8px;
   margin: 0 10px;
@@ -69,8 +70,8 @@
 }
 
 .changelog-btn:hover {
-  color: #2c8d8a;
-  background-color: rgba(44, 141, 138, 0.1);
+  color: var(--color-primary);
+  background-color: var(--color-surface-2);
 }
 
 /* Changelog Modal Styles */
@@ -80,7 +81,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--color-surface-overlay);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   animation: fadeIn 0.3s ease;
 }
@@ -90,9 +92,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: var(--color-surface);
   border-radius: 8px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-2xl);
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
@@ -107,13 +109,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface-2);
 }
 
 .changelog-header h2 {
   margin: 0;
-  color: #2c8d8a;
+  color: var(--color-primary);
   font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .changelog-close-btn {
@@ -121,18 +125,22 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #666;
+  color: var(--color-text-secondary);
   transition: color 0.2s;
+  padding: 4px;
+  border-radius: 4px;
 }
 
 .changelog-close-btn:hover {
-  color: #2c8d8a;
+  color: var(--color-primary);
+  background-color: var(--color-surface-3);
 }
 
 .changelog-content {
   padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
+  background-color: var(--color-surface);
 }
 
 .changelog-loading {
@@ -140,45 +148,52 @@
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  color: #666;
+  color: var(--color-text-secondary);
   font-size: 1rem;
 }
 
 .changelog-markdown {
   font-size: 0.95rem;
   line-height: 1.6;
+  color: var(--color-text-primary);
 }
 
 .changelog-markdown h1 {
   font-size: 1.8rem;
   margin-top: 0;
-  color: #2c8d8a;
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .changelog-markdown h2 {
   font-size: 1.5rem;
   margin-top: 1.5rem;
-  color: #2c8d8a;
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .changelog-markdown h3 {
   font-size: 1.2rem;
   margin-top: 1.2rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
 }
 
 .changelog-markdown code {
-  background-color: #f5f5f5;
+  background-color: var(--color-surface-3);
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
   font-family: monospace;
   font-size: 0.9rem;
+  color: var(--color-text-primary);
 }
 
 .changelog-markdown pre {
-  background-color: #f5f5f5;
+  background-color: var(--color-surface-3);
   padding: 1rem;
   border-radius: 5px;
   overflow-x: auto;
+  border: 1px solid var(--color-border);
 }
 
 @keyframes fadeIn {
@@ -196,18 +211,26 @@
   background: none;
   border: none;
   font-size: 18px;
-  color: #333;
+  color: var(--color-text-primary);
   margin-left: 15px;
   cursor: pointer;
   position: relative;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.search-btn:hover, .cart-btn:hover, .user-btn:hover {
+  background-color: var(--color-surface-2);
+  color: var(--color-primary);
 }
 
 .cart-count {
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #e76f51;
-  color: white;
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
   font-size: 12px;
   width: 18px;
   height: 18px;
@@ -215,6 +238,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
 }
 
 /* User Menu Styles */
@@ -226,8 +250,8 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #2e8b57;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,9 +264,10 @@
   top: 100%;
   right: 0;
   width: 250px;
-  background-color: white;
+  background-color: var(--color-surface);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border);
   margin-top: 10px;
   z-index: 1000;
   overflow: hidden;
@@ -269,18 +294,19 @@
 
 .dropdown-user-info {
   padding: 15px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface-2);
 }
 
 .dropdown-user-name {
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-primary);
   margin-bottom: 5px;
 }
 
 .dropdown-user-email {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .dropdown-menu {
@@ -297,9 +323,9 @@
 .dropdown-menu li button {
   display: block;
   padding: 12px 15px;
-  color: #555;
+  color: var(--color-text-primary);
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   width: 100%;
   text-align: left;
   background: none;
@@ -310,26 +336,26 @@
 
 .dropdown-menu li a:hover,
 .dropdown-menu li button:hover {
-  background-color: #f8f9fa;
-  color: #2e8b57;
+  background-color: var(--color-surface-2);
+  color: var(--color-primary);
 }
 
 .dropdown-menu li:last-child button {
-  color: #e74c3c;
+  color: var(--color-error);
 }
 
 .dropdown-menu li:last-child button:hover {
-  background-color: #fdf3f2;
-  color: #e74c3c;
+  background-color: var(--color-error-light);
+  color: var(--color-error-dark);
 }
 
 .admin-link {
-  color: #4caf50; /* Green color to indicate admin functionality */
+  color: var(--color-secondary) !important;
   font-weight: 600;
 }
 
 .admin-link:hover {
-  color: #388e3c; /* Darker green on hover */
+  color: var(--color-secondary-dark) !important;
 }
 
 /* Responsive Design */

@@ -1,6 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+<<<<<<< HEAD
+import { type ChangelogFile, fetchChangelogFiles as fetchChangelogFilesUtil } from '../../../utils/changelogUtils';
+=======
 import axios from 'axios';
 import { ChangelogFile } from '../../../utils/changelogUtils';
+>>>>>>> parent of 75c8cca (refactor: streamline changelog file fetching by utilizing utility function)
 import './ChangelogModal.css';
 
 // Lazy load the MarkdownDisplay component

@@ -62,8 +62,11 @@ builder.Services.AddCors(options =>
                     "https://localhost:8101",
                     "http://localhost:6200",
                     "https://localhost:6201",
+                    "http://localhost:3000",
+                    "https://localhost:3001",
                     "http://localhost:3006",
                     "http://localhost:3007",
+                    "http://localhost:5173",
                     "http://127.0.0.1:54831",
                     "https://igs.asafarim.com",
                     "http://igs.asafarim.com"

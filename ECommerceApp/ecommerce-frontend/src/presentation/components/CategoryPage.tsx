@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Product, MedicationType } from "../../domain/models/Product";
-import { getProducts } from "../../application/useCases/getProducts";
-import Sidebar from "./Sidebar";
-import "./CategoryPage.css";
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { type Product, type MedicationType } from '../../domain/models/Product';
+import { getProducts } from '../../application/useCases/getProducts';
+import Sidebar from './Sidebar';
+import './CategoryPage.css';
 
 const CategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();

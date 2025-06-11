@@ -1,0 +1,316 @@
+/* Error Boundary Component Styles */
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.error-boundary-container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-xl);
+}
+
+.error-boundary-icon {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-error);
+}
+
+.error-boundary-icon svg {
+  width: 64px;
+  height: 64px;
+  animation: error-pulse 2s infinite;
+}
+
+@keyframes error-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.error-boundary-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.error-boundary-title {
+  margin: 0;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.error-boundary-description {
+  margin: 0;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.error-boundary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-top: var(--spacing-lg);
+}
+
+.error-boundary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-duration-fast) var(--transition-timing);
+  text-decoration: none;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.error-boundary-btn:focus {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+.error-boundary-btn-primary {
+  background: var(--color-gradient-primary);
+  color: white;
+}
+
+.error-boundary-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.error-boundary-btn-secondary {
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.error-boundary-btn-secondary:hover {
+  background: var(--color-surface-3);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.error-boundary-btn i {
+  font-size: var(--font-size-sm);
+}
+
+/* Technical Details Section */
+.error-boundary-details {
+  margin-top: var(--spacing-xl);
+  text-align: left;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.error-boundary-summary {
+  padding: var(--spacing-md);
+  background: var(--color-surface-3);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-duration-fast) var(--transition-timing);
+}
+
+.error-boundary-summary:hover {
+  background: var(--color-primary-light);
+}
+
+.error-boundary-technical {
+  padding: var(--spacing-lg);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.error-info-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.error-info-section:last-child {
+  margin-bottom: 0;
+}
+
+.error-info-section h3 {
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.error-info-section code {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  word-break: break-all;
+}
+
+.error-stack {
+  margin: 0;
+  padding: var(--spacing-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+  line-height: 1.4;
+}
+
+.error-stack::-webkit-scrollbar {
+  width: 6px;
+}
+
+.error-stack::-webkit-scrollbar-track {
+  background: var(--color-surface-2);
+}
+
+.error-stack::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--border-radius-sm);
+}
+
+.error-stack::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .error-boundary {
+    padding: var(--spacing-md);
+  }
+
+  .error-boundary-container {
+    padding: var(--spacing-lg);
+  }
+
+  .error-boundary-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .error-boundary-description {
+    font-size: var(--font-size-sm);
+  }
+
+  .error-boundary-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-boundary-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .error-boundary-icon svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-boundary {
+    padding: var(--spacing-sm);
+  }
+
+  .error-boundary-container {
+    padding: var(--spacing-md);
+  }
+
+  .error-boundary-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .error-boundary-technical {
+    padding: var(--spacing-md);
+  }
+
+  .error-stack {
+    padding: var(--spacing-sm);
+    font-size: 11px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .error-boundary-container {
+    border: 2px solid;
+  }
+
+  .error-boundary-btn {
+    border: 2px solid;
+  }
+
+  .error-boundary-details {
+    border: 2px solid;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .error-boundary-icon svg {
+    animation: none;
+  }
+
+  .error-boundary-btn {
+    transition: none;
+  }
+
+  .error-boundary-btn:hover {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .error-boundary {
+    color: #000;
+    background: #fff;
+  }
+
+  .error-boundary-container {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  .error-boundary-actions {
+    display: none;
+  }
+
+  .error-boundary-icon svg {
+    animation: none;
+  }
+}
