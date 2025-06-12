@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { type ChangelogFile } from '../../../utils/changelogUtils';
+import { API_BASE_URL } from '../../../infrastructure/services/ApiConfig';
 import './ChangelogModal.css';
 
 // Lazy load the MarkdownDisplay component
@@ -32,7 +33,7 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
     setError(null);
     
     try {
-      const response = await axios.get('/api/changelog');
+      const response = await axios.get(`${API_BASE_URL}/changelog`);
       // Check for different possible response formats
       let files = [];
       
