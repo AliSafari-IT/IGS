@@ -10,14 +10,15 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>('changelog');
 
-  // Redirect if not admin
+  // Redirect if not admin or superadmin
   React.useEffect(() => {
-    if (!user || user.role !== 'admin') {
+    if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
+      console.log('Unauthorized access attempt to admin dashboard:', user?.role || 'not logged in');
       navigate('/');
     }
   }, [user, navigate]);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
     return null; // Don't render anything while redirecting
   }
   

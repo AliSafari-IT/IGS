@@ -22,7 +22,19 @@ const AdminUsersPanel= () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view');  // Fetch users from the API
+  const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view');
+  
+  // Helper function to get authentication headers
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('igs_auth_token');
+    return {
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    };
+  };// Fetch users from the API
   const fetchUsers = async () => {
     setIsLoading(true);
     setError(null);
@@ -32,20 +44,15 @@ const AdminUsersPanel= () => {
       const token = localStorage.getItem('igs_auth_token');
       console.log('Auth token found:', token ? `${token.substring(0, 10)}...` : 'None');
       
-      // Create axios instance with auth header
-      const axiosWithAuth = axios.create({
-        headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
-          'Content-Type': 'application/json'
-        }
-      });
+      // Get authentication headers
+      const config = getAuthHeaders();
       
       // Log request details for debugging
-      console.log('Fetching users from:', `${API_BASE_URL}/auth/users`);
-      console.log('With auth header:', token ? 'Yes' : 'No');
+      console.log('Fetching users from:', `${API_BASE_URL}/Auth/users`);
+      console.log('With auth header:', !!config.headers.Authorization);
       
-      // Try to fetch users from the API endpoint
-      const response = await axiosWithAuth.get(`${API_BASE_URL}/auth/users`);
+      // Try to fetch users from the API endpoint - Using capital 'A' in Auth to match backend route
+      const response = await axios.get(`${API_BASE_URL}/Auth/users`, config);
         if (response.data && Array.isArray(response.data)) {
         // Format the API response to match our User interface
         const formattedUsers = response.data.map((user: any) => ({
@@ -65,11 +72,17 @@ const AdminUsersPanel= () => {
         console.warn('API response format unexpected. Using mock data instead.');
         useMockData();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching users:', err);
-      console.warn('Falling back to mock data');
-      // If API call fails, use mock data instead
-      useMockData();
+      
+      if (err.response && err.response.status === 401) {
+        setError('Niet geautoriseerd. Log opnieuw in met beheerdersrechten.');
+      } else {
+        setError('Er is een probleem met het ophalen van gebruikers.');
+        console.warn('Falling back to mock data');
+        // If API call fails, use mock data instead
+        useMockData();
+      }
     } finally {
       setIsLoading(false);
     }
@@ -178,24 +191,15 @@ const AdminUsersPanel= () => {
   };  const handleDeleteUser = async (userId: string) => {
     if (window.confirm('Weet je zeker dat je deze gebruiker wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.')) {
       try {
-        try {
-          // Get auth token from localStorage
-          const token = localStorage.getItem('igs_auth_token');
-          console.log('Auth token for delete:', token ? `${token.substring(0, 10)}...` : 'None');
-          
-          // Create axios instance with auth header
-          const axiosWithAuth = axios.create({
-            headers: {
-              'Authorization': token ? `Bearer ${token}` : '',
-              'Content-Type': 'application/json'
-            }
-          });
+        try {          // Get authentication headers using our helper function
+          const config = getAuthHeaders();
+          console.log('Auth header for delete:', !!config.headers.Authorization);
           
           // Try to call the API (if it exists)
           console.log('Deleting user with ID:', userId);
-          console.log('Delete URL:', `${API_BASE_URL}/auth/users/${userId}`);
+          console.log('Delete URL:', `${API_BASE_URL}/Auth/users/${userId}`);
           
-          const response = await axiosWithAuth.delete(`${API_BASE_URL}/auth/users/${userId}`);
+          const response = await axios.delete(`${API_BASE_URL}/Auth/users/${userId}`, config);
           console.log('Delete user successful:', response.data);
           // If successful, refresh the user list
           fetchUsers();
@@ -288,19 +292,20 @@ const AdminUsersPanel= () => {
       // Create new user
       try {
         // Try API call first
-        try {
-          const response = await axios.post(`${API_BASE_URL}/auth/register`, {
+        try {          const response = await axios.post(`${API_BASE_URL}/Auth/register`, {
             firstName,
             lastName,
             email,
             password,
             confirmPassword: password,
             role
-          });
+          }, getAuthHeaders());
           
+          console.log('User creation successful:', response.data);
           // If successful, refresh the user list
           fetchUsers();
           setIsModalOpen(false);
+          alert('Gebruiker is succesvol aangemaakt.');
         } catch (apiErr) {
           console.warn('API create failed, adding to local state instead:', apiErr);
           
@@ -332,28 +337,25 @@ const AdminUsersPanel= () => {
             firstName,
             lastName,
             role,
-            phoneNumber, // Include phoneNumber in the request
+            phoneNumber: phoneNumber || '', // Ensure phoneNumber is always a string
             userId: selectedUser.id // Include userId as it's expected by the backend
+          };          console.log('Update payload:', updatePayload);          
+          console.log('Update URL:', `${API_BASE_URL}/Auth/users/${selectedUser.id}`);
+            // Get authentication headers using our helper function
+          const config = getAuthHeaders();
+          console.log('Auth header for update:', !!config.headers.Authorization);
+          
+          // Add timeout to config
+          const configWithTimeout = {
+            ...config,
+            timeout: 10000 // 10 second timeout
           };
-          console.log('Update payload:', updatePayload);          
-          console.log('Update URL:', `${API_BASE_URL}/auth/users/${selectedUser.id}`);
           
-          // Get auth token from localStorage
-          const token = localStorage.getItem('igs_auth_token');
-          console.log('Auth token for update:', token ? `${token.substring(0, 10)}...` : 'None');
-          
-          // Add timeout and additional options with auth header
+          // Make the API call with proper authentication
           const response = await axios.put(
-            `${API_BASE_URL}/auth/users/${selectedUser.id}`, 
+            `${API_BASE_URL}/Auth/users/${selectedUser.id}`, 
             updatePayload,
-            {
-              timeout: 10000, // 10 second timeout
-              headers: {
-                'Authorization': token ? `Bearer ${token}` : '',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              }
-            }
+            configWithTimeout
           );
           
           console.log('Update response:', response.data);

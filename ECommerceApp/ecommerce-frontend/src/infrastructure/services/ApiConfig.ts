@@ -2,7 +2,7 @@
 
 // Use the correct API URL based on environment
 export const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' // Use relative URL in production (will be handled by nginx)
+  ? 'https://igs.asafarim.com/api' // Use relative URL in production (will be handled by nginx)
   : 'http://localhost:6200/api';
 
 export const DEFAULT_HEADERS = {
