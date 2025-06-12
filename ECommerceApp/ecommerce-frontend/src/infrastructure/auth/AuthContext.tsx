@@ -251,6 +251,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(false);
     }
   };
+
   // Logout function
   const logout = () => {
     try {
@@ -261,7 +262,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem('igs_auth_token');
       localStorage.removeItem('igs_refresh_token');
       localStorage.removeItem('igs_user_data');
-      localStorage.removeItem('igs_remembered_email');
       
       // Remove authorization header
       delete axios.defaults.headers.common['Authorization'];

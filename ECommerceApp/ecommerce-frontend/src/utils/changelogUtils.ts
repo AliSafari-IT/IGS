@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../infrastructure/services/ApiConfig';
 
 // In-memory storage for changelog content (simulates a database)
 // In a real app, this would be stored on the server
@@ -20,9 +19,10 @@ export interface ChangelogFile {
  * Fetches changelog files from the server
  * @returns Promise with array of changelog files
  */
-export const fetchChangelogFiles = async (): Promise<ChangelogFile[]> => {  try {
-    // Call the new API endpoint using the proper API base URL
-    const response = await axios.get(`${API_BASE_URL}/changelog`);
+export const fetchChangelogFiles = async (): Promise<ChangelogFile[]> => {
+  try {
+    // Call the new API endpoint
+    const response = await axios.get('/api/changelog');
     
     // Define a type for the API response item
     interface ChangelogApiItem {
@@ -120,9 +120,10 @@ export const fetchChangelogFileContent = async (path: string): Promise<string> =
     
     // Normalize the path to ensure it's in the correct format
     const normalizedPath = path.startsWith('/') ? path.substring(1) : path;
-      try {
-      // Try to fetch the file from the database using our new API endpoint with proper base URL
-      const response = await axios.get(`${API_BASE_URL}/changelog/bypath?path=${encodeURIComponent(normalizedPath)}`);
+    
+    try {
+      // Try to fetch the file from the database using our new API endpoint
+      const response = await axios.get(`/api/changelog/bypath?path=${encodeURIComponent(normalizedPath)}`);
       
       if (response.data && response.data.success && response.data.data) {
         console.log('Successfully fetched file from database:', normalizedPath);
@@ -269,7 +270,7 @@ export const createChangelogFile = async (file: Partial<ChangelogFile>): Promise
     };
     
     console.log('Sending to API:', createChangelogDto);
-    const response = await axios.post(`${API_BASE_URL}/changelog`, createChangelogDto);
+    const response = await axios.post('/api/changelog', createChangelogDto);
     console.log('API response:', response.data);
     
     // Check if the response has the expected structure
@@ -311,7 +312,7 @@ export const updateChangelogFile = async (id: string, file: Partial<ChangelogFil
       
       try {
         // Make an API call to save the file to the database using our new endpoint
-        const response = await axios.post(`${API_BASE_URL}/changelog/save-file`, {
+        const response = await axios.post('/api/changelog/save-file', {
           path: filePath,
           content: file.content,
           name: file.name,
@@ -359,7 +360,7 @@ export const updateChangelogFile = async (id: string, file: Partial<ChangelogFil
 export const deleteChangelogFile = async (id: string): Promise<boolean> => {
   try {
     // Call the new API endpoint
-    const response = await axios.delete(`${API_BASE_URL}/changelog/${id}`);
+    const response = await axios.delete(`/api/changelog/${id}`);
     
     if (response.data && response.data.success) {
       console.log('Changelog deleted successfully:', id);

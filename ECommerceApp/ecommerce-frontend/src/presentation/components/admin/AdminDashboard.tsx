@@ -5,20 +5,19 @@ import AdminChangelogPanel from './AdminChangelogPanel';
 import AdminUsersPanel from './AdminUsersPanel';
 import './AdminDashboard.css';
 
-const AdminDashboard = () => {
+const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>('changelog');
 
-  // Redirect if not admin or superadmin
+  // Redirect if not admin
   React.useEffect(() => {
-    if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
-      console.log('Unauthorized access attempt to admin dashboard:', user?.role || 'not logged in');
+    if (!user || user.role !== 'admin') {
       navigate('/');
     }
   }, [user, navigate]);
 
-  if (!user || (user.role !== 'admin' && user.role !== 'superadmin')) {
+  if (!user || user.role !== 'admin') {
     return null; // Don't render anything while redirecting
   }
   
