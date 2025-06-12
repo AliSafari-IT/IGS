@@ -156,20 +156,41 @@ deploy_frontend() {
   log "Building frontend with pnpm..."
   pnpm build || handle_error "Frontend build failed!" "exit"
 
-  # Check if build directory exists
-  if [ ! -d "build" ] && [ ! -d "dist" ]; then
-    handle_error "Neither 'build' nor 'dist' directory found after build" "exit"
+  # Determine build output directory - prefer dist for Vite builds
+  BUILD_OUTPUT_DIR="dist"
+  
+  # Verify the build directory exists and has files
+  if [ ! -d "$BUILD_OUTPUT_DIR" ] || [ -z "$(ls -A "$BUILD_OUTPUT_DIR" 2>/dev/null)" ]; then
+    log "WARNING: dist directory is missing or empty, checking if build directory exists..."
+    if [ -d "build" ] && [ ! -z "$(ls -A "build" 2>/dev/null)" ]; then
+      BUILD_OUTPUT_DIR="build"
+      log "Using build directory instead"
+    else
+      handle_error "Both dist and build directories are empty or missing! Build may have failed." "exit"
+    fi
   fi
 
-  # Determine build output directory
-  BUILD_OUTPUT_DIR="build"
-  if [ ! -d "build" ] && [ -d "dist" ]; then
-    BUILD_OUTPUT_DIR="dist"
+  # Verify the build directory has files
+  if [ -z "$(ls -A "$BUILD_OUTPUT_DIR" 2>/dev/null)" ]; then
+    handle_error "Build directory $BUILD_OUTPUT_DIR is empty! Build may have failed." "exit"
   fi
+
+  # Log the content of the build directory
+  log "Build directory content (first 10 files):"
+  ls -la "$BUILD_OUTPUT_DIR" | head -10 | while read -r line; do
+    log "  $line"
+  done
 
   # Ensure Deployment Directory Exists
   log "Ensuring deployment directory exists..."
   sudo mkdir -p "$FRONTEND_DEPLOY_DIR" || true
+  
+  # Test write permissions
+  if ! sudo test -w "$FRONTEND_DEPLOY_DIR"; then
+    log "Warning: Deployment directory is not writable. Fixing permissions..."
+    sudo chown -R $(whoami):$(whoami) "$FRONTEND_DEPLOY_DIR"
+    sudo chmod -R 755 "$FRONTEND_DEPLOY_DIR"
+  fi
 
   # Clear old files
   log "Cleaning old deployment files..."
@@ -177,13 +198,23 @@ deploy_frontend() {
 
   # Move new build files
   log "Deploying new build files from $BUILD_OUTPUT_DIR..."
-  sudo cp -r "$BUILD_OUTPUT_DIR"/* "$FRONTEND_DEPLOY_DIR"/ || {
+  sudo cp -rv "$BUILD_OUTPUT_DIR"/* "$FRONTEND_DEPLOY_DIR"/ || {
     log "Error: Moving files failed, rolling back..."
     if [ -f "$FRONTEND_BACKUP_PATH" ]; then
       sudo tar -xzf "$FRONTEND_BACKUP_PATH" -C "$FRONTEND_DEPLOY_DIR"
     fi
     handle_error "Frontend deployment failed" "exit"
   }
+  
+  # Verify files were copied
+  if [ -z "$(ls -A "$FRONTEND_DEPLOY_DIR" 2>/dev/null)" ]; then
+    handle_error "Deployment directory is empty after copy operation!" "exit"
+  fi
+  
+  log "Deployment directory content (first 10 files):"
+  ls -la "$FRONTEND_DEPLOY_DIR" | head -10 | while read -r line; do
+    log "  $line"
+  done
 
   # Set correct permissions
   log "Setting correct file permissions..."
