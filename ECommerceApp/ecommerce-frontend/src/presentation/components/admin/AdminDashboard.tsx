@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../infrastructure/auth/AuthContext';
 import AdminChangelogPanel from './AdminChangelogPanel';
+import AdminUsersPanel from './AdminUsersPanel';
 import './AdminDashboard.css';
 
 const AdminDashboard: React.FC = () => {
@@ -65,15 +66,7 @@ const AdminDashboard: React.FC = () => {
       <div className="admin-dashboard-content">
         {activeTab === 'changelog' && <AdminChangelogPanel />}
         
-        {activeTab === 'users' && (
-          <div className="admin-placeholder-panel">
-            <h2>Gebruikers Beheer</h2>
-            <p>Deze functionaliteit is nog in ontwikkeling.</p>
-            <div className="admin-placeholder-icon">
-              <i className="fas fa-users"></i>
-            </div>
-          </div>
-        )}
+        {activeTab === 'users' && <AdminUsersPanel />}
         
         {activeTab === 'products' && (
           <div className="admin-placeholder-panel">

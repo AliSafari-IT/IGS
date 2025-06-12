@@ -112,5 +112,8 @@ namespace IGSPharma.Application.Models.Auth
         
         // Added to help with user identification
         public string UserId { get; set; }
+        
+        // Role can be set by admins
+        public string Role { get; set; }
     }
 }

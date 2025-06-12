@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using IGSPharma.Application.Interfaces;
 using IGSPharma.Application.Models.Auth;
+using IGSPharma.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +14,12 @@ namespace IGSPharma.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserRepository _userRepository;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserRepository userRepository)
         {
             _authService = authService;
+            _userRepository = userRepository;
         }
 
         [HttpPost("login")]
@@ -262,6 +266,153 @@ namespace IGSPharma.API.Controllers
             }
 
             return Ok(new { message = "Password has been changed successfully." });
+        }
+
+        [Authorize(Roles = "admin,superadmin")]
+        [HttpGet("users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userRepository.GetAllAsync();
+                var userResponses = new List<UserDetailsResponse>();
+
+                foreach (var user in users)
+                {
+                    userResponses.Add(new UserDetailsResponse
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Role = user.Role,
+                        CreatedAt = user.CreatedAt,
+                        PhoneNumber = user.PhoneNumber,
+                        PrescriptionAccess = user.PrescriptionAccess,
+                        LastLoginAt = user?.LastLoginAt,
+                        // Assuming LastLoginAt is a DateTime? in User entity
+                    });
+                }
+
+                return Ok(userResponses);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DEBUG] GetAllUsers exception: {ex.Message}");
+                Console.WriteLine($"[DEBUG] GetAllUsers stack trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "An error occurred while retrieving users" });
+            }
+        }
+
+        [Authorize(Roles = "admin,superadmin")]
+        [HttpPut("users/{id}")]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(id);
+                
+                if (user == null)
+                {
+                    return NotFound(new { message = $"User with ID {id} not found." });
+                }
+
+                // Update user properties
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+                
+                if (!string.IsNullOrEmpty(request.PhoneNumber))
+                {
+                    user.PhoneNumber = request.PhoneNumber;
+                }
+                
+                // Only allow changing roles if explicitly provided in the request
+                // and only for admin/superadmin
+                if (!string.IsNullOrEmpty(request.Role) && 
+                    (User.IsInRole("admin") || User.IsInRole("superadmin")))
+                {
+                    user.Role = request.Role;
+                }
+                
+                // Update the user in the repository
+                var updatedUser = await _userRepository.UpdateAsync(user);
+                
+                if (updatedUser == null)
+                {
+                    return StatusCode(500, new { message = "Failed to update user." });
+                }
+                
+                // Convert to response model
+                var response = new UserDetailsResponse
+                {
+                    Id = updatedUser.Id,
+                    FirstName = updatedUser.FirstName,
+                    LastName = updatedUser.LastName,
+                    Email = updatedUser.Email,
+                    Role = updatedUser.Role,
+                    CreatedAt = updatedUser.CreatedAt,
+                    PhoneNumber = updatedUser.PhoneNumber,
+                    PrescriptionAccess = updatedUser.PrescriptionAccess,
+                    LastLoginAt = updatedUser.LastLoginAt
+                };
+                
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DEBUG] UpdateUser exception: {ex.Message}");
+                Console.WriteLine($"[DEBUG] UpdateUser stack trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "An error occurred while updating the user." });
+            }
+        }
+
+        [Authorize(Roles = "admin,superadmin")]
+        [HttpDelete("users/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(id);
+                
+                if (user == null)
+                {
+                    return NotFound(new { message = $"User with ID {id} not found." });
+                }
+                
+                // Prevent deleting the last admin account
+                if (user.Role.ToLower() == "admin" || user.Role.ToLower() == "superadmin")
+                {
+                    // Get all admin users
+                    var allUsers = await _userRepository.GetAllAsync();
+                    var adminCount = allUsers.Count(u => u.Role.ToLower() == "admin" || u.Role.ToLower() == "superadmin");
+                    
+                    if (adminCount <= 1)
+                    {
+                        return BadRequest(new { message = "Cannot delete the last admin account." });
+                    }
+                }
+                
+                // Delete the user
+                var success = await _userRepository.DeleteAsync(id);
+                
+                if (!success)
+                {
+                    return StatusCode(500, new { message = "Failed to delete user." });
+                }
+                
+                return Ok(new { message = "User deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DEBUG] DeleteUser exception: {ex.Message}");
+                Console.WriteLine($"[DEBUG] DeleteUser stack trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "An error occurred while deleting the user." });
+            }
         }
     }
 }
