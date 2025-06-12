@@ -1,64 +1,70 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../infrastructure/auth/AuthContext';
-import './Auth.css';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../infrastructure/auth/AuthContext";
+import "./Auth.css";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { login } = useAuth();
   // We'll use navigate in the handleSubmit function
   const navigate = useNavigate();
-  
+
   // Get the redirect path from sessionStorage or default to home
-  const [redirectPath, setRedirectPath] = useState('/');
-  
+  const [redirectPath, setRedirectPath] = useState("/");
+
+  useEffect(() => {
+    alert(
+      "Demo Admin Credentials:\n\nEmail: admin@asafarim.fake\nPassword: Admin+123456!"
+    );
+  }, []);
+
   // Check for redirect path on component mount
   useEffect(() => {
-    const storedPath = sessionStorage.getItem('redirectPath');
+    const storedPath = sessionStorage.getItem("redirectPath");
     if (storedPath) {
       setRedirectPath(storedPath);
       // Clear it after retrieving
-      sessionStorage.removeItem('redirectPath');
+      sessionStorage.removeItem("redirectPath");
     }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
-      setError('Please enter both email and password');
+      setError("Please enter both email and password");
       return;
     }
-    
+
     setError(null);
     setIsSubmitting(true);
-    
+
     try {
       // Pass rememberMe parameter to login function
       const success = await login(email, password, rememberMe);
-      
+
       if (success) {
-        console.log('Login successful, redirecting to:', redirectPath || '/');
+        console.log("Login successful, redirecting to:", redirectPath || "/");
         // Use navigate to redirect after successful login
         setTimeout(() => {
-          navigate(redirectPath || '/');
+          navigate(redirectPath || "/");
         }, 300);
       } else {
-        setError('Invalid email or password');
+        setError("Invalid email or password");
       }
     } catch (err: any) {
       // Display error message from API if available
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {
-        setError('An error occurred during login. Please try again.');
+        setError("An error occurred during login. Please try again.");
       }
-      console.error('Login error:', err);
+      console.error("Login error:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -66,7 +72,7 @@ const Login: React.FC = () => {
 
   // Check for remembered email on component mount
   React.useEffect(() => {
-    const rememberedEmail = localStorage.getItem('igs_remembered_email');
+    const rememberedEmail = localStorage.getItem("igs_remembered_email");
     if (rememberedEmail) {
       setEmail(rememberedEmail);
       setRememberMe(true);
@@ -80,17 +86,15 @@ const Login: React.FC = () => {
           <h2>Mijn account</h2>
           <div className="auth-tabs">
             <div className="auth-tab active">Inloggen</div>
-            <Link to="/register" className="auth-tab">Registreren</Link>
+            <Link to="/register" className="auth-tab">
+              Registreren
+            </Link>
           </div>
         </div>
-        
+
         <div className="auth-content">
-          {error && (
-            <div className="auth-error">
-              {error}
-            </div>
-          )}
-          
+          {error && <div className="auth-error">{error}</div>}
+
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">E-mailadres</label>
@@ -104,7 +108,7 @@ const Login: React.FC = () => {
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="password">Wachtwoord</label>
               <input
@@ -116,7 +120,7 @@ const Login: React.FC = () => {
                 required
               />
             </div>
-            
+
             <div className="form-group checkbox-group">
               <label className="checkbox-container">
                 <input
@@ -131,20 +135,20 @@ const Login: React.FC = () => {
                 Wachtwoord vergeten?
               </Link>
             </div>
-            
-            <button 
-              type="submit" 
+
+            <button
+              type="submit"
               className="auth-button"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Inloggen...' : 'Inloggen'}
+              {isSubmitting ? "Inloggen..." : "Inloggen"}
             </button>
           </form>
-          
+
           <div className="auth-divider">
             <span>of</span>
           </div>
-          
+
           <div className="social-login">
             <button className="social-button google">
               <i className="fab fa-google"></i>
@@ -155,9 +159,11 @@ const Login: React.FC = () => {
               Inloggen met Facebook
             </button>
           </div>
-          
+
           <div className="auth-footer">
-            <p>Nog geen account? <Link to="/register">Registreer nu</Link></p>
+            <p>
+              Nog geen account? <Link to="/register">Registreer nu</Link>
+            </p>
           </div>
         </div>
       </div>
