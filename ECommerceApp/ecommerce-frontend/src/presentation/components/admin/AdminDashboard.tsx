@@ -5,7 +5,7 @@ import AdminChangelogPanel from './AdminChangelogPanel';
 import AdminUsersPanel from './AdminUsersPanel';
 import './AdminDashboard.css';
 
-const AdminDashboard: React.FC = () => {
+const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>('changelog');
