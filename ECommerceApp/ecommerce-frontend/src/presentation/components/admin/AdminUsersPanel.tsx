@@ -31,9 +31,8 @@ const AdminUsersPanel: React.FC = () => {
     try {
       // Replace with the actual endpoint when it's created in the backend
       // For now, we'll use the mock data
-      // const response = await axios.get(`${API_BASE_URL}/users`);
-      // setUsers(response.data);
-      
+            const response = await axios.get(`${API_BASE_URL}/users`);
+      if (!response.data || !Array.isArray(response.data)) {
       // Mock data for development
       setUsers([
         {
@@ -81,6 +80,10 @@ const AdminUsersPanel: React.FC = () => {
           created: '2023-05-18T11:25:00'
         }
       ]);
+      }
+      else {
+        setUsers(response.data);
+      }
     } catch (err) {
       console.error('Error fetching users:', err);
       setError('Er is een fout opgetreden bij het ophalen van gebruikers. Probeer het later opnieuw.');

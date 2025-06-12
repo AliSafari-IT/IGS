@@ -33,7 +33,10 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
     setError(null);
     
     try {
+      // Use the correct API endpoint with the full path
       const response = await axios.get(`${API_BASE_URL}/changelog`);
+      console.log('Changelog API response:', response);
+      
       // Check for different possible response formats
       let files = [];
       
@@ -58,8 +61,90 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
         setError('No changelog files found.');
       }
     } catch (err) {
-      console.error('Error fetching changelog files:', err);
+      console.error('Error fetching changelog files from API:', err);
+      
+      // Fallback: Try to load changelog files directly from the public directory
+      try {
+        console.log('Attempting to load changelog files from public directory...');
+        const staticResponse = await axios.get('/change-logs/CHANGELOG.md');
+        
+        if (staticResponse.status === 200) {
+          // Create a synthetic changelog file object
+          const staticChangelogFile: ChangelogFile = {
+            id: 'static-changelog',
+            name: 'Changelog',
+            path: '/change-logs/CHANGELOG.md',
+            date: new Date().toLocaleDateString(),
+            size: 'Unknown',
+            content: staticResponse.data,
+            version: 'Latest',
+            readOnly: true
+          };
+          
+          setChangelogFiles([staticChangelogFile]);
+          setSelectedChangelog(staticChangelogFile);
+          setError(null);
+          setIsLoading(false);
+          return; // Exit early since we've handled the fallback
+        }
+      } catch (fallbackErr) {
+        console.error('Fallback also failed:', fallbackErr);
+      }
+      
       setError('Failed to load changelog files. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Handle file selection
+  const handleFileSelection = async (file: ChangelogFile) => {
+    setSelectedChangelog(file);
+    
+    // If the content is already loaded, no need to fetch it again
+    if (file.content) {
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      // Try to load content from API first
+      if (!file.readOnly) {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/changelog/${file.id}`);
+          if (response.data && response.data.content) {
+            // Update the selected file with its content
+            const updatedFile = { ...file, content: response.data.content };
+            setSelectedChangelog(updatedFile);
+            
+            // Also update the file in the files array
+            setChangelogFiles(prev => 
+              prev.map(f => f.id === file.id ? updatedFile : f)
+            );
+            return;
+          }
+        } catch (apiErr) {
+          console.error('Failed to fetch content from API:', apiErr);
+        }
+      }
+      
+      // Fallback: Try to load directly from path
+      try {
+        const staticResponse = await axios.get(file.path);
+        if (staticResponse.status === 200) {
+          const updatedFile = { ...file, content: staticResponse.data };
+          setSelectedChangelog(updatedFile);
+          
+          // Also update the file in the files array
+          setChangelogFiles(prev => 
+            prev.map(f => f.id === file.id ? updatedFile : f)
+          );
+        }
+      } catch (pathErr) {
+        console.error('Failed to fetch content from path:', pathErr);
+        setError(`Failed to load content for ${file.name}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +196,7 @@ const ChangelogModal: React.FC<ChangelogModalProps> = ({ isOpen, onClose }) => {
                   <div 
                     key={file.id} 
                     className={`changelog-file-item ${selectedChangelog && selectedChangelog.id === file.id ? 'active' : ''}`}
-                    onClick={() => setSelectedChangelog(file)}
+                    onClick={() => handleFileSelection(file)}
                   >
                     <div className="changelog-file-name">{file.name}</div>
                     <div className="changelog-file-date">{file.date}</div>
