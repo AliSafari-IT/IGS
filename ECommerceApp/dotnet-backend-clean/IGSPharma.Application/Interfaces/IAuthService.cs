@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IGSPharma.Application.Models.Auth;
 
@@ -13,5 +14,6 @@ namespace IGSPharma.Application.Interfaces
         Task<UserDetailsResponse> GetUserDetailsAsync(string userId);
         Task<UserDetailsResponse> UpdateUserDetailsAsync(string userId, UpdateUserRequest request);
         Task<bool> ChangePasswordAsync(string userId, ChangePasswordRequest request);
+        Task<List<UserDetailsResponse>> GetAllUsersAsync();
     }
 }

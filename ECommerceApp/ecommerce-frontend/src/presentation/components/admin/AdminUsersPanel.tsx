@@ -29,64 +29,32 @@ const AdminUsersPanel: React.FC = () => {
     setError(null);
     
     try {
-      // Replace with the actual endpoint when it's created in the backend
-      // For now, we'll use the mock data
-            const response = await axios.get(`${API_BASE_URL}/users`);
-      if (!response.data || !Array.isArray(response.data)) {
-      // Mock data for development
-      setUsers([
-        {
-          id: '1',
-          firstName: 'Admin',
-          lastName: 'User',
-          email: 'admin@igspharma.nl',
-          role: 'admin',
-          created: '2023-01-15T10:30:00',
-          lastLogin: '2023-06-10T08:45:00'
-        },
-        {
-          id: '2',
-          firstName: 'Jan',
-          lastName: 'Jansen',
-          email: 'jan.jansen@example.com',
-          role: 'user',
-          created: '2023-02-20T14:15:00',
-          lastLogin: '2023-06-09T16:30:00'
-        },
-        {
-          id: '3',
-          firstName: 'Maria',
-          lastName: 'de Vries',
-          email: 'maria.devries@example.com',
-          role: 'user',
-          created: '2023-03-05T09:45:00',
-          lastLogin: '2023-06-08T11:20:00'
-        },
-        {
-          id: '4',
-          firstName: 'Pieter',
-          lastName: 'Bakker',
-          email: 'pieter.bakker@example.com',
-          role: 'pharmacist',
-          created: '2023-04-12T13:10:00',
-          lastLogin: '2023-06-11T09:15:00'
-        },
-        {
-          id: '5',
-          firstName: 'Sophie',
-          lastName: 'Visser',
-          email: 'sophie.visser@example.com',
-          role: 'user',
-          created: '2023-05-18T11:25:00'
+      const token = localStorage.getItem('igs_auth_token');
+      if (!token) {
+        setError('Geen authenticatie token gevonden. Log opnieuw in.');
+        return;
+      }
+
+      const response = await axios.get(`${API_BASE_URL}/Auth/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-      ]);
-      }
-      else {
+      });
+      
+      if (response.data && Array.isArray(response.data)) {
         setUsers(response.data);
+      } else {
+        setError('Ongeldig dataformaat ontvangen van server.');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching users:', err);
-      setError('Er is een fout opgetreden bij het ophalen van gebruikers. Probeer het later opnieuw.');
+      if (err.response?.status === 401) {
+        setError('Uw sessie is verlopen. Log opnieuw in.');
+      } else if (err.response?.status === 403) {
+        setError('U heeft geen toegang tot deze functie.');
+      } else {
+        setError('Er is een fout opgetreden bij het ophalen van gebruikers. Probeer het later opnieuw.');
+      }
     } finally {
       setIsLoading(false);
     }

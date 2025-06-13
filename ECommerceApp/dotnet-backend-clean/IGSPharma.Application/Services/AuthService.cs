@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IGSPharma.Application.Interfaces;
 using IGSPharma.Application.Models.Auth;
@@ -320,6 +322,20 @@ namespace IGSPharma.Application.Services
             await _userRepository.UpdateAsync(user);
 
             return true;
+        }
+
+        public async Task<List<UserDetailsResponse>> GetAllUsersAsync()
+        {
+            try
+            {
+                var users = await _userRepository.GetAllAsync();
+                return users.Select(MapUserToUserDetailsResponse).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while getting all users");
+                throw;
+            }
         }
 
         private UserDetailsResponse MapUserToUserDetailsResponse(User user)

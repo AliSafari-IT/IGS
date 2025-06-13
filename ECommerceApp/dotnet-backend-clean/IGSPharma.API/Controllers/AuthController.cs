@@ -263,5 +263,21 @@ namespace IGSPharma.API.Controllers
 
             return Ok(new { message = "Password has been changed successfully." });
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                var users = await _authService.GetAllUsersAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DEBUG] GetUsers exception: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while fetching users" });
+            }
+        }
     }
 }
