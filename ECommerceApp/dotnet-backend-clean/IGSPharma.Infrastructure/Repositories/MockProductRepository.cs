@@ -39,40 +39,111 @@ namespace IGSPharma.Infrastructure.Repositories
             return Task.FromResult(products);
         }
 
+        public Task<Product> CreateProductAsync(Product product)
+        {
+            if (string.IsNullOrEmpty(product.Id))
+            {
+                product.Id = Guid.NewGuid().ToString();
+            }
+            _products.Add(product);
+            return Task.FromResult(product);
+        }
+
+        public Task<Product> UpdateProductAsync(Product product)
+        {
+            var existingIndex = _products.FindIndex(p => p.Id == product.Id);
+            if (existingIndex >= 0)
+            {
+                _products[existingIndex] = product;
+            }
+            return Task.FromResult(product);
+        }
+
+        public Task<bool> DeleteProductAsync(string id)
+        {
+            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
+                _products.Remove(product);
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
+        }
+
         private List<Product> GenerateMockProducts()
         {
             var products = new List<Product>();
-            var categories = new[] { "prescription", "otc", "vitamins", "personal-care" };
-            var categoryNames = new Dictionary<string, string>
+            var categories = new[] { "Pijnstillers", "Antibiotica", "Vitamines", "Huidverzorging", "Digestie", "Respiratie", "Cardiovasculair", "Andere" };
+            var categoryDescriptions = new Dictionary<string, string>
             {
-                { "prescription", "Prescription Medication" },
-                { "otc", "Over-the-Counter" },
-                { "vitamins", "Vitamin Supplement" },
-                { "personal-care", "Personal Care Product" }
+                { "Pijnstillers", "pijnstillend medicijn" },
+                { "Antibiotica", "antibioticum" },
+                { "Vitamines", "vitamine supplement" },
+                { "Huidverzorging", "huidverzorgingsproduct" },
+                { "Digestie", "spijsverteringsproduct" },
+                { "Respiratie", "ademhalingsproduct" },
+                { "Cardiovasculair", "hart- en vaatproduct" },
+                { "Andere", "algemeen medisch product" }
             };
 
-            // Generate 25 products for each category (100 total)
+            // Generate some products for each category
+            int productId = 1;
             foreach (var category in categories)
             {
-                for (int i = 1; i <= 25; i++)
+                int productsInCategory = _random.Next(3, 8); // 3-7 products per category
+                for (int i = 1; i <= productsInCategory; i++)
                 {
+                    var productName = GenerateProductName(category, i);
                     products.Add(new Product
                     {
-                        Id = $"{category}-{i}",
-                        Name = $"{categoryNames[category]} {i}",
-                        Price = Math.Round((decimal)(_random.NextDouble() * 50 + 10), 2),
-                        ImageUrl = $"https://placehold.co/200x200?text={category}+{i}",
+                        Id = $"prod-{productId++}",
+                        Name = productName,
+                        Price = Math.Round((decimal)(_random.NextDouble() * 100 + 5), 2),
+                        ImageUrl = $"https://placehold.co/200x200?text={Uri.EscapeDataString(productName)}",
                         Category = category,
-                        Description = $"This is a {categoryNames[category].ToLower()} that {(category == "prescription" ? "requires a valid prescription from a licensed healthcare provider" : "is available without prescription")}.",
+                        Description = $"Dit is een hoogwaardig {categoryDescriptions[category]} voor {(category == "Antibiotica" ? "bacteriële infecties" : "algemeen gebruik")}.",
                         InStock = _random.NextDouble() > 0.2,
-                        RequiresPrescription = category == "prescription",
-                        Dosage = category != "personal-care" ? $"{_random.Next(1, 4)} tablet(s) daily" : null,
-                        Manufacturer = $"{(category == "vitamins" ? "NaturalHealth" : category == "personal-care" ? "CareProducts" : "PharmaCorp")} {_random.Next(1, 6)}"
+                        RequiresPrescription = category == "Antibiotica" || _random.NextDouble() > 0.7,
+                        Dosage = GenerateDosage(category),
+                        Manufacturer = GenerateManufacturer()
                     });
                 }
             }
 
             return products;
+        }
+
+        private string GenerateProductName(string category, int index)
+        {
+            var names = category switch
+            {
+                "Pijnstillers" => new[] { "Ibuprofen", "Paracetamol", "Aspirine", "Naproxen", "Diclofenac" },
+                "Antibiotica" => new[] { "Amoxicilline", "Azitromycine", "Cetirizine", "Doxycycline", "Flucloxacilline" },
+                "Vitamines" => new[] { "Vitamine D3", "Vitamine B12", "Vitamine C", "Multivitamine", "Omega-3" },
+                "Huidverzorging" => new[] { "Hydraterende Crème", "Zonnebrandcrème", "Anti-Aging Serum", "Reinigingslotion", "Bodylotion" },
+                "Digestie" => new[] { "Probiotica", "Loperamide", "Buscopan", "Rennie", "Gaviscon" },
+                "Respiratie" => new[] { "Hoestdrank", "Neusdruppels", "Inhalator", "Lozenges", "Ademhalingsspray" },
+                "Cardiovasculair" => new[] { "Aspirine Cardio", "Lisinopril", "Atorvastatine", "Metoprolol", "Amlodipine" },
+                _ => new[] { "Algemeen Product", "Medisch Hulpmiddel", "Zorgproduct", "Therapeutisch Product", "Medicijn" }
+            };
+            
+            var baseName = names[_random.Next(names.Length)];
+            var dosages = new[] { "25mg", "50mg", "100mg", "200mg", "500mg", "10ml", "20ml" };
+            return $"{baseName} {dosages[_random.Next(dosages.Length)]}";
+        }
+
+        private string? GenerateDosage(string category)
+        {
+            if (category == "Huidverzorging") return null;
+            
+            var dosages = new[] { "1x daags", "2x daags", "3x daags", "Naar behoefte", "1 tablet per dag", "2 tabletten per dag" };
+            return dosages[_random.Next(dosages.Length)];
+        }
+
+        private string GenerateManufacturer()
+        {
+            var manufacturers = new[] { "ConsumerHealth", "ReliefMed", "ComfortPharma", "WellnessCare", "HealthPlus", "PharmaVital", "MediCare", "VitalHealth" };
+            return manufacturers[_random.Next(manufacturers.Length)];
         }
     }
 }

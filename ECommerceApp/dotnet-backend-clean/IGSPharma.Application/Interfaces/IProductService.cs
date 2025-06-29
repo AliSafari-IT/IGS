@@ -13,5 +13,8 @@ namespace IGSPharma.Application.Interfaces
             string query,
             int page,
             int limit);
+        Task<ApiResponse<ProductDto>> CreateProductAsync(CreateProductRequest request);
+        Task<ApiResponse<ProductDto>> UpdateProductAsync(string id, UpdateProductRequest request);
+        Task<ApiResponse<bool>> DeleteProductAsync(string id);
     }
 }

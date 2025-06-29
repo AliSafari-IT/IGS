@@ -8,5 +8,8 @@ namespace IGSPharma.Domain.Interfaces
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category);
         Task<Product?> GetProductByIdAsync(string id);
         Task<IEnumerable<Product>> SearchProductsAsync(string query);
+        Task<Product> CreateProductAsync(Product product);
+        Task<Product> UpdateProductAsync(Product product);
+        Task<bool> DeleteProductAsync(string id);
     }
 }

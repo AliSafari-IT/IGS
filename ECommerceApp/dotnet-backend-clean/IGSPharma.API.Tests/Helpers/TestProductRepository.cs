@@ -67,5 +67,36 @@ namespace IGSPharma.API.Tests.Helpers
                     (p.Description != null && p.Description.ToLower().Contains(query.ToLower()))
                 ).ToList());
         }
+
+        public Task<Product> CreateProductAsync(Product product)
+        {
+            if (string.IsNullOrEmpty(product.Id))
+            {
+                product.Id = Guid.NewGuid().ToString();
+            }
+            _products.Add(product);
+            return Task.FromResult(product);
+        }
+
+        public Task<Product> UpdateProductAsync(Product product)
+        {
+            var existingIndex = _products.FindIndex(p => p.Id == product.Id);
+            if (existingIndex >= 0)
+            {
+                _products[existingIndex] = product;
+            }
+            return Task.FromResult(product);
+        }
+
+        public Task<bool> DeleteProductAsync(string id)
+        {
+            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
+                _products.Remove(product);
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
+        }
     }
 }

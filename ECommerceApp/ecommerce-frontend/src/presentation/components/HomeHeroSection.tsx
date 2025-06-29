@@ -105,7 +105,7 @@ function HomeHeroSection() {
             <Link to="/products" className="nav-link">Products</Link>
             <Link to="/solutions" className="nav-link">Solutions</Link>
             <Link to="/research" className="nav-link">Research</Link>
-            <Link to="/about" className="nav-link">About Us</Link>
+            <Link to="/about-us" className="nav-link">About Us</Link>
           </div>
           
           <div className="hero-nav-actions">
